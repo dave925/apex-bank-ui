@@ -40,9 +40,11 @@ function apexLogin() {
             loginTime: new Date().toISOString()
         };
     } else {
+        const emailPrefix = email.split('@')[0];
         userSession = {
             id: Date.now(),
-            name: email.split('@')[0], // Use email prefix as name
+            name: emailPrefix, // Use email prefix as name
+            firstName: emailPrefix, // Also set as first name
             email: email,
             accountNumber: Math.floor(10000000 + Math.random() * 90000000).toString(),
             avatar: `https://picsum.photos/seed/${email}/80/80.jpg`,
@@ -620,7 +622,7 @@ function updateHomePage() {
         // Update user name in greeting message
         const greetingElement = document.getElementById('greetingMessage');
         if (greetingElement) {
-            greetingElement.textContent = `Good morning, ${displayName}`;
+            greetingElement.textContent = `Welcome, ${displayName}`;
         }
         
         // Update user name in all relevant elements
@@ -628,7 +630,7 @@ function updateHomePage() {
         userNameElements.forEach(element => {
             const text = element.textContent;
             if (text.includes('Welcome') || text.includes('Hello') || text.includes('Hi') || text.includes('user') || text.includes('User') || text.includes('Good morning, User')) {
-                element.textContent = `Good morning, ${displayName}`;
+                element.textContent = `Welcome, ${displayName}`;
             }
         });
         
