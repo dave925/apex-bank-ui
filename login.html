@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - APEX Bank</title>
+    <link rel="stylesheet" href="css/apex-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Main Content -->
+    <main>
+        <!-- Login Screen -->
+        <section class="apex-auth">
+            <div class="apex-auth-card">
+                <div class="apex-auth-header">
+                    <div class="apex-auth-logo">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h1 class="apex-auth-title">Welcome back</h1>
+                    <p class="apex-auth-subtitle">Sign in to your APEX Bank account</p>
+                </div>
+                
+                <form class="apex-form" id="loginForm">
+                    <div class="apex-form-group">
+                        <label class="apex-label">Email or phone number</label>
+                        <input type="text" class="apex-input" placeholder="Enter your email or phone number" id="loginEmail">
+                    </div>
+                    
+                    <div class="apex-form-group">
+                        <label class="apex-label">Password</label>
+                        <input type="password" class="apex-input" placeholder="Enter your password" id="loginPassword">
+                    </div>
+                    
+                    <div class="apex-form-group">
+                        <label style="display: flex; align-items: center; gap: var(--apex-spacing-2);">
+                            <input type="checkbox" id="rememberMe" style="width: auto;">
+                            <span style="font-weight: normal;">Remember me</span>
+                        </label>
+                    </div>
+                    
+                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="apexLogin()">
+                        Sign in
+                    </button>
+                    
+                    <div style="text-align: center; margin-top: var(--apex-spacing-4);">
+                        <a href="signup.html" class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-user-plus"></i>
+                            Don't have an account? Sign up
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="chimeToast" class="apex-toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Login successful!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/chime-app-fixed.js"></script>
+</body>
+</html>

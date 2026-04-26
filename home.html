@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - APEX Bank</title>
+    <link rel="stylesheet" href="css/apex-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Premium Navigation -->
+    <nav class="apex-nav" role="navigation" aria-label="Main navigation">
+        <div class="apex-nav-container">
+            <a href="home.html" class="apex-brand" aria-label="APEX Bank - Home">
+                <div class="apex-brand-icon" aria-hidden="true">
+                    <i class="fas fa-university"></i>
+                </div>
+                <span>APEX</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="apex-container apex-section">
+            <!-- Welcome Section -->
+            <div style="text-align: center; margin-bottom: var(--apex-spacing-12);">
+                <h1 id="greetingMessage" style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                    Good morning, User
+                </h1>
+                <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                    Here's what's happening with your money today
+                </p>
+            </div>
+
+            <!-- APEX Card -->
+            <div class="apex-debit-card">
+                <div class="apex-card-chip"></div>
+                <div class="apex-card-number" id="cardNumber">**** **** **** 8234</div>
+                <div class="apex-card-info">
+                    <div>
+                        <div class="apex-card-holder" id="cardHolder">USER NAME</div>
+                        <div class="apex-card-expiry">12/26</div>
+                    </div>
+                    <div>
+                        <i class="fas fa-university" style="font-size: var(--apex-font-size-2xl); opacity: 0.7;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Balance Display -->
+            <div class="apex-balance">
+                <div class="apex-balance-amount" id="balanceAmount">$0.00</div>
+                <div class="apex-balance-label">Available balance</div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="apex-grid" style="margin-bottom: var(--apex-spacing-10);">
+                <div class="apex-feature-card" onclick="window.location.href='move.html'">
+                    <div class="apex-feature-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3 class="apex-feature-title">Move Money</h3>
+                    <p class="apex-feature-description">Pay friends, transfer between accounts, or pay bills</p>
+                </div>
+                
+                                
+                <div class="apex-feature-card" onclick="window.location.href='credit.html'">
+                    <div class="apex-feature-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3 class="apex-feature-title">Credit Builder</h3>
+                    <p class="apex-feature-description">Build credit with no credit check</p>
+                </div>
+            </div>
+
+            
+            <!-- Recent Transactions -->
+            <div class="apex-card">
+                <div class="apex-card-header">
+                    <h2 class="apex-card-title">Recent transactions</h2>
+                    <a href="#" class="apex-btn apex-btn-ghost" onclick="showAllTransactions()">See all</a>
+                </div>
+                <div class="apex-transaction-list" id="recentTransactions">
+                    <div style="text-align: center; padding: var(--apex-spacing-8) var(--apex-spacing-4); color: var(--apex-medium-gray);">
+                        <div style="font-size: 3rem; margin-bottom: var(--apex-spacing-4); opacity: 0.3;">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <h4 style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-dark-gray); margin-bottom: var(--apex-spacing-2);">No transactions yet</h4>
+                        <p style="font-size: var(--apex-font-size-sm); margin: 0;">Start using your account to see your transaction history</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Navigation Bar -->
+    <div class="apex-mobile-bar">
+        <a href="home.html" class="apex-mobile-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="account.html" class="apex-mobile-item">
+            <i class="fas fa-credit-card"></i>
+            <span>Account</span>
+        </a>
+                <a href="move.html" class="apex-mobile-item">
+            <i class="fas fa-exchange-alt"></i>
+            <span>Move</span>
+        </a>
+        <a href="analytics.html" class="apex-mobile-item">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+        </a>
+        <a href="#" class="apex-mobile-item" onclick="showMoreMenu()">
+            <i class="fas fa-ellipsis-h"></i>
+            <span>More</span>
+        </a>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="apexToast" class="apex-toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Welcome back!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/chime-app-fixed.js"></script>
+    <script>
+        // Update home page when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.updateHomePage) {
+                updateHomePage();
+            }
+        });
+    </script>
+    
+    <!-- More Dropdown Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const moreToggle = document.querySelector('.apex-nav-more-toggle');
+            const moreDropdown = document.querySelector('.apex-nav-more-dropdown');
+            
+            if (moreToggle && moreDropdown) {
+                const moreLinks = moreDropdown.querySelectorAll('a');
+                
+                // Toggle dropdown
+                moreToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isExpanded = moreToggle.getAttribute('aria-expanded') === 'true';
+                    moreToggle.setAttribute('aria-expanded', !isExpanded);
+                    moreDropdown.classList.toggle('active');
+                    
+                    // Change icon
+                    const icon = moreToggle.querySelector('i');
+                    if (icon) {
+                        icon.className = isExpanded ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+                    }
+                });
+                
+                // Close dropdown when clicking on a link
+                if (moreLinks && moreLinks.length > 0) {
+                    moreLinks.forEach(link => {
+                        link.addEventListener('click', function() {
+                            moreDropdown.classList.remove('active');
+                            moreToggle.setAttribute('aria-expanded', 'false');
+                            const icon = moreToggle.querySelector('i');
+                            if (icon) {
+                                icon.className = 'fas fa-chevron-down';
+                            }
+                        });
+                    });
+                }
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!moreToggle.contains(event.target) && !moreDropdown.contains(event.target)) {
+                        moreDropdown.classList.remove('active');
+                        moreToggle.setAttribute('aria-expanded', 'false');
+                        const icon = moreToggle.querySelector('i');
+                        if (icon) {
+                            icon.className = 'fas fa-chevron-down';
+                        }
+                    }
+                });
+                
+                // Close dropdown on escape key
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape' && moreDropdown.classList.contains('active')) {
+                        moreDropdown.classList.remove('active');
+                        moreToggle.setAttribute('aria-expanded', 'false');
+                        const icon = moreToggle.querySelector('i');
+                        if (icon) {
+                            icon.className = 'fas fa-chevron-down';
+                        }
+                    }
+                });
+            }
+            
+            // Update greeting and account number
+            updateGreetingAndAccountInfo();
+        });
+        
+        function updateGreetingAndAccountInfo() {
+            // Update greeting message
+            const greetingElement = document.getElementById('greetingMessage');
+            
+            if (greetingElement && apexState.currentUser) {
+                const greeting = getEnhancedTimeBasedGreeting();
+                greetingElement.innerHTML = greeting;
+            }
+            
+            // Update account number on card
+            const cardNumberElement = document.getElementById('cardNumber');
+            if (cardNumberElement && apexState.currentUser && apexState.currentUser.accountNumber) {
+                cardNumberElement.textContent = formatAccountNumber(apexState.currentUser.accountNumber);
+            }
+            
+            // Update card holder name
+            const cardHolderElement = document.getElementById('cardHolder');
+            if (cardHolderElement && apexState.currentUser) {
+                cardHolderElement.textContent = apexState.currentUser.name.toUpperCase();
+            }
+        }
+        
+                
+        // Enhanced real-time greeting
+        function getEnhancedTimeBasedGreeting() {
+            const hour = new Date().getHours();
+            const name = apexState.currentUser ? apexState.currentUser.name.split(' ')[0] : 'User';
+            
+            if (hour < 5) {
+                return `Good night, ${name}`;
+            } else if (hour < 12) {
+                return `Good morning, ${name}`;
+            } else if (hour < 17) {
+                return `Good afternoon, ${name}`;
+            } else if (hour < 21) {
+                return `Good evening, ${name}`;
+            } else {
+                return `Good night, ${name}`;
+            }
+        }
+        
+                
+        // Real-time transaction notifications
+        function simulateRealTimeTransactions() {
+            const transactionTypes = [
+                { name: 'Coffee Shop', amount: -4.50, icon: 'fa-coffee' },
+                { name: 'Salary Deposit', amount: 2500.00, icon: 'fa-money-bill-wave' },
+                { name: 'Grocery Store', amount: -87.32, icon: 'fa-shopping-cart' },
+                { name: 'Friend Transfer', amount: -25.00, icon: 'fa-user-friends' },
+                { name: 'Investment Return', amount: 125.75, icon: 'fa-chart-line' },
+                { name: 'Gas Station', amount: -45.00, icon: 'fa-gas-pump' },
+                { name: 'Restaurant', amount: -32.50, icon: 'fa-utensils' },
+                { name: 'Online Purchase', amount: -19.99, icon: 'fa-shopping-bag' }
+            ];
+            
+            if (Math.random() > 0.7) { // 30% chance of new transaction
+                const transaction = transactionTypes[Math.floor(Math.random() * transactionTypes.length)];
+                const balanceElement = document.getElementById('balanceAmount');
+                
+                if (balanceElement && apexState.currentUser) {
+                    const currentBalance = parseFloat(balanceElement.textContent.replace(/[$,]/g, ''));
+                    const newBalance = currentBalance + transaction.amount;
+                    balanceElement.textContent = `$${newBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    
+                    // Show transaction notification
+                    if (typeof chimeToast === 'function') {
+                        const icon = `<i class="fas ${transaction.icon}"></i>`;
+                        const message = `${icon} ${transaction.name}: ${transaction.amount > 0 ? '+' : ''}$${Math.abs(transaction.amount).toFixed(2)}`;
+                        chimeToast(message, transaction.amount > 0 ? 'success' : 'info');
+                    }
+                }
+            }
+        }
+        
+        // Real-time balance updates (simulated)
+        function simulateRealTimeBalanceUpdates() {
+            const balanceElement = document.getElementById('balanceAmount');
+            if (balanceElement && apexState.currentUser) {
+                // Simulate small balance changes for demo purposes
+                const currentBalance = parseFloat(balanceElement.textContent.replace(/[$,]/g, ''));
+                const change = (Math.random() - 0.5) * 10; // Random change between -$5 and $5
+                const newBalance = currentBalance + change;
+                
+                if (Math.random() > 0.8) { // 20% chance of update
+                    balanceElement.textContent = `$${newBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    
+                    // Show notification for significant changes
+                    if (Math.abs(change) > 2) {
+                        if (typeof chimeToast === 'function') {
+                            chimeToast(`${change > 0 ? '+' : ''}$${change.toFixed(2)} balance update`, 'info');
+                        }
+                    }
+                }
+            }
+        }
+        
+                
+        // More dropdown functionality
+        function initMoreDropdown() {
+            const moreToggle = document.querySelector('.apex-nav-more-toggle');
+            const moreDropdown = document.querySelector('.apex-nav-more-dropdown');
+            
+            if (moreToggle && moreDropdown) {
+                console.log('More dropdown elements found');
+                
+                // Toggle dropdown
+                moreToggle.addEventListener('click', function(e) {
+                    console.log('More button clicked');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    moreDropdown.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!moreToggle.contains(e.target) && !moreDropdown.contains(e.target)) {
+                        moreDropdown.classList.remove('active');
+                    }
+                });
+                
+                // Close dropdown when clicking on a link
+                moreDropdown.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        moreDropdown.classList.remove('active');
+                    });
+                });
+            } else {
+                console.log('More dropdown elements not found');
+            }
+        }
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMoreDropdown);
+        } else {
+            initMoreDropdown();
+        }
+        
+        // Initialize real-time updates
+        
+        setInterval(updateGreetingAndAccountInfo, 60000); // Update greeting every minute
+        setInterval(simulateRealTimeBalanceUpdates, 30000); // Simulate balance updates every 30 seconds
+        setInterval(simulateRealTimeTransactions, 45000); // Simulate transactions every 45 seconds
+        
+        // Initial updates
+        updateGreetingAndAccountInfo();
+    </script>
+
+    <!-- More Button at Bottom -->
+    <div id="moreButtonContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <button id="moreButton" onclick="toggleMoreMenu()" style="background: #2ecc71; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+            More
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div id="moreMenu" style="position: absolute; bottom: 60px; right: 0; background: #2c3e50; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; min-width: 200px; padding: 8px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); display: none;">
+            <a href="index.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Home</a>
+                        <a href="account.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Account</a>
+                        <a href="move.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Move Money</a>
+            <a href="credit.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Credit</a>
+            <a href="analytics.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Analytics</a>
+            <a href="settings.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Settings</a>
+            <a href="help.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Help</a>
+            <a href="notifications.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Notifications</a>
+            <a href="profile.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Profile</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleMoreMenu() {
+            const menu = document.getElementById('moreMenu');
+            if (menu.style.display === 'none' || menu.style.display === '') {
+                menu.style.display = 'block';
+            } else {
+                menu.style.display = 'none';
+            }
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const container = document.getElementById('moreButtonContainer');
+            if (container && !container.contains(e.target)) {
+                document.getElementById('moreMenu').style.display = 'none';
+            }
+        });
+
+        // Add hover effects
+        document.querySelectorAll('#moreMenu a').forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                this.style.background = 'rgba(255, 255, 255, 0.1)';
+            });
+            link.addEventListener('mouseleave', function() {
+                this.style.background = 'transparent';
+            });
+            link.addEventListener('click', function() {
+                document.getElementById('moreMenu').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

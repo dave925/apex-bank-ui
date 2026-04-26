@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chime - Banking That Works For You</title>
+    <link rel="stylesheet" href="css/apex-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="apex-nav">
+        <div class="apex-nav-container">
+            <a href="#" class="apex-brand">
+                <div class="apex-brand-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <span>Chime</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Login Screen -->
+        <section id="login-screen" class="apex-auth screen active">
+            <div class="apex-auth-card">
+                <div class="apex-auth-header">
+                    <div class="apex-auth-logo">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h1 class="apex-auth-title">Welcome back</h1>
+                    <p class="apex-auth-subtitle">Sign in to your Chime account</p>
+                </div>
+                
+                <form class="apex-form" id="loginForm">
+                    <div class="apex-form-group">
+                        <label class="apex-label">Email or phone number</label>
+                        <input type="text" class="apex-input" placeholder="Enter your email or phone number" id="loginEmail">
+                    </div>
+                    
+                    <div class="apex-form-group">
+                        <label class="apex-label">Password</label>
+                        <input type="password" class="apex-input" placeholder="Enter your password" id="loginPassword">
+                    </div>
+                    
+                    <div class="apex-form-group">
+                        <label style="display: flex; align-items: center; gap: var(--apex-spacing-2);">
+                            <input type="checkbox" id="rememberMe" style="width: auto;">
+                            <span style="font-weight: normal;">Remember me</span>
+                        </label>
+                    </div>
+                    
+                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="apexLogin()">
+                        Sign in
+                    </button>
+                    
+                    <div style="text-align: center; margin-top: var(--apex-spacing-4);">
+                        <a href="#" class="apex-btn apex-btn-ghost" onclick="showSignup()">Don't have an account? Sign up</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Home Screen -->
+        <section id="home-screen" class="screen">
+            <div class="apex-container apex-section">
+                <!-- Welcome Section -->
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-12);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Good morning, <span id="userName">Sarah</span>
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Here's what's happening with your money today
+                    </p>
+                </div>
+
+                <!-- Chime Card -->
+                <div class="apex-card" style="margin-bottom: var(--apex-spacing-10);">
+                    <div class="apex-debit-card">
+                        <div class="apex-card-chip"></div>
+                        <div class="apex-card-number">**** **** **** 8234</div>
+                        <div class="apex-card-info">
+                            <div>
+                                <div class="apex-card-holder">SARAH JOHNSON</div>
+                                <div class="apex-card-expiry">12/26</div>
+                            </div>
+                            <div>
+                                <i class="fas fa-university" style="font-size: var(--apex-font-size-2xl); opacity: 0.7;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Balance Display -->
+                <div class="apex-balance">
+                    <div class="apex-balance-amount" id="balanceAmount">$0.00</div>
+                    <div class="apex-balance-label">Available balance</div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="apex-grid" style="margin-bottom: var(--apex-spacing-10);">
+                    <div class="apex-feature-card" onclick="showMoveMoneyScreen()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h3 class="apex-feature-title">Move Money</h3>
+                        <p class="apex-feature-description">Pay friends, transfer between accounts, or pay bills</p>
+                    </div>
+                    
+                    <div class="apex-feature-card" onclick="showGoalsScreen()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <h3 class="apex-feature-title">Goals</h3>
+                        <p class="apex-feature-description">Save for your goals with automatic roundups</p>
+                    </div>
+                    
+                    <div class="apex-feature-card" onclick="showCreditScreen()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h3 class="apex-feature-title">Credit Builder</h3>
+                        <p class="apex-feature-description">Build credit with no credit check</p>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="apex-card">
+                    <div class="apex-card-header">
+                        <h2 class="apex-card-title">Recent transactions</h2>
+                        <a href="#" class="apex-btn apex-btn-ghost" onclick="showAllTransactions()">See all</a>
+                    </div>
+                    <div class="apex-transaction-list" id="recentTransactions">
+                        <div style="text-align: center; padding: var(--apex-spacing-8) var(--apex-spacing-4); color: var(--apex-medium-gray);">
+                            <div style="font-size: 3rem; margin-bottom: var(--apex-spacing-4); opacity: 0.3;">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <h4 style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-dark-gray); margin-bottom: var(--apex-spacing-2);">No transactions yet</h4>
+                            <p style="font-size: var(--apex-font-size-sm); margin: 0;">Start using your account to see your transaction history</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Goals Screen -->
+        <section id="goals-screen" class="screen">
+            <div class="apex-container apex-section">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Your Goals
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Save automatically with roundups and scheduled transfers
+                    </p>
+                </div>
+
+                <div class="apex-goals" id="goalsList">
+                    <div class="apex-goal">
+                        <div class="apex-goal-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="apex-goal-name">Emergency Fund</div>
+                        <div class="apex-goal-amount">$0.00</div>
+                        <div class="apex-goal-progress">
+                            <div class="apex-goal-progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <div class="apex-goal-percentage">0% of $2,000 goal</div>
+                    </div>
+                    
+                    <div class="apex-goal">
+                        <div class="apex-goal-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="apex-goal-name">Vacation Fund</div>
+                        <div class="apex-goal-amount">$0.00</div>
+                        <div class="apex-goal-progress">
+                            <div class="apex-goal-progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <div class="apex-goal-percentage">0% of $2,000 goal</div>
+                    </div>
+                    
+                    <div class="apex-goal">
+                        <div class="apex-goal-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <div class="apex-goal-name">New Laptop</div>
+                        <div class="apex-goal-amount">$0.00</div>
+                        <div class="apex-goal-progress">
+                            <div class="apex-goal-progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <div class="apex-goal-percentage">0% of $600 goal</div>
+                    </div>
+                    
+                    <div class="apex-goal">
+                        <div class="apex-goal-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="apex-goal-name">Holiday Gifts</div>
+                        <div class="apex-goal-amount">$0.00</div>
+                        <div class="apex-goal-progress">
+                            <div class="apex-goal-progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <div class="apex-goal-percentage">0% of $600 goal</div>
+                    </div>
+                    
+                    <div class="apex-goal" style="border: 2px dashed var(--apex-medium-gray); background: transparent; cursor: pointer;" onclick="createNewGoal()">
+                        <div class="apex-goal-icon" style="background: var(--apex-light-gray);">
+                            <i class="fas fa-plus" style="color: var(--apex-medium-gray);"></i>
+                        </div>
+                        <div class="apex-goal-name" style="color: var(--apex-medium-gray);">Create new goal</div>
+                        <div class="apex-goal-amount" style="color: var(--apex-medium-gray);">$0.00</div>
+                        <div class="apex-goal-progress">
+                            <div class="apex-goal-progress-bar" style="width: 0%; background: var(--apex-medium-gray);"></div>
+                        </div>
+                        <div class="apex-goal-percentage" style="color: var(--apex-medium-gray);">0% saved</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: var(--apex-spacing-10);">
+                    <button class="apex-btn apex-btn-primary" onclick="showHomeScreen()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Move Money Screen -->
+        <section id="move-screen" class="screen">
+            <div class="apex-container apex-section">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Move Money
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Send money to friends, pay bills, or transfer between accounts
+                    </p>
+                </div>
+
+                <div class="apex-grid" style="margin-bottom: var(--apex-spacing-8);">
+                    <div class="apex-feature-card" onclick="showPayFriends()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <h3 class="apex-feature-title">Pay Friends</h3>
+                        <p class="apex-feature-description">Send money to anyone with their email or phone</p>
+                    </div>
+                    
+                    <div class="apex-feature-card" onclick="showPayBills()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <h3 class="apex-feature-title">Pay Bills</h3>
+                        <p class="apex-feature-description">Set up and pay your monthly bills</p>
+                    </div>
+                    
+                    <div class="apex-feature-card" onclick="showTransferBetween()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h3 class="apex-feature-title">Transfer</h3>
+                        <p class="apex-feature-description">Move money between your accounts</p>
+                    </div>
+                </div>
+
+                <div class="apex-card" style="max-width: 500px; margin: 0 auto;">
+                    <form class="apex-form">
+                        <div class="apex-form-group">
+                            <label class="apex-label">Who are you paying?</label>
+                            <input type="text" class="apex-input" placeholder="Email, phone number, or $Cashtag" id="recipientName">
+                        </div>
+                        
+                        <div class="apex-form-group">
+                            <label class="apex-label">Amount</label>
+                            <div style="position: relative;">
+                                <span style="position: absolute; left: var(--apex-spacing-4); top: 50%; transform: translateY(-50%); font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-medium-gray);">$</span>
+                                <input type="number" class="apex-input" placeholder="0.00" id="paymentAmount" style="padding-left: var(--apex-spacing-8);">
+                            </div>
+                        </div>
+                        
+                        <div class="apex-form-group">
+                            <label class="apex-label">Note (optional)</label>
+                            <input type="text" class="apex-input" placeholder="What's this for?" id="paymentNote">
+                        </div>
+                        
+                        <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="makePayment()">
+                            Pay $<span id="paymentAmountDisplay">0.00</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div style="text-align: center; margin-top: var(--apex-spacing-10);">
+                    <button class="apex-btn apex-btn-secondary" onclick="showHomeScreen()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Credit Builder Screen -->
+        <section id="credit-screen" class="screen">
+            <div class="apex-container apex-section">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Credit Builder
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Build your credit with no credit check required
+                    </p>
+                </div>
+
+                <div class="apex-card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+                    <div style="margin-bottom: var(--apex-spacing-6);">
+                        <div style="width: 100px; height: 100px; background: var(--apex-green-pale); border-radius: var(--apex-radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--apex-spacing-4); font-size: var(--apex-font-size-3xl); color: var(--apex-primary-green);">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-2);">
+                            Secured Credit Builder
+                        </h3>
+                        <p style="color: var(--apex-medium-gray); margin-bottom: var(--apex-spacing-4);">
+                            Move $200 - $1,000 from your Spending Account to your Credit Builder secured account. 
+                            The money you move is used to secure your credit line.
+                        </p>
+                    </div>
+
+                    <div style="background: var(--apex-green-pale); border-radius: var(--apex-radius-xl); padding: var(--apex-spacing-4); margin-bottom: var(--apex-spacing-6);">
+                        <div style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-primary-green); margin-bottom: var(--apex-spacing-2);">
+                            No credit check required
+                        </div>
+                        <p style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">
+                            Everyone approved with no minimum credit score
+                        </p>
+                    </div>
+
+                    <div style="background: var(--apex-blue-pale); border-radius: var(--apex-radius-xl); padding: var(--apex-spacing-4); margin-bottom: var(--apex-spacing-6);">
+                        <div style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-light-blue); margin-bottom: var(--apex-spacing-2);">
+                            Reports to all 3 credit bureaus
+                        </div>
+                        <p style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">
+                            Build credit history with responsible use
+                        </p>
+                    </div>
+
+                    <button class="apex-btn apex-btn-primary apex-btn-full" onclick="applyForCreditBuilder()">
+                        Apply for Credit Builder
+                    </button>
+                </div>
+
+                <div style="text-align: center; margin-top: var(--apex-spacing-10);">
+                    <button class="apex-btn apex-btn-secondary" onclick="showHomeScreen()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Account Screen -->
+        <section id="account-screen" class="screen">
+            <div class="apex-container apex-section">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Account Overview
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Manage your accounts and view details
+                    </p>
+                </div>
+
+                <div class="apex-grid">
+                    <div class="apex-card">
+                        <div style="display: flex; align-items: center; gap: var(--apex-spacing-4); margin-bottom: var(--apex-spacing-4);">
+                            <div style="width: 48px; height: 48px; background: var(--apex-green-pale); border-radius: var(--apex-radius-full); display: flex; align-items: center; justify-content: center; font-size: var(--apex-font-size-lg); color: var(--apex-primary-green);">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-dark-blue);">Spending Account</h3>
+                                <p style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">Main checking account</p>
+                            </div>
+                        </div>
+                        <div style="font-size: var(--apex-font-size-2xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-2);">
+                            $0.00
+                        </div>
+                        <p style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">
+                            Account ending in 8234
+                        </p>
+                    </div>
+                    
+                    <div class="apex-card">
+                        <div style="display: flex; align-items: center; gap: var(--apex-spacing-4); margin-bottom: var(--apex-spacing-4);">
+                            <div style="width: 48px; height: 48px; background: var(--apex-blue-pale); border-radius: var(--apex-radius-full); display: flex; align-items: center; justify-content: center; font-size: var(--apex-font-size-lg); color: var(--apex-light-blue);">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-dark-blue);">Savings Account</h3>
+                                <p style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">High-yield savings</p>
+                            </div>
+                        </div>
+                        <div style="font-size: var(--apex-font-size-2xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-2);">
+                            $0.00
+                        </div>
+                        <p style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">
+                            0.50% APY
+                        </p>
+                    </div>
+                </div>
+
+                <div class="apex-card" style="margin-top: var(--apex-spacing-6);">
+                    <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">Account Settings</h3>
+                    <div style="display: flex; flex-direction: column; gap: var(--apex-spacing-3);">
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-credit-card"></i>
+                            Card Management
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-file-invoice"></i>
+                            Statements & Documents
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-download"></i>
+                            Download Account Info
+                        </button>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: var(--apex-spacing-10);">
+                    <button class="apex-btn apex-btn-primary" onclick="showHomeScreen()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Screen -->
+        <section id="analytics-screen" class="screen">
+            <div class="apex-container apex-section">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Spending Analytics
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Track your spending habits and patterns
+                    </p>
+                </div>
+
+                <div class="apex-grid">
+                    <div class="apex-card">
+                        <h3 style="font-size: var(--apex-font-size-lg); font-weight: 600; margin-bottom: var(--apex-spacing-4);">This Month</h3>
+                        <div style="font-size: var(--apex-font-size-2xl); font-weight: 700; color: var(--apex-error); margin-bottom: var(--apex-spacing-2);">
+                            $0.00
+                        </div>
+                        <p style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">
+                            No spending this month
+                        </p>
+                    </div>
+                    
+                    <div class="apex-card">
+                        <h3 style="font-size: var(--apex-font-size-lg); font-weight: 600; margin-bottom: var(--apex-spacing-4);">Average Daily</h3>
+                        <div style="font-size: var(--apex-font-size-2xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-2);">
+                            $0.00
+                        </div>
+                        <p style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">
+                            Based on last 30 days
+                        </p>
+                    </div>
+                </div>
+
+                <div class="apex-card" style="margin-top: var(--apex-spacing-6);">
+                    <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">Spending by Category</h3>
+                    <div style="text-align: center; padding: var(--apex-spacing-8) var(--apex-spacing-4); color: var(--apex-medium-gray);">
+                        <div style="font-size: 3rem; margin-bottom: var(--apex-spacing-4); opacity: 0.3;">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h4 style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-dark-gray); margin-bottom: var(--apex-spacing-2);">No spending data yet</h4>
+                        <p style="font-size: var(--apex-font-size-sm); margin: 0;">Start using your account to see spending analytics</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: var(--apex-spacing-10);">
+                    <button class="apex-btn apex-btn-primary" onclick="showHomeScreen()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Screen -->
+        <section id="settings-screen" class="screen">
+            <div class="apex-container apex-section">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Settings
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Manage your account preferences and security
+                    </p>
+                </div>
+
+                <div class="apex-card" style="max-width: 600px; margin: 0 auto;">
+                    <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-6);">Account Settings</h3>
+                    <div style="display: flex; flex-direction: column; gap: var(--apex-spacing-3); margin-bottom: var(--apex-spacing-8);">
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-user"></i>
+                            Personal Information
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Address & Contact
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-phone"></i>
+                            Phone & Email
+                        </button>
+                    </div>
+
+                    <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-6);">Security</h3>
+                    <div style="display: flex; flex-direction: column; gap: var(--apex-spacing-3); margin-bottom: var(--apex-spacing-8);">
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-lock"></i>
+                            Change Password
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-fingerprint"></i>
+                            Biometric Settings
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-shield-alt"></i>
+                            Two-Factor Authentication
+                        </button>
+                    </div>
+
+                    <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-6);">Preferences</h3>
+                    <div style="display: flex; flex-direction: column; gap: var(--apex-spacing-3);">
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-globe"></i>
+                            Language & Region
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-moon"></i>
+                            Dark Mode
+                        </button>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: var(--apex-spacing-10);">
+                    <button class="apex-btn apex-btn-primary" onclick="showHomeScreen()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Help Screen -->
+        <section id="help-screen" class="screen">
+            <div class="apex-container apex-section">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Help & Support
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Get help with your Chime account
+                    </p>
+                </div>
+
+                <div class="apex-grid">
+                    <div class="apex-feature-card" onclick="showFAQ()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3 class="apex-feature-title">FAQ</h3>
+                        <p class="apex-feature-description">Find answers to common questions</p>
+                    </div>
+                    
+                    <div class="apex-feature-card" onclick="showContactSupport()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="apex-feature-title">Contact Support</h3>
+                        <p class="apex-feature-description">Get help from our support team</p>
+                    </div>
+                    
+                    <div class="apex-feature-card" onclick="showSecurityHelp()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="apex-feature-title">Security Help</h3>
+                        <p class="apex-feature-description">Learn about account security</p>
+                    </div>
+                    
+                    <div class="apex-feature-card" onclick="showTroubleshooting()">
+                        <div class="apex-feature-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="apex-feature-title">Troubleshooting</h3>
+                        <p class="apex-feature-description">Fix common issues</p>
+                    </div>
+                </div>
+
+                <div class="apex-card" style="margin-top: var(--apex-spacing-6);">
+                    <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">Quick Links</h3>
+                    <div style="display: flex; flex-direction: column; gap: var(--apex-spacing-3);">
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-book"></i>
+                            User Guide
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-comments"></i>
+                            Community Forum
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-file-alt"></i>
+                            Terms & Conditions
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full">
+                            <i class="fas fa-lock"></i>
+                            Privacy Policy
+                        </button>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: var(--apex-spacing-10);">
+                    <button class="apex-btn apex-btn-primary" onclick="showHomeScreen()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notifications Screen -->
+        <section id="notifications-screen" class="screen">
+            <div class="apex-container apex-section">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Notifications
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Stay updated on your account activity
+                    </p>
+                </div>
+
+                <div class="apex-card">
+                    <div style="text-align: center; padding: var(--apex-spacing-8) var(--apex-spacing-4); color: var(--apex-medium-gray);">
+                        <div style="font-size: 3rem; margin-bottom: var(--apex-spacing-4); opacity: 0.3;">
+                            <i class="fas fa-bell-slash"></i>
+                        </div>
+                        <h4 style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-dark-gray); margin-bottom: var(--apex-spacing-2);">No notifications</h4>
+                        <p style="font-size: var(--apex-font-size-sm); margin: 0;">You're all caught up! Check back later for updates.</p>
+                    </div>
+                </div>
+
+                <div class="apex-card" style="margin-top: var(--apex-spacing-6);">
+                    <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">Notification Settings</h3>
+                    <div style="display: flex; flex-direction: column; gap: var(--apex-spacing-4);">
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: var(--apex-spacing-3); background: var(--apex-off-white); border-radius: var(--apex-radius-lg);">
+                            <span style="font-weight: 500;">Transaction Alerts</span>
+                            <input type="checkbox" checked style="width: auto;">
+                        </label>
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: var(--apex-spacing-3); background: var(--apex-off-white); border-radius: var(--apex-radius-lg);">
+                            <span style="font-weight: 500;">Low Balance Alerts</span>
+                            <input type="checkbox" checked style="width: auto;">
+                        </label>
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: var(--apex-spacing-3); background: var(--apex-off-white); border-radius: var(--apex-radius-lg);">
+                            <span style="font-weight: 500;">Goal Updates</span>
+                            <input type="checkbox" checked style="width: auto;">
+                        </label>
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: var(--apex-spacing-3); background: var(--apex-off-white); border-radius: var(--apex-radius-lg);">
+                            <span style="font-weight: 500;">Security Alerts</span>
+                            <input type="checkbox" checked style="width: auto;">
+                        </label>
+                        <label style="display: flex; align-items: center; justify-content: space-between; padding: var(--apex-spacing-3); background: var(--apex-off-white); border-radius: var(--apex-radius-lg);">
+                            <span style="font-weight: 500;">Marketing Emails</span>
+                            <input type="checkbox" style="width: auto;">
+                        </label>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: var(--apex-spacing-10);">
+                    <button class="apex-btn apex-btn-primary" onclick="showHomeScreen()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Screen -->
+        <section id="profile-screen" class="screen">
+            <div class="apex-container apex-section">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                    <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                        Profile
+                    </h1>
+                    <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                        Manage your account settings and preferences
+                    </p>
+                </div>
+
+                <div class="apex-card" style="max-width: 600px; margin: 0 auto;">
+                    <div style="display: flex; align-items: center; gap: var(--apex-spacing-4); margin-bottom: var(--apex-spacing-8);">
+                        <div style="width: 80px; height: 80px; border-radius: var(--apex-radius-full); background: var(--apex-green-pale); display: flex; align-items: center; justify-content: center; font-size: var(--apex-font-size-2xl); color: var(--apex-primary-green);">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-size: var(--apex-font-size-xl); font-weight: 700; color: var(--apex-dark-blue);">Sarah Johnson</h3>
+                            <p style="color: var(--apex-medium-gray);">sarah.johnson@email.com</p>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px solid var(--apex-light-gray); padding-top: var(--apex-spacing-8);">
+                        <button class="apex-btn apex-btn-secondary apex-btn-full" style="margin-bottom: var(--apex-spacing-3);">
+                            <i class="fas fa-user-edit"></i>
+                            Edit profile
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full" style="margin-bottom: var(--apex-spacing-3);">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full" style="margin-bottom: var(--apex-spacing-3);">
+                            <i class="fas fa-shield-alt"></i>
+                            Security settings
+                        </button>
+                        <button class="apex-btn apex-btn-secondary apex-btn-full" style="margin-bottom: var(--apex-spacing-3);">
+                            <i class="fas fa-question-circle"></i>
+                            Help & support
+                        </button>
+                        <button class="apex-btn apex-btn-ghost apex-btn-full" onclick="apexSignOut()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Navigation Bar -->
+    <div class="apex-mobile-bar">
+        <a href="#home" class="apex-mobile-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#account" class="apex-mobile-item">
+            <i class="fas fa-credit-card"></i>
+            <span>Account</span>
+        </a>
+        <a href="#goals" class="apex-mobile-item">
+            <i class="fas fa-piggy-bank"></i>
+            <span>Goals</span>
+        </a>
+        <a href="#move" class="apex-mobile-item">
+            <i class="fas fa-exchange-alt"></i>
+            <span>Move</span>
+        </a>
+        <a href="#analytics" class="apex-mobile-item">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+        </a>
+        <a href="#more" class="apex-mobile-item" onclick="showMoreMenu()">
+            <i class="fas fa-ellipsis-h"></i>
+            <span>More</span>
+        </a>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="chimeToast" class="apex-toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Payment successful!</span>
+    </div>
+
+        </script>
+    
+    <!-- Scripts -->
+    <script src="js/chime-app-fixed.js"></script>
+</body>
+</html>

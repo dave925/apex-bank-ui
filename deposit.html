@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit - APEX Bank</title>
+    <link rel="stylesheet" href="css/apex-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="apex-nav">
+        <div class="apex-nav-container">
+            <a href="home.html" class="apex-brand">
+                <div class="apex-brand-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                APEX Bank
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="apex-container apex-section">
+            <div style="text-align: center; margin-bottom: var(--apex-spacing-10);">
+                <h1 style="font-size: var(--apex-font-size-3xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
+                    Deposit Funds
+                </h1>
+                <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray);">
+                    Add money to your account quickly and securely
+                </p>
+            </div>
+
+            <div class="apex-card" style="max-width: 600px; margin: 0 auto;">
+                <div style="text-align: center; margin-bottom: var(--apex-spacing-6);">
+                    <div style="width: 80px; height: 80px; border-radius: var(--apex-radius-full); background: linear-gradient(135deg, var(--apex-primary-teal), var(--apex-teal-light)); display: flex; align-items: center; justify-content: center; font-size: var(--apex-font-size-2xl); color: var(--apex-white); box-shadow: var(--apex-shadow-active); margin: 0 auto var(--apex-spacing-4);">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-2);">Quick Deposit</h3>
+                    <p style="color: var(--apex-medium-gray); margin: 0;">Transfer funds from external account</p>
+                </div>
+
+                <form id="depositForm" onsubmit="processDeposit(event)">
+                    <div class="apex-form-group">
+                        <label class="apex-label">Deposit Amount</label>
+                        <div style="position: relative;">
+                            <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--apex-medium-gray); font-size: var(--apex-font-size-lg);">$</span>
+                            <input type="number" class="apex-input" id="depositAmount" placeholder="0.00" step="0.01" min="1.00" required style="padding-left: 20px; font-size: var(--apex-font-size-lg); font-weight: 600;">
+                        </div>
+                    </div>
+                    
+                    <div class="apex-form-group">
+                        <label class="apex-label">Payment Method</label>
+                        <select class="apex-input" id="paymentMethod" required>
+                            <option value="">Select payment method</option>
+                            <option value="bank-transfer">Bank Transfer</option>
+                            <option value="debit-card">Debit Card</option>
+                            <option value="credit-card">Credit Card</option>
+                            <option value="cash">Cash Deposit</option>
+                            <option value="check">Check Deposit</option>
+                        </select>
+                    </div>
+                    
+                    <div class="apex-form-group">
+                        <label class="apex-label">Account</label>
+                        <select class="apex-input" id="depositAccount" required>
+                            <option value="">Select account</option>
+                            <option value="spending">Spending Account</option>
+                            <option value="savings">Savings Account</option>
+                        </select>
+                    </div>
+                    
+                    <div class="apex-form-group">
+                        <label class="apex-label">Description (optional)</label>
+                        <input type="text" class="apex-input" id="depositDescription" placeholder="What's this deposit for?">
+                    </div>
+                    
+                    <button type="submit" class="apex-btn apex-btn-primary apex-btn-full" style="margin-top: var(--apex-spacing-4);">
+                        <i class="fas fa-plus-circle"></i>
+                        Deposit $<span id="depositAmountDisplay">0.00</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="apex-card" style="max-width: 600px; margin: 20px auto 0;">
+                <h3 style="font-size: var(--apex-font-size-xl); font-weight: 600; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">Recent Deposits</h3>
+                
+                <div id="recentDeposits" style="display: flex; flex-direction: column; gap: var(--apex-spacing-3);">
+                    <div style="text-align: center; padding: var(--apex-spacing-8) var(--apex-spacing-4); color: var(--apex-medium-gray);">
+                        <div style="font-size: 3rem; margin-bottom: var(--apex-spacing-4); opacity: 0.3;">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h4 style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-dark-gray); margin-bottom: var(--apex-spacing-2);">No deposits yet</h4>
+                        <p style="font-size: var(--apex-font-size-sm); margin: 0;">Make your first deposit to see transaction history</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: var(--apex-spacing-10);">
+                <button class="apex-btn apex-btn-secondary" onclick="window.location.href='home.html'">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to home
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Navigation Bar -->
+    <div class="apex-mobile-bar">
+        <a href="home.html" class="apex-mobile-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="account.html" class="apex-mobile-item">
+            <i class="fas fa-credit-card"></i>
+            <span>Account</span>
+        </a>
+        <a href="goals.html" class="apex-mobile-item">
+            <i class="fas fa-piggy-bank"></i>
+            <span>Goals</span>
+        </a>
+        <a href="move.html" class="apex-mobile-item">
+            <i class="fas fa-exchange-alt"></i>
+            <span>Move</span>
+        </a>
+        <a href="deposit.html" class="apex-mobile-item active">
+            <i class="fas fa-plus-circle"></i>
+            <span>Deposit</span>
+        </a>
+        <a href="analytics.html" class="apex-mobile-item">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+        </a>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="chimeToast" class="apex-toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Deposit successful!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/chime-app-fixed.js"></script>
+    <script>
+                
+        // Update deposit amount display
+        const depositAmountInput = document.getElementById('depositAmount');
+        const depositAmountDisplay = document.getElementById('depositAmountDisplay');
+            
+        if (depositAmountInput && depositAmountDisplay) {
+            depositAmountInput.addEventListener('input', function() {
+                const amount = parseFloat(this.value) || 0;
+                depositAmountDisplay.textContent = amount.toFixed(2);
+            });
+        }
+
+        // Load recent deposits
+        loadRecentDeposits();
+
+        // Deposit functionality
+        function processDeposit(event) {
+            event.preventDefault();
+            
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const account = document.getElementById('depositAccount').value;
+            const description = document.getElementById('depositDescription').value;
+            
+            // Validation
+            if (!amount || amount <= 0) {
+                chimeToast('Please enter a valid deposit amount', 'error');
+                return;
+            }
+            
+            if (!paymentMethod) {
+                chimeToast('Please select a payment method', 'error');
+                return;
+            }
+            
+            if (!account) {
+                chimeToast('Please select an account', 'error');
+                return;
+            }
+            
+            // Add loading state
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            }
+            
+            // Simulate processing
+            setTimeout(() => {
+                // Create deposit record
+                const deposit = {
+                    id: Date.now(),
+                    amount: amount,
+                    paymentMethod: paymentMethod,
+                    account: account,
+                    description: description || 'Deposit',
+                    date: new Date().toISOString(),
+                    status: 'completed'
+                };
+                
+                // Save to localStorage
+                let deposits = JSON.parse(localStorage.getItem('apexDeposits') || '[]');
+                deposits.unshift(deposit);
+                localStorage.setItem('apexDeposits', JSON.stringify(deposits));
+                
+                // Update balance (in real app, this would connect to backend)
+                if (apexState.currentUser) {
+                    // Update user balance (simplified for demo)
+                    chimeToast(`Successfully deposited $${amount.toFixed(2)} to ${account === 'spending' ? 'Spending' : 'Savings'} Account`, 'success');
+                }
+                
+                // Reset form
+                document.getElementById('depositForm').reset();
+                depositAmountDisplay.textContent = '0.00';
+                
+                // Reload recent deposits
+                loadRecentDeposits();
+                
+                // Reset button
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-plus-circle"></i> Deposit $<span id="depositAmountDisplay">0.00</span>';
+                }
+            }, 2000);
+        }
+
+        function loadRecentDeposits() {
+            const depositsContainer = document.getElementById('recentDeposits');
+            if (!depositsContainer) return;
+            
+            const deposits = JSON.parse(localStorage.getItem('apexDeposits') || '[]');
+            
+            if (deposits.length === 0) {
+                // Show empty state
+                depositsContainer.innerHTML = `
+                    <div style="text-align: center; padding: var(--apex-spacing-8) var(--apex-spacing-4); color: var(--apex-medium-gray);">
+                        <div style="font-size: 3rem; margin-bottom: var(--apex-spacing-4); opacity: 0.3;">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h4 style="font-size: var(--apex-font-size-lg); font-weight: 600; color: var(--apex-dark-gray); margin-bottom: var(--apex-spacing-2);">No deposits yet</h4>
+                        <p style="font-size: var(--apex-font-size-sm); margin: 0;">Make your first deposit to see transaction history</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Show recent deposits
+            depositsContainer.innerHTML = deposits.slice(0, 5).map(deposit => `
+                <div style="padding: var(--apex-spacing-4); border-bottom: 1px solid var(--apex-light-gray);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; color: var(--apex-dark-blue);">$${deposit.amount.toFixed(2)}</div>
+                            <div style="font-size: var(--apex-font-size-sm); color: var(--apex-medium-gray);">${deposit.description}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: var(--apex-font-size-sm); color: var(--apex-medium-gray);">${deposit.account === 'spending' ? 'Spending' : 'Savings'}</div>
+                            <div style="font-size: var(--apex-font-size-xs); color: var(--apex-medium-gray);">${new Date(deposit.date).toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Make functions globally available
+        window.processDeposit = processDeposit;
+        window.loadRecentDeposits = loadRecentDeposits;
+    </script>
+
+    <!-- More Button at Bottom -->
+    <div id="moreButtonContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <button id="moreButton" onclick="toggleMoreMenu()" style="background: #2ecc71; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+            More
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div id="moreMenu" style="position: absolute; bottom: 60px; right: 0; background: #2c3e50; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; min-width: 200px; padding: 8px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); display: none;">
+            <a href="index.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Home</a>
+            <a href="login.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Sign In</a>
+            <a href="signup.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Sign Up</a>
+            <a href="account.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Account</a>
+            <a href="goals.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Goals</a>
+            <a href="move.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Move Money</a>
+            <a href="credit.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Credit</a>
+            <a href="analytics.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Analytics</a>
+            <a href="settings.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Settings</a>
+            <a href="help.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Help</a>
+            <a href="notifications.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Notifications</a>
+            <a href="profile.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Profile</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleMoreMenu() {
+            const menu = document.getElementById('moreMenu');
+            if (menu.style.display === 'none' || menu.style.display === '') {
+                menu.style.display = 'block';
+            } else {
+                menu.style.display = 'none';
+            }
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const container = document.getElementById('moreButtonContainer');
+            if (container && !container.contains(e.target)) {
+                document.getElementById('moreMenu').style.display = 'none';
+            }
+        });
+
+        // Add hover effects
+        document.querySelectorAll('#moreMenu a').forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                this.style.background = 'rgba(255, 255, 255, 0.1)';
+            });
+            link.addEventListener('mouseleave', function() {
+                this.style.background = 'transparent';
+            });
+            link.addEventListener('click', function() {
+                document.getElementById('moreMenu').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
