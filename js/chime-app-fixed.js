@@ -7,17 +7,9 @@ function testJS() {
 }
 
 // Create Secondary Account Function
-function createSecondaryAccount() {
-    console.log('Creating secondary account...');
+function createAccount() {
+    console.log('createAccount function called');
     
-    // Check if secondary account already exists
-    const existingUser = localStorage.getItem('apexSecondaryUser');
-    if (existingUser) {
-        alert('Secondary account already exists. Only one additional account is allowed.');
-        return;
-    }
-    
-    // Get form values
     const firstName = document.getElementById('signupFirstName')?.value.trim();
     const lastName = document.getElementById('signupLastName')?.value.trim();
     const email = document.getElementById('signupEmail')?.value.trim();
@@ -25,33 +17,51 @@ function createSecondaryAccount() {
     const password = document.getElementById('signupPassword')?.value;
     const confirmPassword = document.getElementById('signupConfirmPassword')?.value;
     
+    console.log('Account creation attempt:', { firstName, lastName, email, phone, password: '***', confirmPassword: '***' });
+    
     // Validation
     if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+        console.log('Please fill in all fields');
         alert('Please fill in all fields');
         return;
     }
     
     if (password !== confirmPassword) {
+        console.log('Passwords do not match');
         alert('Passwords do not match');
         return;
     }
     
     if (password.length < 6) {
+        console.log('Password must be at least 6 characters long');
         alert('Password must be at least 6 characters long');
         return;
     }
     
-    // Prevent creating Helena's account again
-    if (email === 'westcoat.madfish@gmail.com') {
-        alert('This email is already registered as the primary account');
+    // Get existing secondary users
+    const secondaryUsers = JSON.parse(localStorage.getItem('apexSecondaryUsers') || '[]');
+    console.log('Current secondary users count:', secondaryUsers.length);
+    
+    // Check if account limit is reached (4 accounts max)
+    if (secondaryUsers.length >= 4) {
+        alert('Maximum account limit reached. Only 4 additional accounts are allowed.');
         return;
     }
     
+    // Check if email already exists
+    if (secondaryUsers.some(user => user.email.toLowerCase() === email.toLowerCase())) {
+        alert('An account with this email already exists.');
+        return;
+    }
+    
+    console.log('Account validation passed! Creating secondary account...');
+    
     // Create secondary user object
     const secondaryUser = {
-        name: `${firstName} ${lastName}`,
+        id: Date.now(),
         firstName: firstName,
         lastName: lastName,
+        name: `${firstName} ${lastName}`,
         email: email,
         phone: phone,
         password: password,
@@ -59,13 +69,17 @@ function createSecondaryAccount() {
         createdAt: new Date().toISOString()
     };
     
-    // Store secondary user
-    localStorage.setItem('apexSecondaryUser', JSON.stringify(secondaryUser));
-    
     console.log('Secondary account created:', secondaryUser);
     
+    // Add to secondary users array
+    secondaryUsers.push(secondaryUser);
+    localStorage.setItem('apexSecondaryUsers', JSON.stringify(secondaryUsers));
+    
+    console.log('Secondary account stored in localStorage');
+    console.log('Total secondary users:', secondaryUsers.length);
+    
     // Show success message
-    alert('Secondary account created successfully! You can now login with your credentials.');
+    alert('Account created successfully! You can now login with your credentials.');
     
     // Redirect to login page
     window.location.href = 'login.html';
@@ -212,13 +226,16 @@ function apexLogin() {
             loginTime: new Date().toISOString()
         };
     } else {
-        // Check if secondary user exists in localStorage
-        const secondaryUser = JSON.parse(localStorage.getItem('apexSecondaryUser') || 'null');
-        console.log('Secondary user check - email:', email);
-        console.log('Secondary user data:', secondaryUser);
+        // Check if user exists in secondary users array
+        const secondaryUsers = JSON.parse(localStorage.getItem('apexSecondaryUsers') || '[]');
+        console.log('Secondary users check - email:', email);
+        console.log('Secondary users data:', secondaryUsers);
         
-        if (!secondaryUser || secondaryUser.email.toLowerCase() !== normalizedEmail) {
-            console.log('Access denied: Email does not match secondary user');
+        // Find user by email
+        const secondaryUser = secondaryUsers.find(user => user.email.toLowerCase() === normalizedEmail);
+        
+        if (!secondaryUser) {
+            console.log('Access denied: Email does not match any secondary user');
             alert('Access denied. Please use Helena Malm\'s account or create a secondary account.');
             return;
         }
