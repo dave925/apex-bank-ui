@@ -178,13 +178,20 @@ function apexLogin() {
     console.log('Cleared existing session, starting fresh login...');
     
     // Check if this is Helena's account
+    console.log('Checking email:', email);
+    console.log('Target email:', 'westcoat.madfish@gmail.com');
+    console.log('Email comparison result:', email === 'westcoat.madfish@gmail.com');
+    
     if (email === 'westcoat.madfish@gmail.com') {
+        console.log('Helena account identified, validating password...');
         // Validate password for Helena's account
         if (password !== 'Aaddffgghh1$') {
             console.log('Invalid password for Helena Malm');
             alert('Invalid password. Please use the correct password for Helena Malm.');
             return;
         }
+        
+        console.log('Helena password validated successfully');
         
         // Create Helena's session with complete details
         var userSession = {
@@ -204,7 +211,7 @@ function apexLogin() {
         const secondaryUser = JSON.parse(localStorage.getItem('apexSecondaryUser') || 'null');
         if (!secondaryUser || secondaryUser.email !== email) {
             console.log('Access denied: Only Helena Malm and registered secondary user can access this system');
-            alert('Access denied. This system is restricted to Helena Malm and one additional user only.');
+            alert('Access denied. Please use Helena Malm\'s account or create a secondary account.');
             return;
         }
         
@@ -475,12 +482,12 @@ function verifyEmail() {
 // Additional utility functions for banking features
 function setupUniversalAccount() {
     console.log('Setting up account based on user type...');
-    
+        
     // Get current user to determine account type
     const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
-    
+        
     if (currentUser.email === 'westcoat.madfish@gmail.com') {
-        // Helena's account - set up $37,310,983 account balances
+        // Helena's account - set up $37.31 million account balances
         console.log('Setting up Helena\'s high-value account...');
         localStorage.setItem('apexSpendingBalance', '28210878.64'); // $28,210,878.64 spending (75.6%)
         localStorage.setItem('apexSavingsBalance', '9100104.36');  // $9,100,104.36 savings (24.4%)
@@ -490,6 +497,7 @@ function setupUniversalAccount() {
         localStorage.setItem('apexSpendingBalance', '0.00'); // $0.00 spending
         localStorage.setItem('apexSavingsBalance', '0.00');  // $0.00 savings
     }
+        
     
     // Only create transactions for Helena's account
     if (currentUser.email === 'westcoat.madfish@gmail.com') {
