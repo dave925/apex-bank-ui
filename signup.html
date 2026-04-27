@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - APEX Bank</title>
+    <title>Create Secondary Account - APEX Bank</title>
     <link rel="stylesheet" href="css/apex-styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,50 +18,44 @@
                     <div class="apex-auth-logo">
                         <i class="fas fa-university"></i>
                     </div>
-                    <h1 class="apex-auth-title">Create Your Account</h1>
-                    <p class="apex-auth-subtitle">Join APEX Bank and start banking smarter</p>
+                    <h1 class="apex-auth-title">Create your APEX account today</h1>
                 </div>
                 
                 <form class="apex-form" id="signupForm">
                     <div class="apex-form-group">
                         <label class="apex-label">First Name</label>
-                        <input type="text" class="apex-input" placeholder="Enter your first name" id="signupFirstName">
+                        <input type="text" class="apex-input" placeholder="Enter your first name" id="signupFirstName" required>
                     </div>
                     
                     <div class="apex-form-group">
                         <label class="apex-label">Last Name</label>
-                        <input type="text" class="apex-input" placeholder="Enter your last name" id="signupLastName">
+                        <input type="text" class="apex-input" placeholder="Enter your last name" id="signupLastName" required>
                     </div>
                     
                     <div class="apex-form-group">
                         <label class="apex-label">Email Address</label>
-                        <input type="email" class="apex-input" placeholder="Enter your email address" id="signupEmail">
+                        <input type="email" class="apex-input" placeholder="Enter your email address" id="signupEmail" required>
                     </div>
                     
                     <div class="apex-form-group">
                         <label class="apex-label">Phone Number</label>
-                        <input type="tel" class="apex-input" placeholder="Enter your phone number" id="signupPhone">
+                        <input type="tel" class="apex-input" placeholder="Enter your phone number" id="signupPhone" required>
                     </div>
                     
                     <div class="apex-form-group">
                         <label class="apex-label">Password</label>
-                        <input type="password" class="apex-input" placeholder="Create a password" id="signupPassword">
+                        <input type="password" class="apex-input" placeholder="Create a password" id="signupPassword" required>
                         <div id="passwordStrength" style="margin-top: var(--apex-spacing-2);"></div>
                     </div>
                     
                     <div class="apex-form-group">
                         <label class="apex-label">Confirm Password</label>
-                        <input type="password" class="apex-input" placeholder="Confirm your password" id="signupConfirmPassword">
+                        <input type="password" class="apex-input" placeholder="Confirm your password" id="signupConfirmPassword" required>
                     </div>
                     
-                    <div class="apex-form-group">
-                        <label style="display: flex; align-items: center; gap: var(--apex-spacing-2);">
-                            <input type="checkbox" id="agreeTerms" style="width: auto;">
-                            <span style="font-weight: normal;">I agree to the Terms of Service and Privacy Policy</span>
-                        </label>
-                    </div>
-                    
-                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="createAccount()">
+                                        
+                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="createSecondaryAccount()">
+                        <i class="fas fa-user-plus"></i>
                         Create Account
                     </button>
                     
@@ -70,49 +64,6 @@
                             <i class="fas fa-sign-in-alt"></i>
                             Already have an account? Sign in
                         </a>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <!-- Email Verification Screen -->
-        <section id="verification-screen" class="apex-auth screen" style="display: none;">
-            <div class="apex-auth-card">
-                <div class="apex-auth-header">
-                    <div class="apex-auth-logo">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <h1 class="apex-auth-title">Verify Your Email</h1>
-                    <p class="apex-auth-subtitle">We've sent a verification code to your email</p>
-                </div>
-                
-                <div class="verification-code-display" id="verificationCodeDisplay" style="background: linear-gradient(135deg, var(--apex-primary-green), var(--apex-green-dark)); color: var(--apex-white); padding: var(--apex-spacing-4); border-radius: var(--apex-radius-xl); text-align: center; margin-bottom: var(--apex-spacing-4);">
-                    <p class="code-label" style="font-size: var(--apex-font-size-sm); margin: 0 0 var(--apex-spacing-2) 0; opacity: 0.9;">Your verification code:</p>
-                    <p class="code-value" id="codeValue" style="font-size: var(--apex-font-size-2xl); font-weight: 700; margin: 0; letter-spacing: 0.2em; font-family: 'Courier New', monospace;">------</p>
-                </div>
-                
-                <form class="apex-form" id="verificationForm">
-                    <div class="apex-form-group">
-                        <label class="apex-label">Enter 6-digit code</label>
-                        <div class="verification-inputs" style="display: flex; gap: var(--apex-spacing-2); justify-content: center;">
-                            <input type="text" class="apex-input verification-input" maxlength="1" style="width: 60px; height: 60px; text-align: center; font-size: var(--apex-font-size-xl); font-weight: 700; border: 2px solid var(--apex-light-gray); border-radius: var(--apex-radius-lg); transition: all var(--apex-transition-fast);" onkeyup="handleVerificationInput(this, 0)" onkeydown="handleVerificationKeydown(event, 0)" onfocus="this.style.borderColor='var(--apex-primary-green)'; this.style.boxShadow='0 0 0 3px rgba(0, 212, 170, 0.1)'" onblur="if(!this.value) this.style.borderColor='var(--apex-light-gray)'; this.style.boxShadow='none'">
-                            <input type="text" class="apex-input verification-input" maxlength="1" style="width: 60px; height: 60px; text-align: center; font-size: var(--apex-font-size-xl); font-weight: 700; border: 2px solid var(--apex-light-gray); border-radius: var(--apex-radius-lg); transition: all var(--apex-transition-fast);" onkeyup="handleVerificationInput(this, 1)" onkeydown="handleVerificationKeydown(event, 1)" onfocus="this.style.borderColor='var(--apex-primary-green)'; this.style.boxShadow='0 0 0 3px rgba(0, 212, 170, 0.1)'" onblur="if(!this.value) this.style.borderColor='var(--apex-light-gray)'; this.style.boxShadow='none'">
-                            <input type="text" class="apex-input verification-input" maxlength="1" style="width: 60px; height: 60px; text-align: center; font-size: var(--apex-font-size-xl); font-weight: 700; border: 2px solid var(--apex-light-gray); border-radius: var(--apex-radius-lg); transition: all var(--apex-transition-fast);" onkeyup="handleVerificationInput(this, 2)" onkeydown="handleVerificationKeydown(event, 2)" onfocus="this.style.borderColor='var(--apex-primary-green)'; this.style.boxShadow='0 0 0 3px rgba(0, 212, 170, 0.1)'" onblur="if(!this.value) this.style.borderColor='var(--apex-light-gray)'; this.style.boxShadow='none'">
-                            <input type="text" class="apex-input verification-input" maxlength="1" style="width: 60px; height: 60px; text-align: center; font-size: var(--apex-font-size-xl); font-weight: 700; border: 2px solid var(--apex-light-gray); border-radius: var(--apex-radius-lg); transition: all var(--apex-transition-fast);" onkeyup="handleVerificationInput(this, 3)" onkeydown="handleVerificationKeydown(event, 3)" onfocus="this.style.borderColor='var(--apex-primary-green)'; this.style.boxShadow='0 0 0 3px rgba(0, 212, 170, 0.1)'" onblur="if(!this.value) this.style.borderColor='var(--apex-light-gray)'; this.style.boxShadow='none'">
-                            <input type="text" class="apex-input verification-input" maxlength="1" style="width: 60px; height: 60px; text-align: center; font-size: var(--apex-font-size-xl); font-weight: 700; border: 2px solid var(--apex-light-gray); border-radius: var(--apex-radius-lg); transition: all var(--apex-transition-fast);" onkeyup="handleVerificationInput(this, 4)" onkeydown="handleVerificationKeydown(event, 4)" onfocus="this.style.borderColor='var(--apex-primary-green)'; this.style.boxShadow='0 0 0 3px rgba(0, 212, 170, 0.1)'" onblur="if(!this.value) this.style.borderColor='var(--apex-light-gray)'; this.style.boxShadow='none'">
-                            <input type="text" class="apex-input verification-input" maxlength="1" style="width: 60px; height: 60px; text-align: center; font-size: var(--apex-font-size-xl); font-weight: 700; border: 2px solid var(--apex-light-gray); border-radius: var(--apex-radius-lg); transition: all var(--apex-transition-fast);" onkeyup="handleVerificationInput(this, 5)" onkeydown="handleVerificationKeydown(event, 5)" onfocus="this.style.borderColor='var(--apex-primary-green)'; this.style.boxShadow='0 0 0 3px rgba(0, 212, 170, 0.1)'" onblur="if(!this.value) this.style.borderColor='var(--apex-light-gray)'; this.style.boxShadow='none'">
-                        </div>
-                    </div>
-                    
-                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="verifyEmail()">
-                        Verify Email
-                    </button>
-                    
-                    <div style="text-align: center; margin-top: var(--apex-spacing-4);">
-                        <button type="button" class="apex-btn apex-btn-ghost" onclick="resendVerification()">
-                            <i class="fas fa-redo"></i>
-                            Resend code
-                        </button>
                     </div>
                 </form>
             </div>
@@ -127,5 +78,32 @@
 
     <!-- Scripts -->
     <script src="js/chime-app-fixed.js"></script>
+    <script>
+        // Check if secondary account already exists
+        window.addEventListener('load', () => {
+            const existingUser = localStorage.getItem('apexSecondaryUser');
+            if (existingUser) {
+                document.querySelector('.apex-auth-title').textContent = 'Account Already Created';
+                document.querySelector('.apex-auth-subtitle').textContent = 'The secondary account has already been created';
+                document.getElementById('signupForm').style.display = 'none';
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.style.textAlign = 'center';
+                messageDiv.style.padding = 'var(--apex-spacing-6)';
+                messageDiv.innerHTML = `
+                    <div style="width: 80px; height: 80px; background: var(--apex-warning); border-radius: var(--apex-radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--apex-spacing-4);">
+                        <i class="fas fa-exclamation-triangle" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                    <p style="color: var(--apex-medium-gray); margin-bottom: var(--apex-spacing-6);">
+                        The secondary account has already been created. Only one additional account is allowed.
+                    </p>
+                    <a href="login.html" class="apex-btn apex-btn-primary" style="width: 100%;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Go to Login
+                    </a>
+                `;
+                document.querySelector('.apex-auth-card').appendChild(messageDiv);
+            }
+        });
+    </script>
 </body>
-</html>

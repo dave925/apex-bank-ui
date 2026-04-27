@@ -128,101 +128,51 @@
     <!-- Scripts -->
     <script src="js/chime-app-fixed.js"></script>
     
-    <!-- Immediate Balance Update Script -->
+    <!-- Simplified Balance Update Script -->
     <script>
-        // IMMEDIATE BALANCE UPDATE - Runs as soon as script loads
-        console.log('IMMEDIATE BALANCE UPDATE STARTED');
-        
-        // Set up account data immediately
-        localStorage.setItem('apexSpendingBalance', '28210878.64');
-        localStorage.setItem('apexSavingsBalance', '9100104.36');
-        
-        // Update balance elements immediately
-        function updateBalancesNow() {
-            const spendingElement = document.getElementById('spending-balance');
-            const savingsElement = document.getElementById('savings-balance');
-            
-            if (spendingElement) {
-                spendingElement.textContent = '$28,210,878.64';
-                console.log('Spending balance updated immediately');
-            }
-            
-            if (savingsElement) {
-                savingsElement.textContent = '$9,100,104.36';
-                console.log('Savings balance updated immediately');
-            }
-        }
-        
-        // Try immediately
-        updateBalancesNow();
-        
-        // Try again in 100ms
-        setTimeout(updateBalancesNow, 100);
-        
-        // Try again in 500ms
-        setTimeout(updateBalancesNow, 500);
-        
-        // Try again when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', updateBalancesNow);
-        } else {
-            updateBalancesNow();
-        }
-        
-        console.log('IMMEDIATE BALANCE UPDATE SETUP COMPLETE');
-        
-        // MutationObserver - Watch for DOM changes and update balances
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'childList') {
-                    // Check if balance elements were added
-                    const spendingElement = document.getElementById('spending-balance');
-                    const savingsElement = document.getElementById('savings-balance');
-                    
-                    if (spendingElement && spendingElement.textContent === '$0.00') {
-                        spendingElement.textContent = '$28,210,878.64';
-                        console.log('MutationObserver: Updated spending balance');
-                    }
-                    
-                    if (savingsElement && savingsElement.textContent === '$0.00') {
-                        savingsElement.textContent = '$9,100,104.36';
-                        console.log('MutationObserver: Updated savings balance');
-                    }
+        // Simple balance update function
+        function updateAccountBalances() {
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
+                
+                let spendingBalance = '0.00';
+                let savingsBalance = '0.00';
+                
+                if (currentUser.email === 'westcoat.madfish@gmail.com') {
+                    spendingBalance = '28210878.64';
+                    savingsBalance = '9100104.36';
                 }
-            });
-        });
-        
-        // Start observing the entire document
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-        
-        console.log('MutationObserver started for balance monitoring');
-        
-        // Continuous update loop - every 200ms for 5 seconds
-        let continuousCount = 0;
-        const continuousUpdate = setInterval(() => {
-            continuousCount++;
-            updateBalancesNow();
-            console.log(`Continuous update #${continuousCount}`);
-            
-            if (continuousCount >= 25) { // 5 seconds
-                clearInterval(continuousUpdate);
-                console.log('Continuous update stopped');
+                
+                localStorage.setItem('apexSpendingBalance', spendingBalance);
+                localStorage.setItem('apexSavingsBalance', savingsBalance);
+                
+                const spendingElement = document.getElementById('spending-balance');
+                const savingsElement = document.getElementById('savings-balance');
+                
+                if (spendingElement) {
+                    spendingElement.textContent = `$${parseFloat(spendingBalance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                }
+                
+                if (savingsElement) {
+                    savingsElement.textContent = `$${parseFloat(savingsBalance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                }
+            } catch (error) {
+                console.error('Error updating balances:', error);
             }
-        }, 200);
+        }
         
+        // Update balances when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateAccountBalances);
+        } else {
+            updateAccountBalances();
+        }
     </script>
     
     <script>
-        // Update account number display
-        function updateAccountNumber() {
-            const accountEndingElement = document.getElementById('accountEnding');
-            if (accountEndingElement && apexState.currentUser && apexState.currentUser.accountNumber) {
-                const lastFour = apexState.currentUser.accountNumber.slice(-4);
-                accountEndingElement.textContent = `Account ending in ${lastFour}`;
-            }
+        // Update account numbers when page loads
+        if (typeof updateAccountNumbers === 'function') {
+            updateAccountNumbers();
         }
     </script>
 

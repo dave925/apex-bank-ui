@@ -6,6 +6,150 @@ function testJS() {
     console.log('JavaScript is working!');
 }
 
+// Create Secondary Account Function
+function createSecondaryAccount() {
+    console.log('Creating secondary account...');
+    
+    // Check if secondary account already exists
+    const existingUser = localStorage.getItem('apexSecondaryUser');
+    if (existingUser) {
+        alert('Secondary account already exists. Only one additional account is allowed.');
+        return;
+    }
+    
+    // Get form values
+    const firstName = document.getElementById('signupFirstName')?.value.trim();
+    const lastName = document.getElementById('signupLastName')?.value.trim();
+    const email = document.getElementById('signupEmail')?.value.trim();
+    const phone = document.getElementById('signupPhone')?.value.trim();
+    const password = document.getElementById('signupPassword')?.value;
+    const confirmPassword = document.getElementById('signupConfirmPassword')?.value;
+    
+    // Validation
+    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+        alert('Please fill in all fields');
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+    }
+    
+    if (password.length < 6) {
+        alert('Password must be at least 6 characters long');
+        return;
+    }
+    
+    // Prevent creating Helena's account again
+    if (email === 'westcoat.madfish@gmail.com') {
+        alert('This email is already registered as the primary account');
+        return;
+    }
+    
+    // Create secondary user object
+    const secondaryUser = {
+        name: `${firstName} ${lastName}`,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        password: password,
+        accountNumber: Math.floor(10000000 + Math.random() * 90000000).toString(),
+        createdAt: new Date().toISOString()
+    };
+    
+    // Store secondary user
+    localStorage.setItem('apexSecondaryUser', JSON.stringify(secondaryUser));
+    
+    console.log('Secondary account created:', secondaryUser);
+    
+    // Show success message
+    alert('Secondary account created successfully! You can now login with your credentials.');
+    
+    // Redirect to login page
+    window.location.href = 'login.html';
+}
+
+// Check login status and update More button menu
+function updateMoreButtonMenu() {
+    const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
+    const moreMenu = document.getElementById('moreMenu');
+    
+    if (moreMenu && currentUser.email) {
+        // User is logged in, hide Sign In and Sign Up links
+        const links = moreMenu.querySelectorAll('a');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === 'login.html' || href === 'signup.html') {
+                link.style.display = 'none';
+            }
+        });
+        
+        // Add Logout option if not already present
+        if (!moreMenu.querySelector('a[href="javascript:logout()"]')) {
+            const logoutLink = document.createElement('a');
+            logoutLink.href = 'javascript:logout()';
+            logoutLink.textContent = 'Logout';
+            logoutLink.style.cssText = 'display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px; background: rgba(220, 53, 69, 0.2);';
+            logoutLink.addEventListener('mouseenter', function() {
+                this.style.background = 'rgba(220, 53, 69, 0.3)';
+            });
+            logoutLink.addEventListener('mouseleave', function() {
+                this.style.background = 'rgba(220, 53, 69, 0.2)';
+            });
+            moreMenu.appendChild(logoutLink);
+        }
+    }
+}
+
+// Logout function
+function logout() {
+    // Clear user session
+    sessionStorage.removeItem('apexSession');
+    localStorage.removeItem('apexCurrentUser');
+    
+    // Show logout message
+    alert('You have been logged out successfully.');
+    
+    // Redirect to login page
+    window.location.href = 'login.html';
+}
+
+// Update account numbers dynamically
+function updateAccountNumbers() {
+    const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
+    
+    if (currentUser.accountNumber) {
+        // Update card number display (masked format)
+        const cardNumberElement = document.getElementById('cardNumber');
+        if (cardNumberElement) {
+            const lastFour = currentUser.accountNumber.slice(-4);
+            cardNumberElement.textContent = `**** **** **** ${lastFour}`;
+        }
+        
+        // Update account ending display
+        const accountEndingElement = document.getElementById('accountEnding');
+        if (accountEndingElement) {
+            const lastFour = currentUser.accountNumber.slice(-4);
+            accountEndingElement.textContent = `Account ending in ${lastFour}`;
+        }
+        
+        // Update any other account number displays
+        const accountNumberElements = document.querySelectorAll('[data-account-number]');
+        accountNumberElements.forEach(element => {
+            const lastFour = currentUser.accountNumber.slice(-4);
+            element.textContent = `**** **** **** ${lastFour}`;
+        });
+    }
+}
+
+// Auto-update More button on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateMoreButtonMenu();
+    updateAccountNumbers();
+});
+
 // Fixed Login Function
 function apexLogin() {
     console.log('apexLogin function called');
@@ -26,28 +170,55 @@ function apexLogin() {
     
     console.log('Login validation passed! Processing...');
     
-    // Create user session for login - handle Helena specifically
-    let userSession;
+    // Check if this is Helena's account
     if (email === 'westcoat.madfish@gmail.com') {
-        userSession = {
+        // Validate password for Helena's account
+        if (password !== 'Aaddffgghh1$') {
+            console.log('Invalid password for Helena Malm');
+            alert('Invalid password. Please use the correct password for Helena Malm.');
+            return;
+        }
+        
+        // Create Helena's session with complete details
+        var userSession = {
             id: Date.now(),
             name: 'Helena Malm',
             firstName: 'Helena',
             lastName: 'Malm',
-            email: email,
-            accountNumber: '45284731', // Helena's specific account number
-            avatar: `https://picsum.photos/seed/${email}/80/80.jpg`,
+            email: 'westcoat.madfish@gmail.com',
+            phone: '0544022365',
+            accountNumber: '45284731',
+            balance: 22000000.00, // Helena's $22 million balance
+            avatar: `https://picsum.photos/seed/westcoat.madfish@gmail.com/80/80.jpg`,
             loginTime: new Date().toISOString()
         };
     } else {
-        const emailPrefix = email.split('@')[0];
-        userSession = {
+        // Check if secondary user exists in localStorage
+        const secondaryUser = JSON.parse(localStorage.getItem('apexSecondaryUser') || 'null');
+        if (!secondaryUser || secondaryUser.email !== email) {
+            console.log('Access denied: Only Helena Malm and registered secondary user can access this system');
+            alert('Access denied. This system is restricted to Helena Malm and one additional user only.');
+            return;
+        }
+        
+        // Validate password for secondary user
+        if (password !== secondaryUser.password) {
+            console.log('Invalid password for secondary user');
+            alert('Invalid password. Please use the correct password.');
+            return;
+        }
+        
+        // Create secondary user's session
+        var userSession = {
             id: Date.now(),
-            name: emailPrefix, // Use email prefix as name
-            firstName: emailPrefix, // Also set as first name
-            email: email,
-            accountNumber: Math.floor(10000000 + Math.random() * 90000000).toString(),
-            avatar: `https://picsum.photos/seed/${email}/80/80.jpg`,
+            name: secondaryUser.name,
+            firstName: secondaryUser.firstName,
+            lastName: secondaryUser.lastName,
+            email: secondaryUser.email,
+            phone: secondaryUser.phone,
+            accountNumber: secondaryUser.accountNumber,
+            balance: 0.00, // Secondary user has $0.00 balance
+            avatar: `https://picsum.photos/seed/${secondaryUser.email}/80/80.jpg`,
             loginTime: new Date().toISOString()
         };
     }
@@ -57,6 +228,12 @@ function apexLogin() {
     // Store user session
     sessionStorage.setItem('apexSession', JSON.stringify(userSession));
     localStorage.setItem('apexCurrentUser', JSON.stringify(userSession));
+    
+    // Update More button menu for logged-in user
+    updateMoreButtonMenu();
+    
+    // Update account numbers for logged-in user
+    updateAccountNumbers();
     
     // Set up $22 million account for login user
     setupUniversalAccount();
@@ -280,21 +457,34 @@ function verifyEmail() {
 
 // Additional utility functions for banking features
 function setupUniversalAccount() {
-    console.log('Setting up universal $37,310,983 account with real-time transactions...');
+    console.log('Setting up account based on user type...');
     
-    // Set up $37,310,983 account balances
-    localStorage.setItem('apexSpendingBalance', '28210878.64'); // $28,210,878.64 spending (75.6%)
-    localStorage.setItem('apexSavingsBalance', '9100104.36');  // $9,100,104.36 savings (24.4%)
+    // Get current user to determine account type
+    const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
     
-    // Create comprehensive realistic transactions with REAL current dates
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth();
-    const currentDay = currentDate.getDate();
+    if (currentUser.email === 'westcoat.madfish@gmail.com') {
+        // Helena's account - set up $37,310,983 account balances
+        console.log('Setting up Helena\'s high-value account...');
+        localStorage.setItem('apexSpendingBalance', '28210878.64'); // $28,210,878.64 spending (75.6%)
+        localStorage.setItem('apexSavingsBalance', '9100104.36');  // $9,100,104.36 savings (24.4%)
+    } else {
+        // Secondary user account - set up $0.00 balances
+        console.log('Setting up secondary user account with $0.00 balance...');
+        localStorage.setItem('apexSpendingBalance', '0.00'); // $0.00 spending
+        localStorage.setItem('apexSavingsBalance', '0.00');  // $0.00 savings
+    }
     
-    console.log('Current date for transactions:', currentDate.toDateString());
-    
-    const transactions = [
+    // Only create transactions for Helena's account
+    if (currentUser.email === 'westcoat.madfish@gmail.com') {
+        // Create comprehensive realistic transactions with REAL current dates
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+        const currentDay = currentDate.getDate();
+        
+        console.log('Current date for transactions:', currentDate.toDateString());
+        
+        const transactions = [
         { id: 1, name: 'Investment Return - Tech Fund', amount: 5800000.00, type: 'deposit', date: new Date(currentYear, currentMonth, currentDay - 2), category: 'Investment', description: 'Q4 2024 Tech Fund Distribution' },
         { id: 2, name: 'Real Estate Sale - Manhattan', amount: 15000000.00, type: 'deposit', date: new Date(currentYear, currentMonth, currentDay - 15), category: 'Real Estate', description: 'Commercial property sale proceeds' },
         { id: 3, name: 'Stock Dividend - Apple Inc', amount: 1200000.00, type: 'deposit', date: new Date(currentYear, currentMonth, currentDay - 8), category: 'Investment', description: 'Quarterly dividend payment' },
@@ -320,17 +510,22 @@ function setupUniversalAccount() {
         { id: 23, name: 'Stock Options Exercise - Google', amount: 3800000.00, type: 'deposit', date: new Date(currentYear, currentMonth, currentDay - 6), category: 'Investment', description: 'RSU vesting and exercise' },
         { id: 24, name: 'Luxury Watch Collection - Patek Philippe', amount: -285000.00, type: 'payment', date: new Date(currentYear, currentMonth, currentDay - 16), category: 'Luxury', description: 'Limited edition timepiece' },
         { id: 25, name: 'Dividend Income - Microsoft', amount: 850000.00, type: 'deposit', date: new Date(currentYear, currentMonth, currentDay - 20), category: 'Investment', description: 'Quarterly dividend payment' }
-    ];
-    
-    // Sort transactions by date (most recent first)
-    transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-    
-    localStorage.setItem('apexTransactions', JSON.stringify(transactions));
-    
-    // Verify total balance
-    const totalBalance = 28210878.64 + 9100104.36;
-    console.log('Universal account setup complete: $' + totalBalance.toLocaleString() + ' balance with', transactions.length, 'real-time transactions');
-    console.log('Sample transaction dates:', transactions.slice(0, 3).map(t => t.date.toDateString()));
+        ];
+        
+        // Sort transactions by date (most recent first)
+        transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        localStorage.setItem('apexTransactions', JSON.stringify(transactions));
+        
+        // Verify total balance
+        const totalBalance = 28210878.64 + 9100104.36;
+        console.log('Helena\'s account setup complete: $' + totalBalance.toLocaleString() + ' balance with', transactions.length, 'real-time transactions');
+        console.log('Sample transaction dates:', transactions.slice(0, 3).map(t => t.date.toDateString()));
+    } else {
+        // Secondary user gets no transactions
+        localStorage.setItem('apexTransactions', JSON.stringify([]));
+        console.log('Secondary user account setup complete: $0.00 balance with no transactions');
+    }
 }
 
 // Navigation functions
@@ -439,9 +634,9 @@ function setupBalanceMasking() {
     const balanceAmountElement = document.getElementById('balanceAmount');
     if (!balanceAmountElement) return;
     
-    // Get full balance
-    const spendingBalance = localStorage.getItem('apexSpendingBalance') || '28210878.64';
-    const savingsBalance = localStorage.getItem('apexSavingsBalance') || '9100104.36';
+    // Get full balance (no hardcoded fallbacks - use actual stored values)
+    const spendingBalance = localStorage.getItem('apexSpendingBalance');
+    const savingsBalance = localStorage.getItem('apexSavingsBalance');
     const totalBalance = parseFloat(spendingBalance) + parseFloat(savingsBalance);
     const formattedBalance = `$${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     
@@ -640,9 +835,9 @@ function updateHomePage() {
             cardHolderElement.textContent = displayName.toUpperCase();
         }
         
-        // Get balance values
-        const spendingBalance = localStorage.getItem('apexSpendingBalance') || '28210878.64';
-        const savingsBalance = localStorage.getItem('apexSavingsBalance') || '9100104.36';
+        // Get balance values (no hardcoded fallbacks - use actual stored values)
+        const spendingBalance = localStorage.getItem('apexSpendingBalance');
+        const savingsBalance = localStorage.getItem('apexSavingsBalance');
         const totalBalance = parseFloat(spendingBalance) + parseFloat(savingsBalance);
         
         console.log('Balance calculation:', { spendingBalance, savingsBalance, totalBalance });
@@ -778,8 +973,8 @@ function fillAnalyticsWithMoney() {
     // Get transactions and balance data
     const transactions = localStorage.getItem('apexTransactions');
     const transactionsData = transactions ? JSON.parse(transactions) : [];
-    const spendingBalance = parseFloat(localStorage.getItem('apexSpendingBalance') || '28210878.64');
-    const savingsBalance = parseFloat(localStorage.getItem('apexSavingsBalance') || '9100104.36');
+    const spendingBalance = parseFloat(localStorage.getItem('apexSpendingBalance'));
+    const savingsBalance = parseFloat(localStorage.getItem('apexSavingsBalance'));
     const totalBalance = spendingBalance + savingsBalance;
     
     console.log('Analytics data:', { totalBalance, transactionsCount: transactionsData.length });
@@ -1082,14 +1277,14 @@ function displayTransactions() {
 
 // Specific account page balance update function
 function updateAccountPageBalances() {
-    console.log('UPDATING ACCOUNT PAGE BALANCES - Setting $37,310,983...');
+    console.log('UPDATING ACCOUNT PAGE BALANCES - Using user-specific balances...');
     
     // Force setup universal account
     setupUniversalAccount();
     
-    // Get balance values
-    const spendingBalance = localStorage.getItem('apexSpendingBalance') || '28210878.64';
-    const savingsBalance = localStorage.getItem('apexSavingsBalance') || '9100104.36';
+    // Get balance values (no hardcoded fallbacks - use actual stored values)
+    const spendingBalance = localStorage.getItem('apexSpendingBalance');
+    const savingsBalance = localStorage.getItem('apexSavingsBalance');
     const totalBalance = parseFloat(spendingBalance) + parseFloat(savingsBalance);
     
     // Format balances for display
@@ -1148,9 +1343,9 @@ function aggressiveBalanceUpdate() {
     // Force setup universal account
     setupUniversalAccount();
     
-    // Get balance values
-    const spendingBalance = localStorage.getItem('apexSpendingBalance') || '28210878.64';
-    const savingsBalance = localStorage.getItem('apexSavingsBalance') || '9100104.36';
+    // Get balance values (no hardcoded fallbacks - use actual stored values)
+    const spendingBalance = localStorage.getItem('apexSpendingBalance');
+    const savingsBalance = localStorage.getItem('apexSavingsBalance');
     const totalBalance = parseFloat(spendingBalance) + parseFloat(savingsBalance);
     
     const formattedBalance = `$${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -1227,14 +1422,14 @@ function aggressiveBalanceUpdate() {
 
 // Update balance display function for all pages
 function updateBalanceDisplay() {
-    console.log('Updating balance display to $22 million...');
+    console.log('Updating balance display with user-specific values...');
     
     // Ensure universal account is set up
     setupUniversalAccount();
     
-    // Get balance values
-    const spendingBalance = localStorage.getItem('apexSpendingBalance') || '17000000.00';
-    const savingsBalance = localStorage.getItem('apexSavingsBalance') || '5000000.00';
+    // Get balance values (no hardcoded fallbacks - use actual stored values)
+    const spendingBalance = localStorage.getItem('apexSpendingBalance');
+    const savingsBalance = localStorage.getItem('apexSavingsBalance');
     const totalBalance = parseFloat(spendingBalance) + parseFloat(savingsBalance);
     
     console.log('Balance values:', { spendingBalance, savingsBalance, totalBalance });
@@ -1446,3 +1641,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Started continuous balance update loop on account page');
     }
 });
+
+// Export functions to window object for global access
+window.updateMoreButtonMenu = updateMoreButtonMenu;
+window.logout = logout;
+window.updateAccountNumbers = updateAccountNumbers;

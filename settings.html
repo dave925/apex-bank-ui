@@ -9,15 +9,73 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Premium Navigation -->
-    <nav class="apex-nav" role="navigation" aria-label="Main navigation">
+    <!-- Navigation -->
+    <nav class="apex-nav">
         <div class="apex-nav-container">
-            <a href="home.html" class="apex-brand" aria-label="APEX Bank - Home">
-                <div class="apex-brand-icon" aria-hidden="true">
+            <a href="index.html" class="apex-brand">
+                <div class="apex-brand-icon">
                     <i class="fas fa-university"></i>
                 </div>
                 <span>APEX</span>
             </a>
+            
+            <!-- Desktop Navigation Menu -->
+            <div class="apex-nav-menu">
+                <a href="home.html" class="apex-nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="account.html" class="apex-nav-link">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Account</span>
+                </a>
+                <a href="goals.html" class="apex-nav-link">
+                    <i class="fas fa-piggy-bank"></i>
+                    <span>Goals</span>
+                </a>
+                <a href="move.html" class="apex-nav-link">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Move</span>
+                </a>
+                <a href="analytics.html" class="apex-nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="credit.html" class="apex-nav-link">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Credit</span>
+                </a>
+                <div class="apex-nav-dropdown">
+                    <button class="apex-nav-link apex-nav-dropdown-toggle">
+                        <i class="fas fa-ellipsis-h"></i>
+                        <span>More</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem; margin-left: 4px;"></i>
+                    </button>
+                    <div class="apex-nav-dropdown-menu">
+                        <a href="settings.html" class="apex-nav-dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                        <a href="help.html" class="apex-nav-dropdown-item">
+                            <i class="fas fa-question-circle"></i>
+                            Help
+                        </a>
+                        <a href="notifications.html" class="apex-nav-dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                        </a>
+                        <a href="profile.html" class="apex-nav-dropdown-item">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="apex-nav-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
 
@@ -122,6 +180,126 @@
     <!-- Scripts -->
     <script src="js/chime-app-fixed.js"></script>
     
+    <!-- Settings Page Functionality -->
+    <script>
+        // Add functionality to settings buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            // Personal Information
+            const personalInfoBtn = document.querySelector('button:has(.fa-user)');
+            if (personalInfoBtn) {
+                personalInfoBtn.addEventListener('click', function() {
+                    showToast('Personal Information settings coming soon!');
+                });
+            }
+            
+            // Address & Contact
+            const addressBtn = document.querySelector('button:has(.fa-map-marker-alt)');
+            if (addressBtn) {
+                addressBtn.addEventListener('click', function() {
+                    showToast('Address & Contact settings coming soon!');
+                });
+            }
+            
+            // Phone & Email
+            const phoneBtn = document.querySelector('button:has(.fa-phone)');
+            if (phoneBtn) {
+                phoneBtn.addEventListener('click', function() {
+                    showToast('Phone & Email settings coming soon!');
+                });
+            }
+            
+            // Change Password
+            const passwordBtn = document.querySelector('button:has(.fa-lock)');
+            if (passwordBtn) {
+                passwordBtn.addEventListener('click', function() {
+                    showToast('Password change feature coming soon!');
+                });
+            }
+            
+            // Biometric Settings
+            const biometricBtn = document.querySelector('button:has(.fa-fingerprint)');
+            if (biometricBtn) {
+                biometricBtn.addEventListener('click', function() {
+                    showToast('Biometric settings coming soon!');
+                });
+            }
+            
+            // Two-Factor Authentication
+            const twoFactorBtn = document.querySelector('button:has(.fa-shield-alt)');
+            if (twoFactorBtn) {
+                twoFactorBtn.addEventListener('click', function() {
+                    showToast('Two-Factor Authentication coming soon!');
+                });
+            }
+            
+            // Notifications
+            const notificationsBtn = document.querySelector('button:has(.fa-bell)');
+            if (notificationsBtn) {
+                notificationsBtn.addEventListener('click', function() {
+                    window.location.href = 'notifications.html';
+                });
+            }
+            
+            // Language & Region
+            const languageBtn = document.querySelector('button:has(.fa-globe)');
+            if (languageBtn) {
+                languageBtn.addEventListener('click', function() {
+                    showToast('Language & Region settings coming soon!');
+                });
+            }
+            
+            // Dark Mode
+            const darkModeBtn = document.querySelector('button:has(.fa-moon)');
+            if (darkModeBtn) {
+                darkModeBtn.addEventListener('click', function() {
+                    // Toggle dark mode
+                    document.body.classList.toggle('dark-mode');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    showToast(isDarkMode ? 'Dark mode enabled!' : 'Dark mode disabled!');
+                });
+            }
+        });
+        
+        // Toast notification function
+        function showToast(message) {
+            const toast = document.getElementById('chimeToast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            if (toast && toastMessage) {
+                toastMessage.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        }
+    </script>
+    
+    <!-- Mobile Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.getElementById('mobileMenuToggle');
+            const navMenu = document.querySelector('.apex-nav-menu');
+            
+            if (mobileToggle && navMenu) {
+                mobileToggle.addEventListener('click', function() {
+                    if (navMenu.style.display === 'flex') {
+                        navMenu.style.display = 'none';
+                    } else {
+                        navMenu.style.display = 'flex';
+                        navMenu.style.position = 'absolute';
+                        navMenu.style.top = '100%';
+                        navMenu.style.left = '0';
+                        navMenu.style.right = '0';
+                        navMenu.style.background = 'var(--apex-navy)';
+                        navMenu.style.flexDirection = 'column';
+                        navMenu.style.padding = 'var(--apex-spacing-4)';
+                        navMenu.style.boxShadow = 'var(--apex-shadow-2xl)';
+                    }
+                });
+            }
+        });
     </script>
 
     <!-- More Button at Bottom -->

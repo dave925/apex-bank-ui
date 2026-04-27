@@ -187,7 +187,7 @@ img {
 }
 
 .apex-nav-menu {
-  display: flex;
+  display: flex !important;
   gap: var(--apex-spacing-2);
   list-style: none;
   align-items: center;
@@ -344,6 +344,101 @@ img {
 .apex-nav-more-dropdown a.dropdown-active {
   background: linear-gradient(135deg, var(--apex-primary-teal), var(--apex-teal-light));
   color: var(--apex-white);
+}
+
+/* Mobile Navigation Toggle */
+.apex-nav-toggle {
+  display: none !important;
+  background: none;
+  border: none;
+  color: var(--apex-white);
+  font-size: var(--apex-font-size-lg);
+  cursor: pointer;
+  padding: var(--apex-spacing-2);
+  border-radius: var(--apex-radius-md);
+  transition: all var(--apex-transition-fast);
+}
+
+.apex-nav-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Update dropdown class names to match HTML */
+.apex-nav-dropdown {
+  position: relative;
+}
+
+.apex-nav-dropdown-toggle {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--apex-white);
+  padding: var(--apex-spacing-3) var(--apex-spacing-4);
+  border-radius: var(--apex-radius-xl);
+  font-weight: 600;
+  font-size: var(--apex-font-size-sm);
+  cursor: pointer;
+  transition: all var(--apex-transition-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--apex-spacing-2);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  position: relative;
+  z-index: 1001;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.apex-nav-dropdown-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: var(--apex-shadow-hover);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.apex-nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--apex-navy-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--apex-radius-xl);
+  min-width: 200px;
+  padding: var(--apex-spacing-2);
+  box-shadow: var(--apex-shadow-2xl);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--apex-transition-normal);
+  z-index: 1000;
+}
+
+.apex-nav-dropdown:hover .apex-nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.apex-nav-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--apex-spacing-3);
+  padding: var(--apex-spacing-3) var(--apex-spacing-4);
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border-radius: var(--apex-radius-lg);
+  transition: all var(--apex-transition-fast);
+  font-weight: 500;
+}
+
+.apex-nav-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--apex-white);
+}
+
+.apex-nav-dropdown-item i {
+  width: 16px;
+  text-align: center;
 }
 
 /* APEX Container */
@@ -994,18 +1089,11 @@ img {
   }
   
   .apex-nav-menu {
-    gap: var(--apex-spacing-1);
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    flex: 1;
-    justify-content: flex-start;
+    display: none;
   }
   
-  .apex-nav-menu::-webkit-scrollbar {
-    display: none;
+  .apex-nav-toggle {
+    display: block;
   }
   
   .apex-nav-link {
@@ -1106,6 +1194,49 @@ img {
   /* Hero section mobile fixes */
   .apex-section[style*="padding: var(--apex-spacing-20) 0"] {
     padding: var(--apex-spacing-12) 0 !important;
+  }
+  
+  /* Account page mobile fixes */
+  .apex-section h1 {
+    font-size: var(--apex-font-size-2xl) !important;
+    margin-bottom: var(--apex-spacing-3) !important;
+  }
+  
+  .apex-section p {
+    font-size: var(--apex-font-size-base) !important;
+  }
+  
+  /* Account cards mobile improvements */
+  .apex-card {
+    margin-bottom: var(--apex-spacing-3);
+  }
+  
+  .apex-card h3 {
+    font-size: var(--apex-font-size-base) !important;
+  }
+  
+  .apex-card p {
+    font-size: var(--apex-font-size-xs) !important;
+  }
+  
+  /* Balance display mobile fixes */
+  #spending-balance,
+  #savings-balance {
+    font-size: var(--apex-font-size-xl) !important;
+    word-break: break-all;
+  }
+  
+  /* Account settings buttons mobile */
+  .apex-btn {
+    min-height: 48px;
+    font-size: var(--apex-font-size-sm);
+  }
+  
+  /* Account overview icons mobile */
+  .apex-card > div > div:first-child {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: var(--apex-font-size-base) !important;
   }
   
   .apex-section[style*="padding: var(--apex-spacing-20) 0"] .apex-container > div {
@@ -1242,6 +1373,30 @@ img {
   .apex-card-chip {
     width: 32px;
     height: 24px;
+  }
+  
+  /* Account page specific small mobile fixes */
+  .apex-section h1 {
+    font-size: var(--apex-font-size-xl) !important;
+    margin-bottom: var(--apex-spacing-2) !important;
+  }
+  
+  .apex-section p {
+    font-size: var(--apex-font-size-sm) !important;
+  }
+  
+  /* Balance display small mobile fixes */
+  #spending-balance,
+  #savings-balance {
+    font-size: var(--apex-font-size-lg) !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Account overview icons small mobile */
+  .apex-card > div > div:first-child {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: var(--apex-font-size-sm) !important;
   }
   
   .apex-toast {

@@ -399,6 +399,11 @@
                 document.getElementById('moreMenu').style.display = 'none';
             });
         });
+        
+        // Update account numbers when page loads
+        if (typeof updateAccountNumbers === 'function') {
+            updateAccountNumbers();
+        }
     </script>
 </body>
 </html>
