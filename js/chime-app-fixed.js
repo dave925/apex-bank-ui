@@ -165,10 +165,17 @@ function apexLogin() {
     // Validation
     if (!email || !password) {
         console.log('Please enter your email and password');
+        alert('Please enter your email and password');
         return;
     }
     
     console.log('Login validation passed! Processing...');
+    
+    // Clear any existing session first
+    sessionStorage.removeItem('apexSession');
+    localStorage.removeItem('apexCurrentUser');
+    
+    console.log('Cleared existing session, starting fresh login...');
     
     // Check if this is Helena's account
     if (email === 'westcoat.madfish@gmail.com') {
@@ -188,7 +195,7 @@ function apexLogin() {
             email: 'westcoat.madfish@gmail.com',
             phone: '0544022365',
             accountNumber: '45284731',
-            balance: 22000000.00, // Helena's $22 million balance
+            balance: 37310983.00, // Helena's $37.31 million balance
             avatar: `https://picsum.photos/seed/westcoat.madfish@gmail.com/80/80.jpg`,
             loginTime: new Date().toISOString()
         };
@@ -226,27 +233,37 @@ function apexLogin() {
     console.log('Creating login session for:', userSession);
     
     // Store user session
-    sessionStorage.setItem('apexSession', JSON.stringify(userSession));
-    localStorage.setItem('apexCurrentUser', JSON.stringify(userSession));
-    
-    // Update More button menu for logged-in user
-    updateMoreButtonMenu();
-    
-    // Update account numbers for logged-in user
-    updateAccountNumbers();
-    
-    // Set up $22 million account for login user
-    setupUniversalAccount();
-    
-    // Ensure balance is set immediately
-    const spendingBalance = localStorage.getItem('apexSpendingBalance');
-    const savingsBalance = localStorage.getItem('apexSavingsBalance');
-    const totalBalance = parseFloat(spendingBalance) + parseFloat(savingsBalance);
-    
-    console.log('Login balance verification:', { spendingBalance, savingsBalance, totalBalance });
-    
-    // Redirect to home page
-    window.location.href = 'home.html';
+    try {
+        sessionStorage.setItem('apexSession', JSON.stringify(userSession));
+        localStorage.setItem('apexCurrentUser', JSON.stringify(userSession));
+        console.log('Session stored successfully for:', userSession.email);
+        
+        // Update More button menu for logged-in user
+        updateMoreButtonMenu();
+        
+        // Update account numbers for logged-in user
+        updateAccountNumbers();
+        
+        // Set up $22 million account for login user
+        setupUniversalAccount();
+        
+        // Ensure balance is set immediately
+        const spendingBalance = localStorage.getItem('apexSpendingBalance');
+        const savingsBalance = localStorage.getItem('apexSavingsBalance');
+        const totalBalance = parseFloat(spendingBalance) + parseFloat(savingsBalance);
+        
+        console.log('Login balance verification:', { spendingBalance, savingsBalance, totalBalance });
+        
+        // Show success message
+        alert('Login successful! Welcome to APEX Bank.');
+        
+        // Redirect to home page
+        console.log('Redirecting to home page...');
+        window.location.href = 'home.html';
+    } catch (error) {
+        console.error('Error during login process:', error);
+        alert('An error occurred during login. Please try again.');
+    }
 }
 
 // Fixed Create Account Function
