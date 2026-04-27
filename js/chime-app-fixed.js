@@ -182,7 +182,12 @@ function apexLogin() {
     console.log('Target email:', 'westcoat.madfish@gmail.com');
     console.log('Email comparison result:', email === 'westcoat.madfish@gmail.com');
     
-    if (email === 'westcoat.madfish@gmail.com') {
+    // Normalize email for comparison (trim whitespace and lowercase)
+    const normalizedEmail = email.trim().toLowerCase();
+    console.log('Normalized email:', normalizedEmail);
+    console.log('Normalized comparison result:', normalizedEmail === 'westcoat.madfish@gmail.com');
+    
+    if (normalizedEmail === 'westcoat.madfish@gmail.com') {
         console.log('Helena account identified, validating password...');
         // Validate password for Helena's account
         if (password !== 'Aaddffgghh1$') {
@@ -209,8 +214,11 @@ function apexLogin() {
     } else {
         // Check if secondary user exists in localStorage
         const secondaryUser = JSON.parse(localStorage.getItem('apexSecondaryUser') || 'null');
-        if (!secondaryUser || secondaryUser.email !== email) {
-            console.log('Access denied: Only Helena Malm and registered secondary user can access this system');
+        console.log('Secondary user check - email:', email);
+        console.log('Secondary user data:', secondaryUser);
+        
+        if (!secondaryUser || secondaryUser.email.toLowerCase() !== normalizedEmail) {
+            console.log('Access denied: Email does not match secondary user');
             alert('Access denied. Please use Helena Malm\'s account or create a secondary account.');
             return;
         }
