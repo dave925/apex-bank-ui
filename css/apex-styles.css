@@ -1083,6 +1083,11 @@ img {
 }
 
 @media (max-width: 768px) {
+  body {
+    /* Keep content visible above fixed mobile tab bar */
+    padding-bottom: 84px;
+  }
+
   .apex-nav-container {
     padding: 0 var(--apex-spacing-2);
     height: 64px;
@@ -1090,7 +1095,7 @@ img {
   }
   
   .apex-nav-menu {
-    display: none;
+    display: none !important;
   }
   
   .apex-nav-toggle {
@@ -1266,12 +1271,18 @@ img {
 }
 
 @media (max-width: 480px) {
+  body {
+    /* Slightly tighter bottom offset on very small screens */
+    padding-bottom: 76px;
+  }
+
   .apex-nav-container {
     height: 56px;
     padding: 0 var(--apex-spacing-1);
   }
   
   .apex-nav-menu {
+    display: none !important;
     top: 56px;
     max-height: calc(100vh - 56px);
   }
