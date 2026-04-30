@@ -24,6 +24,7 @@
   --apex-warning: #F59E0B;
   --apex-error: #EF4444;
   --apex-info: #3B82F6;
+  --apex-gold: #F5C542;
   
   /* Legacy Green Colors (for compatibility) */
   --apex-primary-green: #10B981;
@@ -1474,72 +1475,6 @@ img {
 }
 
 /* Legacy chime class support for backward compatibility */
-.chime-nav,
-.chime-nav-container,
-.chime-brand,
-.chime-brand-icon,
-.chime-nav-menu,
-.chime-nav-link,
-.chime-container,
-.chime-section,
-.chime-grid,
-.chime-card,
-.chime-card-header,
-.chime-card-title,
-.chime-card-subtitle,
-.chime-btn,
-.chime-btn-primary,
-.chime-btn-secondary,
-.chime-btn-ghost,
-.chime-btn-full,
-.chime-form,
-.chime-form-group,
-.chime-label,
-.chime-input,
-.chime-debit-card,
-.chime-card-chip,
-.chime-card-number,
-.chime-card-info,
-.chime-card-holder,
-.chime-card-expiry,
-.chime-balance,
-.chime-balance-amount,
-.chime-balance-label,
-.chime-transaction-list,
-.chime-transaction-item,
-.chime-transaction-icon,
-.chime-transaction-details,
-.chime-transaction-name,
-.chime-transaction-date,
-.chime-transaction-amount,
-.chime-transaction-amount.positive,
-.chime-transaction-amount.negative,
-.chime-goals,
-.chime-goal,
-.chime-goal-icon,
-.chime-goal-name,
-.chime-goal-amount,
-.chime-goal-progress,
-.chime-goal-progress-bar,
-.chime-goal-percentage,
-.chime-feature-card,
-.chime-feature-icon,
-.chime-feature-title,
-.chime-feature-description,
-.chime-auth,
-.chime-auth-card,
-.chime-auth-header,
-.chime-auth-logo,
-.chime-auth-title,
-.chime-auth-subtitle,
-.chime-mobile-bar,
-.chime-mobile-item,
-.chime-toast,
-.chime-toast.show,
-.chime-toast.success,
-.chime-toast.error,
-.chime-toast.warning,
-.chime-toast.info {
-  /* These classes map to apex equivalents for backward compatibility */
-  all: unset;
-}
+/* NOTE: Previously this file applied `all: unset;` to `.chime-*` classes which can
+   silently wipe styles if any legacy markup remains. If legacy markup is required,
+   add explicit `.chime-*` selectors that mirror the corresponding `.apex-*` rules. */

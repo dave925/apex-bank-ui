@@ -9,15 +9,73 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Premium Navigation -->
-    <nav class="apex-nav" role="navigation" aria-label="Main navigation">
+    <!-- Navigation -->
+    <nav class="apex-nav">
         <div class="apex-nav-container">
-            <a href="home.html" class="apex-brand" aria-label="APEX Bank - Home">
-                <div class="apex-brand-icon" aria-hidden="true">
+            <a href="index.html" class="apex-brand">
+                <div class="apex-brand-icon">
                     <i class="fas fa-university"></i>
                 </div>
                 <span>APEX</span>
             </a>
+            
+            <!-- Desktop Navigation Menu -->
+            <div class="apex-nav-menu">
+                <a href="home.html" class="apex-nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="account.html" class="apex-nav-link">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Account</span>
+                </a>
+                <a href="goals.html" class="apex-nav-link">
+                    <i class="fas fa-piggy-bank"></i>
+                    <span>Goals</span>
+                </a>
+                <a href="move.html" class="apex-nav-link">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Move</span>
+                </a>
+                <a href="analytics.html" class="apex-nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="credit.html" class="apex-nav-link">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Credit</span>
+                </a>
+                <div class="apex-nav-dropdown">
+                    <button class="apex-nav-link apex-nav-dropdown-toggle">
+                        <i class="fas fa-ellipsis-h"></i>
+                        <span>More</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem; margin-left: 4px;"></i>
+                    </button>
+                    <div class="apex-nav-dropdown-menu">
+                        <a href="settings.html" class="apex-nav-dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                        <a href="help.html" class="apex-nav-dropdown-item">
+                            <i class="fas fa-question-circle"></i>
+                            Help
+                        </a>
+                        <a href="notifications.html" class="apex-nav-dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                        </a>
+                        <a href="profile.html" class="apex-nav-dropdown-item">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="apex-nav-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
 
@@ -102,61 +160,37 @@
         <span id="toastMessage">Analytics loaded!</span>
     </div>
 
+    <!-- Mobile Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.getElementById('mobileMenuToggle');
+            const navMenu = document.querySelector('.apex-nav-menu');
+            
+            if (mobileToggle && navMenu) {
+                mobileToggle.addEventListener('click', function() {
+                    if (navMenu.style.display === 'flex') {
+                        navMenu.style.display = 'none';
+                    } else {
+                        navMenu.style.display = 'flex';
+                        navMenu.style.position = 'absolute';
+                        navMenu.style.top = '100%';
+                        navMenu.style.left = '0';
+                        navMenu.style.right = '0';
+                        navMenu.style.background = 'var(--apex-navy)';
+                        navMenu.style.flexDirection = 'column';
+                        navMenu.style.padding = 'var(--apex-spacing-4)';
+                        navMenu.style.boxShadow = 'var(--apex-shadow-2xl)';
+                    }
+                });
+            }
+        });
+    </script>
+
     <!-- Scripts -->
     <script src="js/chime-app-fixed.js"></script>
     
     </script>
 
-    <!-- More Button at Bottom -->
-    <div id="moreButtonContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-        <button id="moreButton" onclick="toggleMoreMenu()" style="background: #2ecc71; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
-            More
-            <i class="fas fa-chevron-down"></i>
-        </button>
-        <div id="moreMenu" style="position: absolute; bottom: 60px; right: 0; background: #2c3e50; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; min-width: 200px; padding: 8px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); display: none;">
-            <a href="index.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Home</a>
-                        <a href="account.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Account</a>
-            <a href="goals.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Goals</a>
-            <a href="move.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Move Money</a>
-            <a href="credit.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Credit</a>
-            <a href="analytics.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Analytics</a>
-            <a href="settings.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Settings</a>
-            <a href="help.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Help</a>
-            <a href="notifications.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Notifications</a>
-            <a href="profile.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Profile</a>
-        </div>
-    </div>
-
-    <script>
-        function toggleMoreMenu() {
-            const menu = document.getElementById('moreMenu');
-            if (menu.style.display === 'none' || menu.style.display === '') {
-                menu.style.display = 'block';
-            } else {
-                menu.style.display = 'none';
-            }
-        }
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-            const container = document.getElementById('moreButtonContainer');
-            if (container && !container.contains(e.target)) {
-                document.getElementById('moreMenu').style.display = 'none';
-            }
-        });
-
-        // Add hover effects
-        document.querySelectorAll('#moreMenu a').forEach(link => {
-            link.addEventListener('mouseenter', function() {
-                this.style.background = 'rgba(255, 255, 255, 0.1)';
-            });
-            link.addEventListener('mouseleave', function() {
-                this.style.background = 'transparent';
-            });
-            link.addEventListener('click', function() {
-                document.getElementById('moreMenu').style.display = 'none';
-            });
-        });
-    </script>
+    <!-- Floating More button removed (top-nav dropdown is the single source of truth). -->
 </body>
 </html>

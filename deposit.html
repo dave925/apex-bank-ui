@@ -274,58 +274,6 @@
         window.loadRecentDeposits = loadRecentDeposits;
     </script>
 
-    <!-- More Button at Bottom -->
-    <div id="moreButtonContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-        <button id="moreButton" onclick="toggleMoreMenu()" style="background: #2ecc71; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
-            More
-            <i class="fas fa-chevron-down"></i>
-        </button>
-        <div id="moreMenu" style="position: absolute; bottom: 60px; right: 0; background: #2c3e50; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; min-width: 200px; padding: 8px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); display: none;">
-            <a href="index.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Home</a>
-            <a href="login.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Sign In</a>
-            <a href="signup.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Sign Up</a>
-            <a href="account.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Account</a>
-            <a href="goals.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Goals</a>
-            <a href="move.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Move Money</a>
-            <a href="credit.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Credit</a>
-            <a href="analytics.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Analytics</a>
-            <a href="settings.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Settings</a>
-            <a href="help.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Help</a>
-            <a href="notifications.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Notifications</a>
-            <a href="profile.html" style="display: block; padding: 12px 16px; color: white; text-decoration: none; border-radius: 8px; font-size: 14px;">Profile</a>
-        </div>
-    </div>
-
-    <script>
-        function toggleMoreMenu() {
-            const menu = document.getElementById('moreMenu');
-            if (menu.style.display === 'none' || menu.style.display === '') {
-                menu.style.display = 'block';
-            } else {
-                menu.style.display = 'none';
-            }
-        }
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-            const container = document.getElementById('moreButtonContainer');
-            if (container && !container.contains(e.target)) {
-                document.getElementById('moreMenu').style.display = 'none';
-            }
-        });
-
-        // Add hover effects
-        document.querySelectorAll('#moreMenu a').forEach(link => {
-            link.addEventListener('mouseenter', function() {
-                this.style.background = 'rgba(255, 255, 255, 0.1)';
-            });
-            link.addEventListener('mouseleave', function() {
-                this.style.background = 'transparent';
-            });
-            link.addEventListener('click', function() {
-                document.getElementById('moreMenu').style.display = 'none';
-            });
-        });
-    </script>
+    <!-- Floating More button removed (top-nav dropdown is the single source of truth). -->
 </body>
 </html>

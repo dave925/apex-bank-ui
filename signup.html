@@ -53,19 +53,72 @@
                         <input type="password" class="apex-input" placeholder="Confirm your password" id="signupConfirmPassword" required>
                     </div>
                     
-                                        
-                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="createSecondaryAccount()">
+                    <div class="apex-form-group">
+                        <label style="display: flex; align-items: center; gap: var(--apex-spacing-2);">
+                            <input type="checkbox" id="agreeTerms" style="width: auto;">
+                            <span style="font-weight: normal; font-size: var(--apex-font-size-sm);">
+                                I agree to the APEX Bank 
+                                <a href="#" onclick="showTermsAndConditions(); return false;" style="color: var(--apex-primary-green); text-decoration: underline;">Terms of Service</a> 
+                                and 
+                                <a href="#" onclick="showPrivacyPolicy(); return false;" style="color: var(--apex-primary-green); text-decoration: underline;">Privacy Policy</a>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="createAccount()">
                         <i class="fas fa-user-plus"></i>
                         Create Account
                     </button>
                     
                     <div style="text-align: center; margin-top: var(--apex-spacing-4);">
-                        <a href="login.html" class="apex-btn apex-btn-secondary apex-btn-full">
+                        <button type="button" class="apex-btn apex-btn-secondary apex-btn-full" onclick="goToLogin()">
                             <i class="fas fa-sign-in-alt"></i>
                             Already have an account? Sign in
-                        </a>
+                        </button>
                     </div>
                 </form>
+            </div>
+        </section>
+
+        <!-- Verification Screen -->
+        <section id="verification-screen" class="apex-auth" style="display: none;">
+            <div class="apex-auth-card">
+                <div class="apex-auth-header">
+                    <div class="apex-auth-logo">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h1 class="apex-auth-title">Verify Your Account</h1>
+                    <p class="apex-auth-subtitle">Enter the 6-digit verification code shown below</p>
+                </div>
+
+                <div class="verification-code-display" style="text-align: center; padding: var(--apex-spacing-4); border-radius: var(--apex-radius-xl); margin-bottom: var(--apex-spacing-6);">
+                    <div style="font-size: var(--apex-font-size-sm); opacity: 0.9; margin-bottom: var(--apex-spacing-2);">Verification code</div>
+                    <div id="codeValue" style="font-size: var(--apex-font-size-3xl); font-weight: 800; letter-spacing: 0.2em;">000000</div>
+                </div>
+
+                <div style="display: flex; gap: var(--apex-spacing-2); justify-content: center; margin-bottom: var(--apex-spacing-6);">
+                    <input type="text" class="apex-input verification-input" inputmode="numeric" maxlength="1" oninput="handleVerificationInput(this, 0)" onkeydown="handleVerificationKeydown(event, 0)" style="width: 48px; text-align: center; font-size: var(--apex-font-size-lg);">
+                    <input type="text" class="apex-input verification-input" inputmode="numeric" maxlength="1" oninput="handleVerificationInput(this, 1)" onkeydown="handleVerificationKeydown(event, 1)" style="width: 48px; text-align: center; font-size: var(--apex-font-size-lg);">
+                    <input type="text" class="apex-input verification-input" inputmode="numeric" maxlength="1" oninput="handleVerificationInput(this, 2)" onkeydown="handleVerificationKeydown(event, 2)" style="width: 48px; text-align: center; font-size: var(--apex-font-size-lg);">
+                    <input type="text" class="apex-input verification-input" inputmode="numeric" maxlength="1" oninput="handleVerificationInput(this, 3)" onkeydown="handleVerificationKeydown(event, 3)" style="width: 48px; text-align: center; font-size: var(--apex-font-size-lg);">
+                    <input type="text" class="apex-input verification-input" inputmode="numeric" maxlength="1" oninput="handleVerificationInput(this, 4)" onkeydown="handleVerificationKeydown(event, 4)" style="width: 48px; text-align: center; font-size: var(--apex-font-size-lg);">
+                    <input type="text" class="apex-input verification-input" inputmode="numeric" maxlength="1" oninput="handleVerificationInput(this, 5)" onkeydown="handleVerificationKeydown(event, 5)" style="width: 48px; text-align: center; font-size: var(--apex-font-size-lg);">
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: var(--apex-spacing-3);">
+                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="verifyEmail()">
+                        <i class="fas fa-check-circle"></i>
+                        Verify Account
+                    </button>
+                    <button type="button" class="apex-btn apex-btn-secondary apex-btn-full" onclick="resendVerification()">
+                        <i class="fas fa-redo"></i>
+                        Resend Code
+                    </button>
+                    <button type="button" class="apex-btn apex-btn-ghost apex-btn-full" onclick="location.reload()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Sign Up
+                    </button>
+                </div>
             </div>
         </section>
     </main>
@@ -79,12 +132,165 @@
     <!-- Scripts -->
     <script src="js/chime-app-fixed.js"></script>
     <script>
-        // Check if secondary account already exists
+        // Go to login page function
+        function goToLogin() {
+            window.location.href = 'login.html';
+        }
+        
+        // Show Terms and Conditions
+        function showTermsAndConditions() {
+            const termsContent = `
+                <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2 style="color: var(--apex-primary-green); margin-bottom: 20px;">APEX Bank Terms of Service</h2>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">1. Account Terms</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        By creating an APEX Bank account, you agree to provide accurate information and maintain the security of your account credentials.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">2. Banking Services</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        APEX Bank provides digital banking services including account management, transfers, and financial analytics. Services are subject to availability and regulatory compliance.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">3. Account Limits</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        Users may create one primary account and up to 4 additional accounts. All accounts are subject to AML and KYC verification requirements.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">4. Privacy and Data</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        We protect your data in accordance with our Privacy Policy and applicable banking regulations. Your information is never sold to third parties.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">5. Account Security</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        You are responsible for maintaining the confidentiality of your login credentials. Report unauthorized access immediately.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">6. Fee Structure</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        APEX Bank offers fee-free basic banking services. Additional services may have associated fees which will be clearly disclosed.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">7. Account Closure</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        You may close your account at any time. Remaining funds will be transferred according to your instructions.
+                    </p>
+                    
+                    <p style="margin-top: 30px; font-size: 12px; color: var(--apex-medium-gray);">
+                        By continuing, you acknowledge that you have read, understood, and agree to be bound by these terms.
+                    </p>
+                </div>
+            `;
+            
+            showModal('Terms of Service', termsContent);
+        }
+        
+        // Show Privacy Policy
+        function showPrivacyPolicy() {
+            const privacyContent = `
+                <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2 style="color: var(--apex-primary-green); margin-bottom: 20px;">APEX Bank Privacy Policy</h2>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">Information We Collect</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        We collect information necessary to provide banking services, including personal identification, contact information, and transaction data.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">How We Use Your Information</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        Your information is used to provide banking services, prevent fraud, comply with regulations, and improve our services.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">Information Sharing</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        We do not sell your personal information. We may share information with regulatory authorities, law enforcement, or service providers as required by law.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">Data Security</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        We use industry-standard encryption and security measures to protect your information both in transit and at rest.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">Your Rights</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        You have the right to access, correct, or delete your personal information, subject to legal and regulatory requirements.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">Cookies and Tracking</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        We use cookies and similar technologies to enhance your experience and provide security features.
+                    </p>
+                    
+                    <h3 style="color: var(--apex-dark-blue); margin: 20px 0 10px 0;">Policy Updates</h3>
+                    <p style="line-height: 1.6; margin-bottom: 15px;">
+                        We may update this privacy policy. Changes will be communicated through our website or email notifications.
+                    </p>
+                    
+                    <p style="margin-top: 30px; font-size: 12px; color: var(--apex-medium-gray);">
+                        Last updated: ${new Date().toLocaleDateString()}
+                    </p>
+                </div>
+            `;
+            
+            showModal('Privacy Policy', privacyContent);
+        }
+        
+        // Modal function
+        function showModal(title, content) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 12px; max-width: 700px; max-height: 80vh; overflow-y: auto; width: 100%;">
+                    <div style="padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; color: var(--apex-primary-green);">${title}</h3>
+                        <button onclick="this.closest('[style*=fixed]').remove()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+                    </div>
+                    <div style="padding: 20px;">
+                        ${content}
+                    </div>
+                    <div style="padding: 20px; border-top: 1px solid #eee; text-align: right;">
+                        <button onclick="this.closest('[style*=fixed]').remove()" style="background: var(--apex-primary-green); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        // Override checkLoginStatus for signup page to allow logged users to create additional accounts
+        window.addEventListener('DOMContentLoaded', function() {
+            // Don't redirect logged users from signup page - they might want to create additional accounts
+            const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
+            if (currentUser.email) {
+                // User is logged in - show message about creating additional account
+                const authTitle = document.querySelector('.apex-auth-title');
+                const authSubtitle = document.querySelector('.apex-auth-subtitle');
+                if (authTitle) authTitle.textContent = 'Create Additional Account';
+                if (authSubtitle) authSubtitle.textContent = 'Add up to 4 additional accounts to your APEX Bank profile';
+            }
+        });
+        
+        // Check if secondary accounts limit is reached
         window.addEventListener('load', () => {
-            const existingUser = localStorage.getItem('apexSecondaryUser');
-            if (existingUser) {
-                document.querySelector('.apex-auth-title').textContent = 'Account Already Created';
-                document.querySelector('.apex-auth-subtitle').textContent = 'The secondary account has already been created';
+            const secondaryUsers = JSON.parse(localStorage.getItem('apexSecondaryUsers') || '[]');
+            if (secondaryUsers.length >= 4) {
+                document.querySelector('.apex-auth-title').textContent = 'Account Limit Reached';
+                document.querySelector('.apex-auth-subtitle').textContent = 'Maximum 4 additional accounts have been created';
                 document.getElementById('signupForm').style.display = 'none';
                 
                 const messageDiv = document.createElement('div');
@@ -95,7 +301,7 @@
                         <i class="fas fa-exclamation-triangle" style="color: white; font-size: 2rem;"></i>
                     </div>
                     <p style="color: var(--apex-medium-gray); margin-bottom: var(--apex-spacing-6);">
-                        The secondary account has already been created. Only one additional account is allowed.
+                        The maximum of 4 additional accounts has been reached. Please contact support if you need more accounts.
                     </p>
                     <a href="login.html" class="apex-btn apex-btn-primary" style="width: 100%;">
                         <i class="fas fa-sign-in-alt"></i>

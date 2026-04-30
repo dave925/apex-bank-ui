@@ -11,6 +11,18 @@
 <body>
     <!-- Main Content -->
     <main>
+        <!-- Simple Navigation -->
+        <nav class="apex-nav">
+            <div class="apex-nav-container">
+                <a href="index.html" class="apex-brand">
+                    <div class="apex-brand-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <span>APEX</span>
+                </a>
+            </div>
+        </nav>
+        
         <!-- Login Screen -->
         <section class="apex-auth">
             <div class="apex-auth-card">
@@ -22,7 +34,7 @@
                     <p class="apex-auth-subtitle">Sign in to your APEX Bank account</p>
                 </div>
                 
-                <form class="apex-form" id="loginForm">
+                <form class="apex-form" id="loginForm" onsubmit="return false;">
                     <div class="apex-form-group">
                         <label class="apex-label">Email or phone number</label>
                         <input type="text" class="apex-input" placeholder="Enter your email or phone number" id="loginEmail">
@@ -40,7 +52,7 @@
                         </label>
                     </div>
                     
-                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="apexLogin()">
+                    <button type="button" class="apex-btn apex-btn-primary apex-btn-full" onclick="handleLogin()">
                         Sign in
                     </button>
                     
@@ -63,5 +75,35 @@
 
     <!-- Scripts -->
     <script src="js/chime-app-fixed.js"></script>
+    <script>
+        // Handle login button click
+        function handleLogin() {
+            console.log('Login button clicked');
+            apexLogin();
+        }
+        
+        // Add Enter key support for login form
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginEmail = document.getElementById('loginEmail');
+            const loginPassword = document.getElementById('loginPassword');
+            
+            // Handle Enter key press in form fields
+            function handleEnterKey(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    console.log('Enter key pressed, calling apexLogin');
+                    apexLogin();
+                }
+            }
+            
+            // Add event listeners to form fields
+            if (loginEmail) loginEmail.addEventListener('keypress', handleEnterKey);
+            if (loginPassword) loginPassword.addEventListener('keypress', handleEnterKey);
+            
+            // Keep login form visible even if a user session exists,
+            // so users can always switch accounts from this page.
+        });
+    </script>
 </body>
 </html>

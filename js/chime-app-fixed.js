@@ -6,83 +6,178 @@ function testJS() {
     console.log('JavaScript is working!');
 }
 
-// Create Secondary Account Function
-function createAccount() {
-    console.log('createAccount function called');
+// Provide a lightweight global state object for pages that still reference it.
+// (The main logic in this repo uses localStorage/sessionStorage as the source of truth.)
+window.apexState = window.apexState || {
+    get currentUser() {
+        return getCurrentUser();
+    }
+};
+
+const PRIMARY_ACCOUNT = Object.freeze({
+    email: 'westcoat.madfish@gmail.com',
+    phone: '0544022365',
+    password: 'Aaddffgghh1$',
+    firstName: 'Helena',
+    lastName: 'Malm',
+    name: 'Helena Malm',
+    accountNumber: '45284731',
+    balance: 37310983.00
+});
+
+function showApexToast(message, type = 'info') {
+    const toast = document.getElementById('chimeToast') || document.getElementById('apexToast');
+    const toastMessage = document.getElementById('toastMessage');
     
-    const firstName = document.getElementById('signupFirstName')?.value.trim();
-    const lastName = document.getElementById('signupLastName')?.value.trim();
-    const email = document.getElementById('signupEmail')?.value.trim();
-    const phone = document.getElementById('signupPhone')?.value.trim();
-    const password = document.getElementById('signupPassword')?.value;
-    const confirmPassword = document.getElementById('signupConfirmPassword')?.value;
-    
-    console.log('Account creation attempt:', { firstName, lastName, email, phone, password: '***', confirmPassword: '***' });
-    
-    // Validation
-    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
-        console.log('Please fill in all fields');
-        alert('Please fill in all fields');
+    if (!toast || !toastMessage) {
+        alert(message);
         return;
     }
     
-    if (password !== confirmPassword) {
-        console.log('Passwords do not match');
-        alert('Passwords do not match');
-        return;
+    toastMessage.textContent = message;
+    toast.classList.remove('show', 'success', 'error', 'warning', 'info');
+    toast.classList.add(type);
+    void toast.offsetWidth;
+    toast.classList.add('show');
+    
+    if (window.apexToastTimer) {
+        clearTimeout(window.apexToastTimer);
     }
     
-    if (password.length < 6) {
-        console.log('Password must be at least 6 characters long');
-        alert('Password must be at least 6 characters long');
-        return;
+    window.apexToastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3200);
+}
+
+// Backwards-compatible alias used across pages.
+function chimeToast(message, type = 'info') {
+    showApexToast(message, type);
+}
+
+function formatAccountNumber(accountNumber) {
+    const digits = (accountNumber || '').toString().replace(/\D/g, '');
+    if (digits.length < 4) return '**** **** **** 8234';
+    const lastFour = digits.slice(-4);
+    return `**** **** **** ${lastFour}`;
+}
+
+function showAllTransactions() {
+    window.location.href = 'account.html';
+}
+
+function showMoreMenu() {
+    showApexToast('More menu options are in the top navigation.', 'info');
+}
+
+function normalizeEmail(value) {
+    return (value || '').trim().toLowerCase();
+}
+
+function normalizePhone(value) {
+    return (value || '').replace(/\D/g, '');
+}
+
+function normalizeLoginIdentifier(value) {
+    const trimmedValue = (value || '').trim();
+    return trimmedValue.includes('@') ? normalizeEmail(trimmedValue) : normalizePhone(trimmedValue);
+}
+
+function getCurrentUser() {
+    try {
+        const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
+        return currentUser && typeof currentUser === 'object' ? currentUser : {};
+    } catch (error) {
+        return {};
     }
-    
-    // Get existing secondary users
-    const secondaryUsers = JSON.parse(localStorage.getItem('apexSecondaryUsers') || '[]');
-    console.log('Current secondary users count:', secondaryUsers.length);
-    
-    // Check if account limit is reached (4 accounts max)
-    if (secondaryUsers.length >= 4) {
-        alert('Maximum account limit reached. Only 4 additional accounts are allowed.');
-        return;
+}
+
+function getSecondaryUsers() {
+    try {
+        const secondaryUsers = JSON.parse(localStorage.getItem('apexSecondaryUsers') || '[]');
+        return Array.isArray(secondaryUsers) ? secondaryUsers : [];
+    } catch (error) {
+        return [];
     }
+}
+
+function saveSecondaryUsers(secondaryUsers) {
+    localStorage.setItem('apexSecondaryUsers', JSON.stringify(secondaryUsers));
+}
+
+function generateAccountNumber() {
+    return Math.floor(10000000 + Math.random() * 90000000).toString();
+}
+
+function isPrimaryUserIdentifier(identifier) {
+    const normalizedIdentifier = normalizeLoginIdentifier(identifier);
+    return normalizedIdentifier === PRIMARY_ACCOUNT.email || normalizedIdentifier === normalizePhone(PRIMARY_ACCOUNT.phone);
+}
+
+function findSecondaryUserByIdentifier(identifier) {
+    const normalizedIdentifier = normalizeLoginIdentifier(identifier);
     
-    // Check if email already exists
-    if (secondaryUsers.some(user => user.email.toLowerCase() === email.toLowerCase())) {
-        alert('An account with this email already exists.');
-        return;
-    }
+    return getSecondaryUsers().find(user => {
+        return normalizeEmail(user.email) === normalizedIdentifier || normalizePhone(user.phone) === normalizedIdentifier;
+    });
+}
+
+function createUserSession(user) {
+    const firstName = (user.firstName || '').trim() || (user.name || 'User').trim().split(' ')[0];
+    const lastName = (user.lastName || '').trim();
+    const name = (user.name || `${firstName} ${lastName}`.trim()).trim();
+    const email = normalizeEmail(user.email);
+    const phone = normalizePhone(user.phone);
+    const avatarSeed = email || phone || Date.now().toString();
     
-    console.log('Account validation passed! Creating secondary account...');
-    
-    // Create secondary user object
-    const secondaryUser = {
+    return {
         id: Date.now(),
-        firstName: firstName,
+        name: name || 'User',
+        firstName: firstName || 'User',
         lastName: lastName,
-        name: `${firstName} ${lastName}`,
         email: email,
         phone: phone,
-        password: password,
-        accountNumber: Math.floor(10000000 + Math.random() * 90000000).toString(),
-        createdAt: new Date().toISOString()
+        accountNumber: user.accountNumber || generateAccountNumber(),
+        balance: typeof user.balance === 'number' ? user.balance : 0.00,
+        avatar: user.avatar || `https://picsum.photos/seed/${avatarSeed}/80/80.jpg`,
+        loginTime: new Date().toISOString()
     };
+}
+
+function persistUserSession(userSession) {
+    sessionStorage.setItem('apexSession', JSON.stringify(userSession));
+    localStorage.setItem('apexCurrentUser', JSON.stringify(userSession));
+}
+
+function resetVerificationInputs() {
+    const verificationInputs = document.querySelectorAll('.verification-input');
     
-    console.log('Secondary account created:', secondaryUser);
+    verificationInputs.forEach((input, index) => {
+        input.value = '';
+        input.style.borderColor = 'var(--apex-light-gray)';
+        input.style.backgroundColor = 'var(--apex-white)';
+        
+        if (index === 0) {
+            input.focus();
+        }
+    });
+}
+
+function showVerificationScreen(verificationCode) {
+    const verificationScreen = document.getElementById('verification-screen');
+    const signupScreen = document.getElementById('signup-screen');
+    const codeValue = document.getElementById('codeValue');
     
-    // Add to secondary users array
-    secondaryUsers.push(secondaryUser);
-    localStorage.setItem('apexSecondaryUsers', JSON.stringify(secondaryUsers));
+    if (!verificationScreen || !signupScreen || !codeValue) {
+        return false;
+    }
     
-    console.log('Secondary account stored in localStorage');
-    console.log('Total secondary users:', secondaryUsers.length);
+    signupScreen.style.display = 'none';
+    verificationScreen.style.display = 'flex';
+    codeValue.textContent = verificationCode;
+    codeValue.style.animation = 'pulse 2s infinite';
+    resetVerificationInputs();
     
-    // Show success message
-    alert('Account created successfully! You can now login with your credentials.');
-    
-    // Redirect to login page
-    window.location.href = 'login.html';
+    return true;
 }
 
 // Check login status and update More button menu
@@ -118,16 +213,27 @@ function updateMoreButtonMenu() {
 }
 
 // Logout function
-function logout() {
+function logout(redirectTo = 'login.html') {
     // Clear user session
     sessionStorage.removeItem('apexSession');
     localStorage.removeItem('apexCurrentUser');
+    localStorage.removeItem('apexRememberMe');
+    localStorage.removeItem('apexSpendingBalance');
+    localStorage.removeItem('apexSavingsBalance');
+    localStorage.removeItem('apexTransactions');
+    window.pendingUser = null;
+    window.generatedVerificationCode = null;
+    
+    // Update navigation visibility for logged-out user
+    updateNavigationVisibility();
     
     // Show logout message
-    alert('You have been logged out successfully.');
+    showApexToast('You have been logged out successfully.', 'info');
     
-    // Redirect to login page
-    window.location.href = 'login.html';
+    // Redirect after toast feedback
+    setTimeout(() => {
+        window.location.href = redirectTo;
+    }, 250);
 }
 
 // Update account numbers dynamically
@@ -160,244 +266,207 @@ function updateAccountNumbers() {
 
 // Auto-update More button on page load
 document.addEventListener('DOMContentLoaded', function() {
-    updateMoreButtonMenu();
-    updateAccountNumbers();
+    // Check login status and redirect if needed
+    if (!checkLoginStatus()) {
+        return; // Will redirect, so don't continue
+    }
+    
+    initializeSignupScreen();
+    
+    // Update navigation visibility based on login status
+    updateNavigationVisibility();
+    
+    // Update More button menu and account numbers if logged in
+    const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
+    if (currentUser.email) {
+        updateMoreButtonMenu();
+        updateAccountNumbers();
+        
+        // If user is logged in and on signup page, update the UI to show they're creating an additional account
+        const currentPage = window.location.pathname.split('/').pop();
+        if (currentPage === 'signup.html') {
+            const authTitle = document.querySelector('.apex-auth-title');
+            const authSubtitle = document.querySelector('.apex-auth-subtitle');
+            if (authTitle) authTitle.textContent = 'Create Additional Account';
+            if (authSubtitle) authSubtitle.textContent = 'Add up to 4 additional accounts to your APEX Bank profile';
+        }
+    }
 });
 
 // Fixed Login Function
 function apexLogin() {
-    console.log('apexLogin function called');
-    
-    const email = document.getElementById('loginEmail')?.value.trim();
+    const identifier = document.getElementById('loginEmail')?.value.trim();
     const password = document.getElementById('loginPassword')?.value;
     const rememberMe = document.getElementById('rememberMe')?.checked;
+    const authCard = document.querySelector('.apex-auth-card');
     
-    console.log('Login attempt - Email:', email);
-    console.log('Login attempt - Password:', password ? '***' : '');
-    console.log('Remember me:', rememberMe);
-    
-    // Validation
-    if (!email || !password) {
-        console.log('Please enter your email and password');
-        alert('Please enter your email and password');
+    if (!identifier || !password) {
+        showApexToast('Please enter your email or phone number and password.', 'error');
+        if (authCard) {
+            authCard.classList.add('shake');
+            setTimeout(() => authCard.classList.remove('shake'), 500);
+        }
         return;
     }
     
-    console.log('Login validation passed! Processing...');
+    const normalizedIdentifier = normalizeLoginIdentifier(identifier);
+    let userSession = null;
     
-    // Clear any existing session first
-    sessionStorage.removeItem('apexSession');
-    localStorage.removeItem('apexCurrentUser');
-    
-    console.log('Cleared existing session, starting fresh login...');
-    
-    // Check if this is Helena's account
-    console.log('Checking email:', email);
-    console.log('Target email:', 'westcoat.madfish@gmail.com');
-    console.log('Email comparison result:', email === 'westcoat.madfish@gmail.com');
-    
-    // Normalize email for comparison (trim whitespace and lowercase)
-    const normalizedEmail = email.trim().toLowerCase();
-    console.log('Normalized email:', normalizedEmail);
-    console.log('Normalized comparison result:', normalizedEmail === 'westcoat.madfish@gmail.com');
-    
-    if (normalizedEmail === 'westcoat.madfish@gmail.com') {
-        console.log('Helena account identified, validating password...');
-        // Validate password for Helena's account
-        if (password !== 'Aaddffgghh1$') {
-            console.log('Invalid password for Helena Malm');
-            alert('Invalid password. Please use the correct password for Helena Malm.');
+    if (isPrimaryUserIdentifier(normalizedIdentifier)) {
+        if (password !== PRIMARY_ACCOUNT.password) {
+            showApexToast('Invalid password. Please try again.', 'error');
+            if (authCard) {
+                authCard.classList.add('shake');
+                setTimeout(() => authCard.classList.remove('shake'), 500);
+            }
             return;
         }
         
-        console.log('Helena password validated successfully');
-        
-        // Create Helena's session with complete details
-        var userSession = {
-            id: Date.now(),
-            name: 'Helena Malm',
-            firstName: 'Helena',
-            lastName: 'Malm',
-            email: 'westcoat.madfish@gmail.com',
-            phone: '0544022365',
-            accountNumber: '45284731',
-            balance: 37310983.00, // Helena's $37.31 million balance
-            avatar: `https://picsum.photos/seed/westcoat.madfish@gmail.com/80/80.jpg`,
-            loginTime: new Date().toISOString()
-        };
+        userSession = createUserSession({
+            ...PRIMARY_ACCOUNT,
+            avatar: `https://picsum.photos/seed/${PRIMARY_ACCOUNT.email}/80/80.jpg`
+        });
     } else {
-        // Check if user exists in secondary users array
-        const secondaryUsers = JSON.parse(localStorage.getItem('apexSecondaryUsers') || '[]');
-        console.log('Secondary users check - email:', email);
-        console.log('Secondary users data:', secondaryUsers);
-        
-        // Find user by email
-        const secondaryUser = secondaryUsers.find(user => user.email.toLowerCase() === normalizedEmail);
-        
+        const secondaryUser = findSecondaryUserByIdentifier(normalizedIdentifier);
         if (!secondaryUser) {
-            console.log('Access denied: Email does not match any secondary user');
-            alert('Access denied. Please use Helena Malm\'s account or create a secondary account.');
+            showApexToast('No account matched that email or phone number.', 'error');
+            if (authCard) {
+                authCard.classList.add('shake');
+                setTimeout(() => authCard.classList.remove('shake'), 500);
+            }
             return;
         }
         
-        // Validate password for secondary user
         if (password !== secondaryUser.password) {
-            console.log('Invalid password for secondary user');
-            alert('Invalid password. Please use the correct password.');
+            showApexToast('Invalid password. Please try again.', 'error');
+            if (authCard) {
+                authCard.classList.add('shake');
+                setTimeout(() => authCard.classList.remove('shake'), 500);
+            }
             return;
         }
         
-        // Create secondary user's session
-        var userSession = {
-            id: Date.now(),
-            name: secondaryUser.name,
-            firstName: secondaryUser.firstName,
-            lastName: secondaryUser.lastName,
-            email: secondaryUser.email,
-            phone: secondaryUser.phone,
-            accountNumber: secondaryUser.accountNumber,
-            balance: 0.00, // Secondary user has $0.00 balance
-            avatar: `https://picsum.photos/seed/${secondaryUser.email}/80/80.jpg`,
-            loginTime: new Date().toISOString()
-        };
+        userSession = createUserSession({
+            ...secondaryUser,
+            balance: 0.00
+        });
     }
     
-    console.log('Creating login session for:', userSession);
-    
-    // Store user session
     try {
-        sessionStorage.setItem('apexSession', JSON.stringify(userSession));
-        localStorage.setItem('apexCurrentUser', JSON.stringify(userSession));
-        console.log('Session stored successfully for:', userSession.email);
+        sessionStorage.removeItem('apexSession');
+        localStorage.removeItem('apexCurrentUser');
+        persistUserSession(userSession);
+        localStorage.setItem('apexRememberMe', rememberMe ? 'true' : 'false');
         
-        // Update More button menu for logged-in user
         updateMoreButtonMenu();
-        
-        // Update account numbers for logged-in user
         updateAccountNumbers();
-        
-        // Set up $22 million account for login user
+        updateNavigationVisibility();
         setupUniversalAccount();
-        
-        // Ensure balance is set immediately
-        const spendingBalance = localStorage.getItem('apexSpendingBalance');
-        const savingsBalance = localStorage.getItem('apexSavingsBalance');
-        const totalBalance = parseFloat(spendingBalance) + parseFloat(savingsBalance);
-        
-        console.log('Login balance verification:', { spendingBalance, savingsBalance, totalBalance });
-        
-        // Show success message
-        alert('Login successful! Welcome to APEX Bank.');
-        
-        // Redirect to home page
-        console.log('Redirecting to home page...');
-        window.location.href = 'home.html';
+        showApexToast('Login successful! Welcome to APEX Bank.', 'success');
+        setTimeout(() => {
+            window.location.href = 'home.html';
+        }, 350);
     } catch (error) {
         console.error('Error during login process:', error);
-        alert('An error occurred during login. Please try again.');
+        showApexToast('An error occurred during login. Please try again.', 'error');
     }
 }
 
 // Fixed Create Account Function
 function createAccount() {
-    console.log('createAccount function called');
-    
     const firstName = document.getElementById('signupFirstName')?.value.trim();
     const lastName = document.getElementById('signupLastName')?.value.trim();
-    const email = document.getElementById('signupEmail')?.value.trim();
-    const phone = document.getElementById('signupPhone')?.value.trim();
+    const email = normalizeEmail(document.getElementById('signupEmail')?.value);
+    const phone = normalizePhone(document.getElementById('signupPhone')?.value);
     const password = document.getElementById('signupPassword')?.value;
     const confirmPassword = document.getElementById('signupConfirmPassword')?.value;
-    const agreeTerms = document.getElementById('agreeTerms')?.checked;
+    const agreeTerms = document.getElementById('agreeTerms')?.checked === true;
+    const secondaryUsers = getSecondaryUsers();
+    const authCard = document.querySelector('.apex-auth-card');
     
-    console.log('Form values:', { firstName, lastName, email, phone, password: password ? '***' : '', confirmPassword: confirmPassword ? '***' : '', agreeTerms });
-    
-    // Store user details for verification
-    window.pendingUser = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone
-    };
-    
-    // Validation
     if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
-        console.log('Please fill in all fields');
+        showApexToast('Please fill in all fields.', 'error');
+        return;
+    }
+    
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showApexToast('Please enter a valid email address.', 'error');
+        return;
+    }
+    
+    if (phone.length < 7) {
+        showApexToast('Please enter a valid phone number.', 'error');
         return;
     }
     
     if (password.length < 8) {
-        console.log('Password must be at least 8 characters long');
+        showApexToast('Password must be at least 8 characters long.', 'error');
         return;
     }
     
     if (password !== confirmPassword) {
-        console.log('Passwords do not match');
+        showApexToast('Passwords do not match.', 'error');
         return;
     }
     
     if (!agreeTerms) {
-        console.log('Please agree to the Terms of Service and Privacy Policy');
+        showApexToast('Please agree to the Terms of Service and Privacy Policy.', 'error');
         return;
     }
     
-    console.log('Account creation validation passed! Processing...');
-    
-    // Generate verification code first
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-    console.log('Your verification code is: ' + verificationCode);
-    
-    // Store verification code for later validation
-    window.generatedVerificationCode = verificationCode;
-    
-    // Switch to verification screen
-    const verificationScreen = document.getElementById('verification-screen');
-    const signupScreen = document.getElementById('signup-screen');
-    
-    if (verificationScreen && signupScreen) {
-        signupScreen.style.display = 'none';
-        verificationScreen.style.display = 'block';
-        
-        // Update verification code display
-        const codeValue = document.getElementById('codeValue');
-        if (codeValue) {
-            codeValue.textContent = verificationCode;
-            codeValue.style.animation = 'pulse 2s infinite';
-        }
-        
-        // Clear any existing verification inputs
-        const verificationInputs = document.querySelectorAll('.verification-input');
-        verificationInputs.forEach(input => input.value = '');
-        
-        // Focus on first input
-        if (verificationInputs.length > 0) {
-            verificationInputs[0].focus();
-        }
+    if (secondaryUsers.length >= 4) {
+        showApexToast('Maximum account limit reached. Only 4 additional accounts are allowed.', 'warning');
+        return;
     }
+    
+    if (
+        isPrimaryUserIdentifier(email) ||
+        isPrimaryUserIdentifier(phone) ||
+        findSecondaryUserByIdentifier(email) ||
+        findSecondaryUserByIdentifier(phone)
+    ) {
+        showApexToast('An account with that email or phone number already exists.', 'error');
+        return;
+    }
+    
+    window.pendingUser = {
+        id: Date.now(),
+        firstName: firstName,
+        lastName: lastName,
+        name: `${firstName} ${lastName}`,
+        email: email,
+        phone: phone,
+        password: password,
+        accountNumber: generateAccountNumber(),
+        createdAt: new Date().toISOString()
+    };
+    
+    window.generatedVerificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    if (!showVerificationScreen(window.generatedVerificationCode)) {
+        showApexToast('Unable to load the verification step. Please refresh and try again.', 'error');
+        if (authCard) {
+            authCard.classList.add('shake');
+            setTimeout(() => authCard.classList.remove('shake'), 500);
+        }
+        return;
+    }
+    
+    showApexToast('Enter the 6-digit code below to finish creating your account.', 'info');
 }
 
 // Fixed Sign Out Function
 function apexSignOut() {
-    if (confirm('Are you sure you want to sign out?')) {
-        console.log('Signing out...');
-        
-        // Clear session data
-        sessionStorage.removeItem('apexSession');
-        localStorage.removeItem('apexCurrentUser');
-        
-        // Clear user state
-        window.currentUser = null;
-        window.pendingUser = null;
-        window.generatedVerificationCode = null;
-        
-        // Redirect to main page
-        window.location.href = 'index.html';
+    if (!confirm('Are you sure you want to sign out?')) {
+        return;
     }
+    console.log('Signing out...');
+    logout('index.html');
 }
 
 // Handle Verification Input
 function handleVerificationInput(input, index) {
-    console.log('handleVerificationInput called for input ' + index);
+    input.value = input.value.replace(/\D/g, '').slice(0, 1);
     
     if (input.value.length === 1 && index < 5) {
         // Move to next input
@@ -437,70 +506,177 @@ function handleVerificationKeydown(event, index) {
 
 // Verify Email Function
 function verifyEmail() {
-    console.log('verifyEmail function called!');
-    
     const inputs = document.querySelectorAll('.verification-input');
     const enteredCode = Array.from(inputs).map(input => input.value).join('');
     const storedCode = window.generatedVerificationCode;
+    const pendingUser = window.pendingUser;
     
-    console.log('Entered code: ' + enteredCode);
-    console.log('Expected code: ' + (storedCode || 'Not found'));
+    if (!pendingUser || !storedCode) {
+        showApexToast('Please complete the sign-up form before verifying.', 'error');
+        return;
+    }
     
-    // Validate the entered code against stored code
-    if (enteredCode === storedCode && enteredCode.length === 6) {
-        console.log('Email verified! Setting up your $20 million account...');
+    if (enteredCode.length !== 6) {
+        showApexToast('Please enter the full 6-digit verification code.', 'error');
+        return;
+    }
+    
+    if (enteredCode !== storedCode) {
+        resetVerificationInputs();
+        showApexToast('Invalid verification code. Please try again.', 'error');
+        return;
+    }
+    
+    const secondaryUsers = getSecondaryUsers();
+    if (secondaryUsers.length >= 4) {
+        showApexToast('Maximum account limit reached. Only 4 additional accounts are allowed.', 'warning');
+        return;
+    }
+    
+    if (
+        isPrimaryUserIdentifier(pendingUser.email) ||
+        isPrimaryUserIdentifier(pendingUser.phone) ||
+        findSecondaryUserByIdentifier(pendingUser.email) ||
+        findSecondaryUserByIdentifier(pendingUser.phone)
+    ) {
+        window.pendingUser = null;
+        window.generatedVerificationCode = null;
+        showApexToast('That account already exists. Please sign in instead.', 'warning');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 400);
+        return;
+    }
+    
+    const secondaryUser = {
+        ...pendingUser
+    };
+    
+    secondaryUsers.push(secondaryUser);
+    saveSecondaryUsers(secondaryUsers);
+    
+    const currentUser = getCurrentUser();
+    window.pendingUser = null;
+    window.generatedVerificationCode = null;
+    
+    if (currentUser.email) {
+        showApexToast('Additional account created successfully.', 'success');
+        setTimeout(() => {
+            window.location.href = 'home.html';
+        }, 400);
+        return;
+    }
+    
+    try {
+        const userSession = createUserSession({
+            ...secondaryUser,
+            balance: 0.00
+        });
         
-        // Get user details from pending verification
-        const pendingUser = window.pendingUser || {
-            firstName: 'Helena',
-            lastName: 'Malm',
-            email: 'westcoat.madfish@gmail.com',
-            phone: '+1-555-0000'
-        };
-        
-        // Create user session with details
-        const userSession = {
-            id: Date.now(),
-            name: `${pendingUser.firstName} ${pendingUser.lastName}`,
-            firstName: pendingUser.firstName,
-            lastName: pendingUser.lastName,
-            email: pendingUser.email,
-            phone: pendingUser.phone,
-            accountNumber: Math.floor(10000000 + Math.random() * 90000000).toString(),
-            avatar: `https://picsum.photos/seed/${pendingUser.email}/80/80.jpg`,
-            loginTime: new Date().toISOString()
-        };
-        
-        console.log('Creating user session for:', userSession);
-        
-        // Store user session
-        sessionStorage.setItem('apexSession', JSON.stringify(userSession));
-        localStorage.setItem('apexCurrentUser', JSON.stringify(userSession));
-        
-        // Set up $22 million account for new user using universal function
+        persistUserSession(userSession);
+        updateMoreButtonMenu();
+        updateAccountNumbers();
+        updateNavigationVisibility();
         setupUniversalAccount();
         
-        // Ensure balance is set immediately
-        const spendingBalance = localStorage.getItem('apexSpendingBalance');
-        const savingsBalance = localStorage.getItem('apexSavingsBalance');
-        const totalBalance = parseFloat(spendingBalance) + parseFloat(savingsBalance);
+        showApexToast('Email verified! Your account is ready.', 'success');
+        setTimeout(() => {
+            window.location.href = 'home.html';
+        }, 400);
+    } catch (error) {
+        console.error('Account created but auto-login failed:', error);
+        showApexToast('Your account was created. Please sign in to continue.', 'warning');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 400);
+    }
+}
+
+function resendVerification() {
+    if (!window.pendingUser) {
+        showApexToast('Please fill in the sign-up form first.', 'warning');
+        return;
+    }
+    
+    window.generatedVerificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    const codeValue = document.getElementById('codeValue');
+    if (codeValue) {
+        codeValue.textContent = window.generatedVerificationCode;
+    }
+    
+    resetVerificationInputs();
+    showApexToast('A new verification code is ready.', 'info');
+}
+
+function checkPasswordStrength(password) {
+    let strength = 0;
+    
+    if (password.length >= 8) strength++;
+    if (/[a-z]/.test(password)) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^a-zA-Z0-9]/.test(password)) strength++;
+    
+    return strength;
+}
+
+function initializeSignupScreen() {
+    const signupForm = document.getElementById('signupForm');
+    const passwordInput = document.getElementById('signupPassword');
+    const strengthIndicator = document.getElementById('passwordStrength');
+    
+    if (!signupForm) {
+        return;
+    }
+    
+    if (signupForm.dataset.initialized !== 'true') {
+        signupForm.dataset.initialized = 'true';
+        signupForm.addEventListener('submit', event => {
+            event.preventDefault();
+            createAccount();
+        });
+    }
+    
+    if (passwordInput && strengthIndicator && passwordInput.dataset.initialized !== 'true') {
+        passwordInput.dataset.initialized = 'true';
         
-        console.log('Balance verification after setup:', { spendingBalance, savingsBalance, totalBalance });
+        const updateStrengthIndicator = () => {
+            const password = passwordInput.value;
+            
+            if (!password) {
+                strengthIndicator.innerHTML = '';
+                return;
+            }
+            
+            const strength = checkPasswordStrength(password);
+            let label = 'Weak';
+            let color = 'var(--apex-error)';
+            
+            if (strength >= 5) {
+                label = 'Strong';
+                color = 'var(--apex-success)';
+            } else if (strength >= 4) {
+                label = 'Good';
+                color = 'var(--apex-info)';
+            } else if (strength >= 3) {
+                label = 'Fair';
+                color = 'var(--apex-warning)';
+            }
+            
+            strengthIndicator.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--apex-spacing-2); margin-top: var(--apex-spacing-2);">
+                    <span style="font-size: var(--apex-font-size-sm); color: ${color}; font-weight: 600;">Password strength: ${label}</span>
+                    <span style="font-size: var(--apex-font-size-xs); color: var(--apex-medium-gray);">Use upper, lower, number, and symbol</span>
+                </div>
+                <div style="display: flex; gap: 4px; margin-top: 6px;">
+                    ${Array.from({ length: 5 }, (_, index) => `<span style="flex: 1; height: 4px; border-radius: var(--apex-radius-full); background: ${index < strength ? color : 'var(--apex-light-gray)'};"></span>`).join('')}
+                </div>
+            `;
+        };
         
-        // Clear the stored verification code and pending user
-        window.generatedVerificationCode = null;
-        window.pendingUser = null;
-        
-        // Redirect to home page
-        window.location.href = 'home.html';
-    } else {
-        console.log('Invalid verification code. Please try again.');
-        
-        // Clear inputs and focus on first input
-        inputs.forEach(input => input.value = '');
-        if (inputs.length > 0) {
-            inputs[0].focus();
-        }
+        passwordInput.addEventListener('input', updateStrengthIndicator);
+        updateStrengthIndicator();
     }
 }
 
@@ -647,10 +823,16 @@ function requestPayment() {
 
 // Export functions to global scope
 window.testJS = testJS;
+window.chimeToast = chimeToast;
+window.showApexToast = showApexToast;
+window.formatAccountNumber = formatAccountNumber;
+window.showAllTransactions = showAllTransactions;
+window.showMoreMenu = showMoreMenu;
 window.apexLogin = apexLogin;
 window.createAccount = createAccount;
 window.apexSignOut = apexSignOut;
 window.verifyEmail = verifyEmail;
+window.resendVerification = resendVerification;
 window.handleVerificationInput = handleVerificationInput;
 window.handleVerificationKeydown = handleVerificationKeydown;
 window.setupUniversalAccount = setupUniversalAccount;
@@ -842,7 +1024,7 @@ function setupBalanceMasking() {
 
 // Update home page with user info and balance
 function updateHomePage() {
-    console.log('Updating home page with $22 million balance and real-time transactions...');
+    console.log('Updating home page with stored balances and transactions...');
     
     // Ensure universal account is set up
     setupUniversalAccount();
@@ -1448,10 +1630,8 @@ function aggressiveBalanceUpdate() {
     const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
     headings.forEach(heading => {
         if (heading.textContent.includes('Balance') || heading.textContent.includes('Available')) {
-            if (!heading.textContent.includes('$22,000,000.00')) {
-                heading.textContent = heading.textContent + ': ' + formattedBalance;
-                updatedCount++;
-            }
+            heading.textContent = heading.textContent + ': ' + formattedBalance;
+            updatedCount++;
         }
     });
     
@@ -1522,10 +1702,10 @@ function updateBalanceDisplay() {
 
 // Force update home page function
 function forceUpdateHomePage() {
-    console.log('Force updating home page with $22 million balance...');
+    console.log('Force updating home page with stored balances...');
     
-    // Always ensure universal account is set up with $22 million
-    console.log('Setting up universal account to ensure $22 million balance...');
+    // Always ensure universal account is set up with stored balances
+    console.log('Ensuring universal account data is present...');
     setupUniversalAccount();
     
     // Update home page
@@ -1534,7 +1714,7 @@ function forceUpdateHomePage() {
     // Force update again after a short delay to ensure DOM is ready
     setTimeout(() => {
         updateHomePage();
-        console.log('Home page force updated with $22 million balance');
+        console.log('Home page force update complete');
     }, 500);
     
     // Final verification after another delay
@@ -1555,7 +1735,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update home page if we're on home.html
     if (currentPage === 'home' || window.location.pathname.includes('home.html') || window.location.pathname.endsWith('/home')) {
-        console.log('On home page - UPDATING $22 MILLION BALANCE AND TRANSACTIONS...');
+        console.log('On home page - updating balance and transactions...');
         
         // AGGRESSIVE HOMEPAGE UPDATES - Multiple attempts
         setTimeout(() => {
@@ -1692,7 +1872,77 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Customer Service Contact Functions
+function contactWhatsApp() {
+    const phoneNumber = '+14145124732';
+    const message = encodeURIComponent('Hello! I need help with my APEX Bank account.');
+    const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^\d]/g, '')}?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+}
+
+function makePhoneCall() {
+    const phoneNumber = '+14706163556';
+    window.location.href = `tel:${phoneNumber}`;
+}
+
+// Navigation visibility based on login status
+function updateNavigationVisibility() {
+    const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
+    const navMenu = document.querySelector('.apex-nav-menu');
+    const mobileToggle = document.getElementById('mobileMenuToggle');
+    const brandLink = document.querySelector('.apex-brand');
+    
+    if (navMenu) {
+        if (currentUser.email) {
+            // User is logged in - show navigation menu
+            navMenu.style.display = 'flex';
+            if (mobileToggle) {
+                mobileToggle.style.display = 'none';
+            }
+            // Update brand link to go to home page instead of index
+            if (brandLink) {
+                brandLink.href = 'home.html';
+            }
+        } else {
+            // User is not logged in - hide navigation menu
+            navMenu.style.display = 'none';
+            if (mobileToggle) {
+                mobileToggle.style.display = 'none';
+            }
+            // Update brand link to go to index page
+            if (brandLink) {
+                brandLink.href = 'index.html';
+            }
+        }
+    }
+}
+
+// Check if user is logged in and redirect if needed
+function checkLoginStatus() {
+    const currentUser = getCurrentUser();
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Pages that don't require login (public pages)
+    const publicPages = ['', 'index.html', 'chime-index.html', 'login.html', 'signup.html'];
+    
+    // If user is not logged in and trying to access any page except login/signup, redirect to login
+    if (!currentUser.email && !publicPages.includes(currentPage)) {
+        window.location.href = 'login.html';
+        return false;
+    }
+    
+    // Allow users to manually navigate to login and signup pages
+    // Don't redirect from login or signup pages even if logged in
+    // Users might want to switch accounts or create additional accounts
+    
+    return true;
+}
+
 // Export functions to window object for global access
 window.updateMoreButtonMenu = updateMoreButtonMenu;
 window.logout = logout;
 window.updateAccountNumbers = updateAccountNumbers;
+window.contactWhatsApp = contactWhatsApp;
+window.makePhoneCall = makePhoneCall;
+window.updateNavigationVisibility = updateNavigationVisibility;
+window.checkLoginStatus = checkLoginStatus;
