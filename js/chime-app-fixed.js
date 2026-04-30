@@ -66,7 +66,95 @@ function showAllTransactions() {
 }
 
 function showMoreMenu() {
-    showApexToast('More menu options are in the top navigation.', 'info');
+    const currentPath = (window.location.pathname.split('/').pop() || 'home.html').toLowerCase();
+    const currentUser = getCurrentUser();
+    const isLoggedIn = Boolean(currentUser.email);
+    const menuItems = isLoggedIn
+        ? [
+            { href: 'settings.html', icon: 'fa-cog', label: 'Settings' },
+            { href: 'help.html', icon: 'fa-question-circle', label: 'Help' },
+            { href: 'notifications.html', icon: 'fa-bell', label: 'Notifications' },
+            { href: 'profile.html', icon: 'fa-user', label: 'Profile' }
+        ]
+        : [
+            { href: 'login.html', icon: 'fa-sign-in-alt', label: 'Sign In' },
+            { href: 'signup.html', icon: 'fa-user-plus', label: 'Sign Up' },
+            { href: 'help.html', icon: 'fa-question-circle', label: 'Help' }
+        ];
+
+    let overlay = document.getElementById('apexMobileMoreOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'apexMobileMoreOverlay';
+        overlay.className = 'apex-mobile-more-overlay';
+        overlay.innerHTML = `
+            <div class="apex-mobile-more-sheet" role="dialog" aria-modal="true" aria-label="More navigation">
+                <div class="apex-mobile-more-header">
+                    <span>More</span>
+                    <button type="button" class="apex-mobile-more-close" aria-label="Close more menu">&times;</button>
+                </div>
+                <div class="apex-mobile-more-list"></div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        overlay.addEventListener('click', event => {
+            const sheet = overlay.querySelector('.apex-mobile-more-sheet');
+            if (sheet && !sheet.contains(event.target)) {
+                closeMoreMenu();
+            }
+        });
+
+        const closeButton = overlay.querySelector('.apex-mobile-more-close');
+        if (closeButton) {
+            closeButton.addEventListener('click', closeMoreMenu);
+        }
+    }
+
+    const list = overlay.querySelector('.apex-mobile-more-list');
+    if (!list) return;
+
+    list.innerHTML = menuItems.map(item => {
+        const activeClass = item.href.toLowerCase() === currentPath ? 'active' : '';
+        return `
+            <a href="${item.href}" class="apex-mobile-more-link ${activeClass}">
+                <i class="fas ${item.icon}"></i>
+                <span>${item.label}</span>
+            </a>
+        `;
+    }).join('') + (isLoggedIn
+        ? `
+            <button type="button" class="apex-mobile-more-link apex-mobile-more-logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        `
+        : '');
+
+    const logoutButton = list.querySelector('.apex-mobile-more-logout');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            closeMoreMenu();
+            logout('login.html');
+        });
+    }
+
+    list.querySelectorAll('a').forEach(anchor => {
+        anchor.addEventListener('click', () => {
+            closeMoreMenu();
+        });
+    });
+
+    overlay.classList.add('show');
+    document.body.classList.add('apex-mobile-more-open');
+}
+
+function closeMoreMenu() {
+    const overlay = document.getElementById('apexMobileMoreOverlay');
+    if (overlay) {
+        overlay.classList.remove('show');
+    }
+    document.body.classList.remove('apex-mobile-more-open');
 }
 
 function normalizeEmail(value) {

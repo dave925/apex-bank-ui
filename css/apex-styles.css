@@ -1026,6 +1026,91 @@ img {
   background: var(--apex-green-pale);
 }
 
+/* Mobile More bottom sheet */
+.apex-mobile-more-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--apex-transition-normal);
+}
+
+.apex-mobile-more-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.apex-mobile-more-sheet {
+  width: 100%;
+  background: var(--apex-white);
+  border-top-left-radius: var(--apex-radius-2xl);
+  border-top-right-radius: var(--apex-radius-2xl);
+  box-shadow: var(--apex-shadow-2xl);
+  padding: var(--apex-spacing-4);
+  transform: translateY(100%);
+  transition: transform var(--apex-transition-normal);
+}
+
+.apex-mobile-more-overlay.show .apex-mobile-more-sheet {
+  transform: translateY(0);
+}
+
+.apex-mobile-more-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--apex-spacing-3);
+  color: var(--apex-dark-blue);
+  font-weight: 700;
+}
+
+.apex-mobile-more-close {
+  background: transparent;
+  border: none;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--apex-medium-gray);
+  cursor: pointer;
+}
+
+.apex-mobile-more-list {
+  display: grid;
+  gap: var(--apex-spacing-2);
+  padding-bottom: calc(var(--apex-spacing-2) + env(safe-area-inset-bottom, 0px));
+}
+
+.apex-mobile-more-link {
+  display: flex;
+  align-items: center;
+  gap: var(--apex-spacing-3);
+  width: 100%;
+  border: 1px solid var(--apex-light-gray);
+  border-radius: var(--apex-radius-lg);
+  padding: var(--apex-spacing-3) var(--apex-spacing-4);
+  text-decoration: none;
+  background: var(--apex-white);
+  color: var(--apex-dark-blue);
+  font-weight: 600;
+}
+
+.apex-mobile-more-link.active {
+  border-color: var(--apex-primary-teal);
+  background: var(--apex-teal-pale);
+}
+
+.apex-mobile-more-logout {
+  color: var(--apex-error);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+body.apex-mobile-more-open {
+  overflow: hidden;
+}
+
 /* APEX Toast Notifications */
 .apex-toast {
   position: fixed;
