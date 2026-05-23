@@ -3,460 +3,442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APEX Bank - Modern Banking Made Simple</title>
-    <meta name="description" content="Experience modern banking with APEX Bank. No fees, early direct deposit, and smart financial tools.">
+    <title>APEX Private Bank - Premium Digital Banking</title>
+    <meta name="description" content="A premium real-time online banking interface prototype with dashboard, transfers, cards, analytics, alerts, and security settings.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2307111f'/%3E%3Cpath d='M18 31 32 16l14 15-14 17z' fill='%238fe6d1'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="css/apex-styles.css">
+    <link rel="stylesheet" href="css/premium-bank.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="apex-nav">
-        <div class="apex-nav-container">
-            <a href="index.html" class="apex-brand">
-                <div class="apex-brand-icon">
-                    <i class="fas fa-university"></i>
-                </div>
-                <span>APEX</span>
-            </a>
-        </div>
-    </nav>
+<body class="premium-bank">
+    <div class="auth-shell" id="authShell">
+        <section class="auth-hero">
+            <nav class="auth-nav">
+                <a class="premium-brand" href="#login">
+                    <span class="premium-brand-mark"><i class="fas fa-gem"></i></span>
+                    <span>APEX Private</span>
+                </a>
+                <button class="ghost-pill" type="button" id="demoAccessBtn">
+                    <i class="fas fa-shield-halved"></i>
+                    Demo access
+                </button>
+            </nav>
 
-    <!-- Hero Section -->
-    <main>
-        <section class="apex-section" style="background: linear-gradient(135deg, var(--apex-primary-green), var(--apex-green-dark)); color: var(--apex-white); padding: var(--apex-spacing-20) 0;">
-            <div class="apex-container">
-                <div style="text-align: center; max-width: 800px; margin: 0 auto;">
-                    <h1 style="font-size: var(--apex-font-size-5xl); font-weight: 800; margin-bottom: var(--apex-spacing-6); line-height: 1.2;">
-                        Banking That Works for You
-                    </h1>
-                    <p style="font-size: var(--apex-font-size-xl); margin-bottom: var(--apex-spacing-8); opacity: 0.9; line-height: 1.6;">
-                        No hidden fees. Get paid up to 2 days early. Build credit automatically. Join thousands who've made the switch to smarter banking.
-                    </p>
-                    <div style="display: flex; gap: var(--apex-spacing-4); justify-content: center; flex-wrap: wrap;">
-                        <a href="signup.html" class="apex-btn apex-btn-light" style="background: var(--apex-white); color: var(--apex-primary-green); padding: var(--apex-spacing-4) var(--apex-spacing-8); font-size: var(--apex-font-size-lg);">
-                            <i class="fas fa-rocket"></i>
-                            Get Started Free
-                        </a>
-                        <a href="#features" class="apex-btn apex-btn-ghost" style="border: 2px solid var(--apex-white); color: var(--apex-white); padding: var(--apex-spacing-4) var(--apex-spacing-8); font-size: var(--apex-font-size-lg);">
-                            <i class="fas fa-play-circle"></i>
-                            Learn More
-                        </a>
+            <div class="auth-grid">
+                <div class="auth-copy">
+                    <span class="eyebrow"><i class="fas fa-lock"></i> Bank-grade encrypted prototype</span>
+                    <h1>Premium banking, live money movement, and intelligent wealth clarity.</h1>
+                    <p>Explore a complete high-fidelity digital bank with real-time balances, instant transfer states, fraud alerts, smart filters, analytics, cards, loans, investments, and mobile-ready navigation.</p>
+                    <div class="trust-row">
+                        <span><i class="fas fa-fingerprint"></i> Biometric-ready</span>
+                        <span><i class="fas fa-vault"></i> FDIC-style trust cues</span>
+                        <span><i class="fas fa-bolt"></i> Live feed</span>
                     </div>
+                    <div class="phone-preview" aria-label="Mobile banking preview">
+                        <div class="phone-top"></div>
+                        <div class="phone-balance">
+                            <span>Net worth</span>
+                            <strong>$184,920.44</strong>
+                        </div>
+                        <div class="mini-chart">
+                            <span style="height: 44%"></span>
+                            <span style="height: 62%"></span>
+                            <span style="height: 52%"></span>
+                            <span style="height: 80%"></span>
+                            <span style="height: 68%"></span>
+                            <span style="height: 92%"></span>
+                        </div>
+                        <div class="phone-card-row">
+                            <span><i class="fas fa-credit-card"></i> Sapphire Debit</span>
+                            <b>Active</b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="auth-panel">
+                    <div class="auth-switch">
+                        <button class="auth-tab active" type="button" data-auth-tab="login">Secure login</button>
+                        <button class="auth-tab" type="button" data-auth-tab="signup">Signup</button>
+                    </div>
+
+                    <form class="premium-form auth-form active" id="loginForm">
+                        <div class="fingerprint-orb">
+                            <i class="fas fa-fingerprint"></i>
+                            <span></span>
+                        </div>
+                        <h2>Welcome back</h2>
+                        <p>Use the secure demo credentials or biometric quick access.</p>
+                        <label>
+                            Email
+                            <input type="email" value="helena@apexprivate.bank" autocomplete="email">
+                        </label>
+                        <label>
+                            Password
+                            <input type="password" value="PrivateBanking#2026" autocomplete="current-password">
+                        </label>
+                        <div class="form-row">
+                            <label class="check-line"><input type="checkbox" checked> Remember this device</label>
+                            <a href="#security">Need help?</a>
+                        </div>
+                        <button class="primary-action" type="submit">
+                            <i class="fas fa-unlock-keyhole"></i>
+                            Enter secure dashboard
+                        </button>
+                    </form>
+
+                    <form class="premium-form auth-form" id="signupForm">
+                        <div class="fingerprint-orb emerald">
+                            <i class="fas fa-user-shield"></i>
+                            <span></span>
+                        </div>
+                        <h2>Create private access</h2>
+                        <p>Preview a polished onboarding flow for a premium fintech account.</p>
+                        <label>
+                            Full name
+                            <input type="text" value="Maya Sterling" autocomplete="name">
+                        </label>
+                        <label>
+                            Email
+                            <input type="email" value="maya@example.com" autocomplete="email">
+                        </label>
+                        <label>
+                            Phone
+                            <input type="tel" value="+1 415 555 0198" autocomplete="tel">
+                        </label>
+                        <button class="primary-action" type="submit">
+                            <i class="fas fa-circle-check"></i>
+                            Open demo account
+                        </button>
+                    </form>
                 </div>
             </div>
         </section>
-
-        <!-- Features Section -->
-        <section id="features" class="apex-section">
-            <div class="apex-container">
-                <div style="text-align: center; margin-bottom: var(--apex-spacing-12);">
-                    <h2 style="font-size: var(--apex-font-size-4xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
-                        Why Choose APEX Bank?
-                    </h2>
-                    <p style="font-size: var(--apex-font-size-xl); color: var(--apex-medium-gray);">
-                        Everything you need in a bank, nothing you don't
-                    </p>
-                </div>
-
-                <div class="apex-grid">
-                    <div class="apex-feature-card">
-                        <div class="apex-feature-icon" style="background: var(--apex-green-pale); color: var(--apex-primary-green);">
-                            <i class="fas fa-dollar-sign"></i>
-                        </div>
-                        <h3 class="apex-feature-title">No Monthly Fees</h3>
-                        <p class="apex-feature-description">No minimum balance requirements, no monthly maintenance fees, no overdraft fees. Ever.</p>
-                    </div>
-                    
-                    <div class="apex-feature-card">
-                        <div class="apex-feature-icon" style="background: var(--apex-blue-pale); color: var(--apex-light-blue);">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h3 class="apex-feature-title">Early Direct Deposit</h3>
-                        <p class="apex-feature-description">Get your paycheck up to 2 days early when you set up direct deposit with APEX Bank.</p>
-                    </div>
-                    
-                    <div class="apex-feature-card">
-                        <div class="apex-feature-icon" style="background: var(--apex-green-pale); color: var(--apex-primary-green);">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3 class="apex-feature-title">FDIC Insured</h3>
-                        <p class="apex-feature-description">Your money is protected up to $250,000 through FDIC insurance at our partner banks.</p>
-                    </div>
-                    
-                    <div class="apex-feature-card">
-                        <div class="apex-feature-icon" style="background: var(--apex-blue-pale); color: var(--apex-light-blue);">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h3 class="apex-feature-title">Mobile Banking</h3>
-                        <p class="apex-feature-description">Manage your money on the go with our award-winning mobile app and 24/7 access.</p>
-                    </div>
-                    
-                    <div class="apex-feature-card">
-                        <div class="apex-feature-icon" style="background: var(--apex-green-pale); color: var(--apex-primary-green);">
-                            <i class="fas fa-credit-card"></i>
-                        </div>
-                        <h3 class="apex-feature-title">Free Debit Card</h3>
-                        <p class="apex-feature-description">Get a free Visa® debit card with contactless payments and worldwide ATM access.</p>
-                    </div>
-                    
-                    <div class="apex-feature-card">
-                        <div class="apex-feature-icon" style="background: var(--apex-blue-pale); color: var(--apex-light-blue);">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3 class="apex-feature-title">Build Credit</h3>
-                        <p class="apex-feature-description">Build your credit history automatically with our Credit Builder account - no credit check required.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Stats Section -->
-        <section style="background: var(--apex-dark-blue); color: var(--apex-white); padding: var(--apex-spacing-12) 0;">
-            <div class="apex-container">
-                <div class="apex-grid">
-                    <div style="text-align: center;">
-                        <div style="font-size: var(--apex-font-size-4xl); font-weight: 800; margin-bottom: var(--apex-spacing-2);">2M+</div>
-                        <div style="font-size: var(--apex-font-size-lg); opacity: 0.8;">Happy Customers</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: var(--apex-font-size-4xl); font-weight: 800; margin-bottom: var(--apex-spacing-2);">$10B+</div>
-                        <div style="font-size: var(--apex-font-size-lg); opacity: 0.8;">Transactions Processed</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: var(--apex-font-size-4xl); font-weight: 800; margin-bottom: var(--apex-spacing-2);">4.8★</div>
-                        <div style="font-size: var(--apex-font-size-lg); opacity: 0.8;">App Store Rating</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: var(--apex-font-size-4xl); font-weight: 800; margin-bottom: var(--apex-spacing-2);">24/7</div>
-                        <div style="font-size: var(--apex-font-size-lg); opacity: 0.8;">Customer Support</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="apex-section">
-            <div class="apex-container">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--apex-spacing-12); align-items: center;">
-                    <div>
-                        <h2 style="font-size: var(--apex-font-size-4xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-6);">
-                            Banking Reimagined
-                        </h2>
-                        <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray); margin-bottom: var(--apex-spacing-6); line-height: 1.6;">
-                            APEX Bank was founded on a simple principle: banking should be simple, transparent, and work for you, not against you. We've eliminated the complexity and hidden fees that traditional banks use to profit at your expense.
-                        </p>
-                        <p style="font-size: var(--apex-font-size-lg); color: var(--apex-medium-gray); margin-bottom: var(--apex-spacing-8); line-height: 1.6;">
-                            With APEX Bank, you get modern digital banking tools, early access to your money, and the freedom to manage your finances on your terms. No branches, no paperwork, no hassle - just smart banking that fits your life.
-                        </p>
-                        <div style="display: flex; gap: var(--apex-spacing-4);">
-                            <a href="signup.html" class="apex-btn apex-btn-primary">
-                                <i class="fas fa-user-plus"></i>
-                                Join APEX Bank
-                            </a>
-                            <a href="#contact" class="apex-btn apex-btn-secondary">
-                                <i class="fas fa-phone"></i>
-                                Contact Us
-                            </a>
-                        </div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="width: 300px; height: 300px; background: linear-gradient(135deg, var(--apex-primary-green), var(--apex-green-dark)); border-radius: var(--apex-radius-2xl); display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: var(--apex-shadow-xl);">
-                            <i class="fas fa-university" style="font-size: 6rem; color: var(--apex-white);"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section style="background: var(--apex-off-white); padding: var(--apex-spacing-12) 0;">
-            <div class="apex-container">
-                <div style="text-align: center; margin-bottom: var(--apex-spacing-12);">
-                    <h2 style="font-size: var(--apex-font-size-4xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
-                        What Our Customers Say
-                    </h2>
-                    <p style="font-size: var(--apex-font-size-xl); color: var(--apex-medium-gray);">
-                        Join thousands of satisfied APEX Bank customers
-                    </p>
-                </div>
-
-                <div class="apex-grid">
-                    <div class="apex-card">
-                        <div style="margin-bottom: var(--apex-spacing-4);">
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                        </div>
-                        <p style="font-size: var(--apex-font-size-lg); margin-bottom: var(--apex-spacing-4); line-height: 1.6;">
-                            "APEX Bank changed my life. No more hidden fees and I get my paycheck 2 days early. The app is incredibly easy to use."
-                        </p>
-                        <div style="display: flex; align-items: center; gap: var(--apex-spacing-3);">
-                            <div style="width: 48px; height: 48px; border-radius: var(--apex-radius-full); background: var(--apex-green-pale); display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-user" style="color: var(--apex-primary-green);"></i>
-                            </div>
-                            <div>
-                                <div style="font-weight: 600; color: var(--apex-dark-blue);">Sarah Johnson</div>
-                                <div style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">Customer since 2023</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="apex-card">
-                        <div style="margin-bottom: var(--apex-spacing-4);">
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                        </div>
-                        <p style="font-size: var(--apex-font-size-lg); margin-bottom: var(--apex-spacing-4); line-height: 1.6;">
-                            "The Credit Builder feature helped me improve my credit score by 100 points in just 6 months. Absolutely incredible!"
-                        </p>
-                        <div style="display: flex; align-items: center; gap: var(--apex-spacing-3);">
-                            <div style="width: 48px; height: 48px; border-radius: var(--apex-radius-full); background: var(--apex-blue-pale); display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-user" style="color: var(--apex-light-blue);"></i>
-                            </div>
-                            <div>
-                                <div style="font-weight: 600; color: var(--apex-dark-blue);">Mike Chen</div>
-                                <div style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">Customer since 2022</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="apex-card">
-                        <div style="margin-bottom: var(--apex-spacing-4);">
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                            <i class="fas fa-star" style="color: var(--apex-warning);"></i>
-                        </div>
-                        <p style="font-size: var(--apex-font-size-lg); margin-bottom: var(--apex-spacing-4); line-height: 1.6;">
-                            "Finally, a bank that doesn't nickel and dime me. The savings goals feature helps me stay on track with my finances."
-                        </p>
-                        <div style="display: flex; align-items: center; gap: var(--apex-spacing-3);">
-                            <div style="width: 48px; height: 48px; border-radius: var(--apex-radius-full); background: var(--apex-green-pale); display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-user" style="color: var(--apex-primary-green);"></i>
-                            </div>
-                            <div>
-                                <div style="font-weight: 600; color: var(--apex-dark-blue);">Emily Davis</div>
-                                <div style="color: var(--apex-medium-gray); font-size: var(--apex-font-size-sm);">Customer since 2024</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section style="background: linear-gradient(135deg, var(--apex-primary-green), var(--apex-green-dark)); color: var(--apex-white); padding: var(--apex-spacing-16) 0; text-align: center;">
-            <div class="apex-container">
-                <h2 style="font-size: var(--apex-font-size-4xl); font-weight: 700; margin-bottom: var(--apex-spacing-4);">
-                    Ready to Switch to Better Banking?
-                </h2>
-                <p style="font-size: var(--apex-font-size-xl); margin-bottom: var(--apex-spacing-8); opacity: 0.9;">
-                    Join APEX Bank today and experience banking the way it should be.
-                </p>
-                <div style="display: flex; gap: var(--apex-spacing-4); justify-content: center; flex-wrap: wrap;">
-                    <a href="signup.html" class="apex-btn apex-btn-light" style="background: var(--apex-white); color: var(--apex-primary-green); padding: var(--apex-spacing-4) var(--apex-spacing-8); font-size: var(--apex-font-size-lg);">
-                        <i class="fas fa-rocket"></i>
-                        Open Your Free Account
-                    </a>
-                    <a href="login.html" class="apex-btn apex-btn-ghost" style="border: 2px solid var(--apex-white); color: var(--apex-white); padding: var(--apex-spacing-4) var(--apex-spacing-8); font-size: var(--apex-font-size-lg);">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Sign In
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="apex-section">
-            <div class="apex-container">
-                <div style="text-align: center; margin-bottom: var(--apex-spacing-12);">
-                    <h2 style="font-size: var(--apex-font-size-4xl); font-weight: 700; color: var(--apex-dark-blue); margin-bottom: var(--apex-spacing-4);">
-                        Get in Touch
-                    </h2>
-                    <p style="font-size: var(--apex-font-size-xl); color: var(--apex-medium-gray);">
-                        Have questions? We're here to help 24/7
-                    </p>
-                </div>
-
-                <div class="apex-grid">
-                    <div class="apex-card">
-                        <div class="apex-feature-icon" style="background: var(--apex-green-pale); color: var(--apex-primary-green);">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <h3 class="apex-feature-title">Call Us</h3>
-                        <p class="apex-feature-description">1-800-APEX-BANK</p>
-                        <p class="apex-feature-description">Available 24/7</p>
-                    </div>
-                    
-                    <div class="apex-card">
-                        <div class="apex-feature-icon" style="background: var(--apex-blue-pale); color: var(--apex-light-blue);">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <h3 class="apex-feature-title">Email Us</h3>
-                        <p class="apex-feature-description">support@apexbank.com</p>
-                        <p class="apex-feature-description">Response within 24 hours</p>
-                    </div>
-                    
-                    <div class="apex-card">
-                        <div class="apex-feature-icon" style="background: var(--apex-green-pale); color: var(--apex-primary-green);">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <h3 class="apex-feature-title">Live Chat</h3>
-                        <p class="apex-feature-description">Chat with our team</p>
-                        <p class="apex-feature-description">Available 24/7</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer style="background: var(--apex-dark-blue); color: var(--apex-white); padding: var(--apex-spacing-12) 0;">
-        <div class="apex-container">
-            <div class="apex-grid">
-                <div>
-                    <div style="display: flex; align-items: center; gap: var(--apex-spacing-3); margin-bottom: var(--apex-spacing-4);">
-                        <div class="apex-brand-icon" style="width: 32px; height: 32px;">
-                            <i class="fas fa-university"></i>
-                        </div>
-                        <span style="font-size: var(--apex-font-size-xl); font-weight: 700;">APEX Bank</span>
-                    </div>
-                    <p style="color: var(--apex-medium-gray); margin-bottom: var(--apex-spacing-4);">
-                        Modern banking made simple, transparent, and accessible to everyone.
-                    </p>
-                    <div style="display: flex; gap: var(--apex-spacing-3);">
-                        <a href="#" style="color: var(--apex-white); opacity: 0.8; font-size: 1.2rem;">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="#" style="color: var(--apex-white); opacity: 0.8; font-size: 1.2rem;">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" style="color: var(--apex-white); opacity: 0.8; font-size: 1.2rem;">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" style="color: var(--apex-white); opacity: 0.8; font-size: 1.2rem;">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 style="font-size: var(--apex-font-size-lg); font-weight: 600; margin-bottom: var(--apex-spacing-4);">Products</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Checking Account</a></li>
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Savings Account</a></li>
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Credit Builder</a></li>
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Debit Card</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 style="font-size: var(--apex-font-size-lg); font-weight: 600; margin-bottom: var(--apex-spacing-4);">Company</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">About Us</a></li>
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Careers</a></li>
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Press</a></li>
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Blog</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 style="font-size: var(--apex-font-size-lg); font-weight: 600; margin-bottom: var(--apex-spacing-4);">Legal</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Privacy Policy</a></li>
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Terms of Service</a></li>
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">FDIC Notice</a></li>
-                        <li style="margin-bottom: var(--apex-spacing-2);"><a href="#" style="color: var(--apex-white); opacity: 0.8; text-decoration: none;">Licenses</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: var(--apex-spacing-8); padding-top: var(--apex-spacing-8); text-align: center;">
-                <p style="color: var(--apex-medium-gray); margin: 0;">
-                    © 2024 APEX Bank. All rights reserved. Member FDIC.
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Toast Notification -->
-    <div id="apexToast" class="apex-toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Welcome to APEX Bank!</span>
     </div>
 
-    <!-- Scripts -->
-    <script src="js/chime-app-fixed.js"></script>
-    
-    <!-- Mobile Navigation Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileToggle = document.getElementById('mobileMenuToggle');
-            const navMenu = document.querySelector('.apex-nav-menu');
-            
-            if (mobileToggle && navMenu) {
-                mobileToggle.addEventListener('click', function() {
-                    if (navMenu.style.display === 'flex') {
-                        navMenu.style.display = 'none';
-                    } else {
-                        navMenu.style.display = 'flex';
-                        navMenu.style.position = 'absolute';
-                        navMenu.style.top = '100%';
-                        navMenu.style.left = '0';
-                        navMenu.style.right = '0';
-                        navMenu.style.background = 'var(--apex-navy)';
-                        navMenu.style.flexDirection = 'column';
-                        navMenu.style.padding = 'var(--apex-spacing-4)';
-                        navMenu.style.boxShadow = 'var(--apex-shadow-2xl)';
-                    }
-                });
-            }
-        });
-    </script>
-    <script>
-        
-                
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+    <div class="bank-shell hidden" id="bankShell">
+        <aside class="premium-sidebar">
+            <a class="premium-brand" href="#dashboard" data-page-link="dashboard">
+                <span class="premium-brand-mark"><i class="fas fa-gem"></i></span>
+                <span>APEX Private</span>
+            </a>
+            <nav class="side-nav" aria-label="Banking navigation">
+                <button class="side-link active" type="button" data-page-link="dashboard"><i class="fas fa-table-columns"></i><span>Dashboard</span></button>
+                <button class="side-link" type="button" data-page-link="transfers"><i class="fas fa-arrow-right-arrow-left"></i><span>Transfers</span></button>
+                <button class="side-link" type="button" data-page-link="transactions"><i class="fas fa-receipt"></i><span>Transactions</span></button>
+                <button class="side-link" type="button" data-page-link="cards"><i class="fas fa-credit-card"></i><span>Cards</span></button>
+                <button class="side-link" type="button" data-page-link="analytics"><i class="fas fa-chart-pie"></i><span>Budgets</span></button>
+                <button class="side-link" type="button" data-page-link="wealth"><i class="fas fa-landmark"></i><span>Loans & Invest</span></button>
+                <button class="side-link" type="button" data-page-link="alerts"><i class="fas fa-bell"></i><span>Alerts</span><b id="navAlertCount">3</b></button>
+                <button class="side-link" type="button" data-page-link="security"><i class="fas fa-user-lock"></i><span>Profile & Security</span></button>
+            </nav>
+            <div class="security-card">
+                <i class="fas fa-shield-heart"></i>
+                <strong>Security score 96%</strong>
+                <span>Face ID, device trust, and payment limits active.</span>
+            </div>
+        </aside>
 
-        // Show welcome toast on page load
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                if (typeof chimeToast === 'function') {
-                    chimeToast('Welcome to APEX Bank! Your journey to better banking starts here.', 'info');
-                }
-            }, 1000);
-        });
-    </script>
+        <main class="bank-main">
+            <header class="topbar">
+                <div>
+                    <span class="eyebrow">Good evening, Helena</span>
+                    <h1 id="pageTitle">Command Center</h1>
+                </div>
+                <div class="topbar-actions">
+                    <label class="search-shell">
+                        <i class="fas fa-magnifying-glass"></i>
+                        <input type="search" id="globalSearch" placeholder="Search transactions, cards, payees">
+                    </label>
+                    <button class="icon-button" type="button" data-page-link="alerts" aria-label="Open notifications">
+                        <i class="fas fa-bell"></i>
+                        <span id="topAlertCount">3</span>
+                    </button>
+                    <div class="user-chip">
+                        <img src="https://picsum.photos/seed/apex-private-helena/96/96.jpg" alt="Helena Malm profile">
+                        <span>Helena M.</span>
+                    </div>
+                </div>
+            </header>
 
-    <script>
-        // Check login status and update navigation visibility
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentUser = JSON.parse(localStorage.getItem('apexCurrentUser') || '{}');
-            const brandLink = document.querySelector('.apex-brand');
+            <section class="page-section active" data-page="dashboard">
+                <div class="dashboard-grid">
+                    <article class="hero-balance glass-card">
+                        <div class="hero-balance-top">
+                            <div>
+                                <span>Total balance</span>
+                                <strong id="totalBalance">$184,920.44</strong>
+                            </div>
+                            <button class="tiny-live" type="button"><i class="fas fa-circle"></i> Live</button>
+                        </div>
+                        <div class="balance-trend">
+                            <span>+8.4% this month</span>
+                            <div>
+                                <i style="height: 38%"></i><i style="height: 64%"></i><i style="height: 48%"></i><i style="height: 76%"></i><i style="height: 56%"></i><i style="height: 88%"></i><i style="height: 72%"></i>
+                            </div>
+                        </div>
+                    </article>
 
-            if (brandLink) {
-                brandLink.href = currentUser.email ? 'home.html' : 'index.html';
-            }
-        });
-    </script>
+                    <article class="premium-card account-card">
+                        <div class="card-heading">
+                            <span><i class="fas fa-wallet"></i> Checking</span>
+                            <b>••• 4832</b>
+                        </div>
+                        <strong id="checkingBalance">$62,480.20</strong>
+                        <p>Available now · Treasury yield sweep on idle cash</p>
+                    </article>
+
+                    <article class="premium-card account-card">
+                        <div class="card-heading">
+                            <span><i class="fas fa-piggy-bank"></i> Savings</span>
+                            <b>4.80% APY</b>
+                        </div>
+                        <strong id="savingsBalance">$122,440.24</strong>
+                        <p>Emergency reserve · Goal protected</p>
+                    </article>
+
+                    <article class="premium-card quick-transfer-card">
+                        <div class="card-heading">
+                            <span><i class="fas fa-bolt"></i> Quick transfer</span>
+                            <b>Instant</b>
+                        </div>
+                        <div class="quick-payees" id="quickPayees"></div>
+                        <button class="primary-action compact" type="button" data-page-link="transfers">Start transfer</button>
+                    </article>
+                </div>
+
+                <div class="content-grid">
+                    <article class="premium-card">
+                        <div class="card-heading">
+                            <span>Live transaction feed</span>
+                            <button class="text-button" type="button" data-page-link="transactions">View all</button>
+                        </div>
+                        <div class="transaction-list" id="recentTransactions"></div>
+                    </article>
+
+                    <article class="premium-card">
+                        <div class="card-heading">
+                            <span>Spending insights</span>
+                            <b>May 2026</b>
+                        </div>
+                        <div class="donut-row">
+                            <div class="donut-chart" aria-label="Spending by category"></div>
+                            <div class="insight-list">
+                                <span><i class="dot teal"></i> Lifestyle $3,840</span>
+                                <span><i class="dot navy"></i> Housing $4,250</span>
+                                <span><i class="dot gold"></i> Travel $2,120</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="premium-card bill-card">
+                        <div class="card-heading">
+                            <span>Bill payments</span>
+                            <b>Auto-pay ready</b>
+                        </div>
+                        <div class="bill-row"><span>Amex Platinum</span><b>$1,248.40</b><em>Due tomorrow</em></div>
+                        <div class="bill-row"><span>Pacific Gas</span><b>$184.12</b><em>Due in 5 days</em></div>
+                        <div class="bill-row"><span>Mortgage</span><b>$4,250.00</b><em>Scheduled</em></div>
+                    </article>
+
+                    <article class="premium-card">
+                        <div class="card-heading">
+                            <span>Cards overview</span>
+                            <button class="text-button" type="button" data-page-link="cards">Manage</button>
+                        </div>
+                        <div class="mini-bank-card">
+                            <span>APEX Sapphire Debit</span>
+                            <strong>•••• 8921</strong>
+                            <small>Limit remaining $18,420</small>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="page-section" data-page="transfers">
+                <div class="split-layout">
+                    <article class="premium-card transfer-panel">
+                        <div class="card-heading">
+                            <span>Real-time money transfer</span>
+                            <b id="transferStatus">Ready</b>
+                        </div>
+                        <form class="premium-form" id="transferForm">
+                            <label>From account
+                                <select id="fromAccount">
+                                    <option value="checking">APEX Checking ••• 4832</option>
+                                    <option value="savings">High-yield Savings ••• 7781</option>
+                                </select>
+                            </label>
+                            <label>Recipient
+                                <select id="recipientSelect"></select>
+                            </label>
+                            <label>Amount
+                                <input type="number" id="transferAmount" min="1" step="0.01" value="850">
+                            </label>
+                            <label>Memo
+                                <input type="text" id="transferMemo" value="Portfolio contribution">
+                            </label>
+                            <button class="primary-action" type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                                Send instantly
+                            </button>
+                        </form>
+                    </article>
+                    <article class="premium-card confirmation-card" id="confirmationCard">
+                        <div class="success-orb"><i class="fas fa-lock"></i></div>
+                        <h2>Encrypted payment rail</h2>
+                        <p>Transfers settle instantly in this prototype with balance updates, live feed entries, confirmation states, and fraud screening.</p>
+                        <div class="rail-steps">
+                            <span class="active">Device trust</span>
+                            <span>Risk scan</span>
+                            <span>Confirmation</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="page-section" data-page="transactions">
+                <article class="premium-card">
+                    <div class="transactions-toolbar">
+                        <label class="search-shell wide"><i class="fas fa-magnifying-glass"></i><input type="search" id="transactionSearch" placeholder="Search merchant, category, memo"></label>
+                        <select id="transactionFilter">
+                            <option value="all">All activity</option>
+                            <option value="deposit">Deposits</option>
+                            <option value="payment">Payments</option>
+                            <option value="transfer">Transfers</option>
+                            <option value="flagged">Security flagged</option>
+                        </select>
+                    </div>
+                    <div class="transaction-list full" id="transactionHistory"></div>
+                </article>
+            </section>
+
+            <section class="page-section" data-page="cards">
+                <div class="cards-layout">
+                    <article class="lux-card">
+                        <span>APEX Private</span>
+                        <strong>•••• 8921</strong>
+                        <div><em>HELENA MALM</em><b>12/29</b></div>
+                    </article>
+                    <article class="premium-card">
+                        <div class="card-heading"><span>Card controls</span><b>Debit active</b></div>
+                        <div class="control-list">
+                            <label><span>Contactless payments</span><input type="checkbox" checked></label>
+                            <label><span>International spend</span><input type="checkbox" checked></label>
+                            <label><span>Online purchases</span><input type="checkbox" checked></label>
+                            <label><span>ATM withdrawals</span><input type="checkbox"></label>
+                        </div>
+                    </article>
+                    <article class="premium-card">
+                        <div class="card-heading"><span>Virtual cards</span><button class="text-button" type="button">Create card</button></div>
+                        <div class="virtual-card-row"><i class="fas fa-globe"></i><span>Online shopping</span><b>$2,400 limit</b></div>
+                        <div class="virtual-card-row"><i class="fas fa-plane"></i><span>Travel reserve</span><b>$8,000 limit</b></div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="page-section" data-page="analytics">
+                <div class="content-grid">
+                    <article class="premium-card large">
+                        <div class="card-heading"><span>Budgeting and analytics</span><b>72% on track</b></div>
+                        <div class="bar-chart" id="budgetChart"></div>
+                    </article>
+                    <article class="premium-card">
+                        <div class="card-heading"><span>Category budgets</span><b>Smart limits</b></div>
+                        <div class="budget-list" id="budgetList"></div>
+                    </article>
+                    <article class="premium-card">
+                        <div class="card-heading"><span>Cashflow forecast</span><b>Next 30 days</b></div>
+                        <div class="forecast-card">
+                            <strong>+$9,820</strong>
+                            <span>Projected surplus after recurring bills and transfers.</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="page-section" data-page="wealth">
+                <div class="content-grid">
+                    <article class="premium-card">
+                        <div class="card-heading"><span>Investment overview</span><b>$412,840</b></div>
+                        <div class="portfolio-ring"></div>
+                        <div class="insight-list">
+                            <span><i class="dot teal"></i> ETFs 48%</span>
+                            <span><i class="dot navy"></i> Bonds 24%</span>
+                            <span><i class="dot gold"></i> Alternatives 18%</span>
+                            <span><i class="dot rose"></i> Cash 10%</span>
+                        </div>
+                    </article>
+                    <article class="premium-card">
+                        <div class="card-heading"><span>Loans</span><b>Excellent standing</b></div>
+                        <div class="loan-row"><span>Home equity line</span><b>$82,000 available</b></div>
+                        <div class="loan-row"><span>Auto loan</span><b>14 payments left</b></div>
+                        <div class="loan-row"><span>Personal credit</span><b>6.4% APR pre-qualified</b></div>
+                    </article>
+                    <article class="premium-card large">
+                        <div class="card-heading"><span>Wealth recommendations</span><b>AI insights</b></div>
+                        <div class="recommendation">
+                            <i class="fas fa-sparkles"></i>
+                            <div>
+                                <strong>Move $7,500 idle cash into high-yield savings</strong>
+                                <p>Maintains your monthly cash buffer while increasing projected interest by $360/year.</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="page-section" data-page="alerts">
+                <article class="premium-card">
+                    <div class="card-heading"><span>Notification center</span><button class="text-button" type="button" id="markAlertsRead">Mark all read</button></div>
+                    <div class="alert-list" id="alertList"></div>
+                </article>
+            </section>
+
+            <section class="page-section" data-page="security">
+                <div class="content-grid">
+                    <article class="premium-card profile-card">
+                        <img src="https://picsum.photos/seed/apex-private-helena/128/128.jpg" alt="Helena Malm">
+                        <h2>Helena Malm</h2>
+                        <p>Private banking client · San Francisco, CA</p>
+                        <button class="primary-action compact" type="button">Edit profile</button>
+                    </article>
+                    <article class="premium-card">
+                        <div class="card-heading"><span>Security settings</span><b>Strong</b></div>
+                        <div class="security-list">
+                            <div><i class="fas fa-fingerprint"></i><span>Biometric login</span><b>Enabled</b></div>
+                            <div><i class="fas fa-mobile-screen"></i><span>Trusted device</span><b>This browser</b></div>
+                            <div><i class="fas fa-key"></i><span>Passkey</span><b>Active</b></div>
+                            <div><i class="fas fa-shield-virus"></i><span>Fraud monitoring</span><b>24/7</b></div>
+                        </div>
+                    </article>
+                    <article class="premium-card large">
+                        <div class="fraud-banner">
+                            <i class="fas fa-triangle-exclamation"></i>
+                            <div>
+                                <strong>Fraud alert simulation</strong>
+                                <p>APEX blocked a suspicious $1,420 card-not-present attempt in Lisbon. Confirmed safe card controls remain active.</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <nav class="mobile-tabbar" aria-label="Mobile banking navigation">
+            <button class="active" type="button" data-page-link="dashboard"><i class="fas fa-house"></i><span>Home</span></button>
+            <button type="button" data-page-link="transfers"><i class="fas fa-arrow-right-arrow-left"></i><span>Move</span></button>
+            <button type="button" data-page-link="transactions"><i class="fas fa-receipt"></i><span>Activity</span></button>
+            <button type="button" data-page-link="cards"><i class="fas fa-credit-card"></i><span>Cards</span></button>
+            <button type="button" data-page-link="security"><i class="fas fa-user"></i><span>Profile</span></button>
+        </nav>
+    </div>
+
+    <div class="premium-toast" id="premiumToast" role="status" aria-live="polite">
+        <i class="fas fa-circle-check"></i>
+        <span>Transfer complete</span>
+    </div>
+
+    <script src="js/premium-bank.js"></script>
 </body>
 </html>
