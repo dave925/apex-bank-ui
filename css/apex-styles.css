@@ -1,37 +1,37 @@
 /* APEX Bank Design System */
 
 :root {
-  /* Premium Fintech Color Palette */
-  --apex-primary-teal: #2563EB;
-  --apex-teal-dark: #1D4ED8;
-  --apex-teal-light: #38BDF8;
-  --apex-teal-pale: #EFF6FF;
+  /* Care-first banking palette */
+  --apex-primary-teal: #0E9F6E;
+  --apex-teal-dark: #047857;
+  --apex-teal-light: #22D3EE;
+  --apex-teal-pale: #ECFDF5;
 
-  --apex-navy: #111827;
-  --apex-navy-light: #1F2937;
-  --apex-navy-lighter: #374151;
-  --apex-navy-pale: #F8FAFC;
+  --apex-navy: #10233F;
+  --apex-navy-light: #17345C;
+  --apex-navy-lighter: #2D4F79;
+  --apex-navy-pale: #F7F4EC;
 
   --apex-white: #FFFFFF;
-  --apex-off-white: #F6F7FB;
-  --apex-light-gray: #E5E7EB;
-  --apex-medium-gray: #6B7280;
-  --apex-dark-gray: #374151;
-  --apex-dark-blue: #0F172A;
-  --apex-black: #030712;
+  --apex-off-white: #FBF7EF;
+  --apex-light-gray: #E7E0D4;
+  --apex-medium-gray: #687386;
+  --apex-dark-gray: #314158;
+  --apex-dark-blue: #10233F;
+  --apex-black: #07111F;
 
-  --apex-success: #16A34A;
-  --apex-warning: #F59E0B;
+  --apex-success: #0E9F6E;
+  --apex-warning: #D97706;
   --apex-error: #EF4444;
-  --apex-info: #2563EB;
-  --apex-gold: #FBBF24;
+  --apex-info: #0EA5E9;
+  --apex-gold: #D8A84E;
 
   /* Legacy Green Colors (for compatibility) */
-  --apex-primary-green: #2563EB;
-  --apex-green-dark: #1E40AF;
-  --apex-green-pale: #DBEAFE;
-  --apex-light-blue: #38BDF8;
-  --apex-blue-pale: #E0F2FE;
+  --apex-primary-green: #0E9F6E;
+  --apex-green-dark: #065F46;
+  --apex-green-pale: #DFF7EA;
+  --apex-light-blue: #22D3EE;
+  --apex-blue-pale: #E6FFFB;
 
   /* Typography */
   --apex-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -67,16 +67,16 @@
   --apex-radius-full: 9999px;
 
   /* Shadows */
-  --apex-shadow-sm: 0 12px 30px rgba(15, 23, 42, 0.06);
-  --apex-shadow-md: 0 18px 45px rgba(15, 23, 42, 0.1);
-  --apex-shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.14);
-  --apex-shadow-xl: 0 30px 80px rgba(15, 23, 42, 0.18);
-  --apex-shadow-2xl: 0 40px 100px rgba(15, 23, 42, 0.28);
+  --apex-shadow-sm: 0 14px 36px rgba(16, 35, 63, 0.07);
+  --apex-shadow-md: 0 22px 54px rgba(16, 35, 63, 0.11);
+  --apex-shadow-lg: 0 28px 70px rgba(16, 35, 63, 0.15);
+  --apex-shadow-xl: 0 34px 88px rgba(16, 35, 63, 0.18);
+  --apex-shadow-2xl: 0 44px 110px rgba(16, 35, 63, 0.26);
 
   /* Premium Fintech Shadows */
-  --apex-shadow-navbar: 0 18px 45px rgba(15, 23, 42, 0.18);
-  --apex-shadow-hover: 0 20px 50px rgba(37, 99, 235, 0.18);
-  --apex-shadow-active: 0 16px 40px rgba(37, 99, 235, 0.26);
+  --apex-shadow-navbar: 0 18px 45px rgba(16, 35, 63, 0.2);
+  --apex-shadow-hover: 0 20px 50px rgba(14, 159, 110, 0.16);
+  --apex-shadow-active: 0 16px 40px rgba(14, 159, 110, 0.24);
 
   /* Transitions */
   --apex-transition-fast: 150ms ease-in-out;
@@ -101,9 +101,10 @@ body {
   line-height: 1.5;
   color: var(--apex-dark-gray);
   background:
-    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 32rem),
-    radial-gradient(circle at top right, rgba(37, 99, 235, 0.12), transparent 28rem),
-    linear-gradient(180deg, #FFFFFF 0%, var(--apex-off-white) 44%, #EEF2FF 100%);
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.16), transparent 30rem),
+    radial-gradient(circle at top right, rgba(216, 168, 78, 0.14), transparent 26rem),
+    radial-gradient(circle at 50% 18%, rgba(14, 159, 110, 0.08), transparent 30rem),
+    linear-gradient(180deg, #FFFDF8 0%, var(--apex-off-white) 48%, #EEF8F3 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -118,9 +119,9 @@ body::before {
   pointer-events: none;
   z-index: -1;
   background-image:
-    linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(rgba(16, 35, 63, 0.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 35, 63, 0.026) 1px, transparent 1px);
+  background-size: 56px 56px;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent 75%);
 }
 
@@ -148,7 +149,7 @@ img {
 .apex-section h1,
 .apex-section h2,
 .apex-auth-title {
-  letter-spacing: -0.05em;
+  letter-spacing: -0.045em;
 }
 
 .apex-section h1,
@@ -158,8 +159,8 @@ img {
 
 /* Premium Fintech Navigation */
 .apex-nav {
-  background: rgba(17, 24, 39, 0.86);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(16, 35, 63, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -199,7 +200,9 @@ img {
 .apex-brand-icon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, var(--apex-teal-light), var(--apex-primary-teal) 58%, #1E40AF);
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.44), transparent 42%),
+    linear-gradient(135deg, var(--apex-teal-light), var(--apex-primary-teal) 58%, var(--apex-teal-dark));
   border-radius: 18px;
   display: flex;
   align-items: center;
@@ -246,7 +249,7 @@ img {
   left: 50%;
   width: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--apex-primary-teal), var(--apex-teal-light));
+  background: linear-gradient(90deg, var(--apex-gold), var(--apex-teal-light));
   border-radius: var(--apex-radius-full);
   transform: translateX(-50%);
   transition: all var(--apex-transition-normal);
@@ -494,7 +497,7 @@ img {
 
 /* APEX Cards */
 .apex-card {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 253, 248, 0.86);
   border-radius: var(--apex-radius-2xl);
   border: 1px solid rgba(255, 255, 255, 0.76);
   padding: var(--apex-spacing-6);
@@ -505,7 +508,7 @@ img {
 }
 
 .apex-card:hover {
-  border-color: rgba(37, 99, 235, 0.18);
+  border-color: rgba(14, 159, 110, 0.22);
   box-shadow: var(--apex-shadow-lg);
   transform: translateY(-4px);
 }
@@ -574,7 +577,7 @@ img {
 }
 
 .apex-btn-primary:hover {
-  background: linear-gradient(135deg, var(--apex-teal-light), var(--apex-primary-teal));
+  background: linear-gradient(135deg, var(--apex-teal-dark), var(--apex-teal-light));
   transform: translateY(-3px);
   box-shadow: var(--apex-shadow-active);
   border-color: rgba(255, 255, 255, 0.3);
@@ -637,18 +640,18 @@ img {
 
 .apex-input {
   padding: var(--apex-spacing-4) var(--apex-spacing-4);
-  border: 1px solid rgba(148, 163, 184, 0.38);
+  border: 1px solid rgba(104, 115, 134, 0.28);
   border-radius: var(--apex-radius-xl);
   font-size: var(--apex-font-size-base);
   transition: all var(--apex-transition-fast);
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+  background: rgba(255, 253, 248, 0.92);
+  box-shadow: inset 0 1px 2px rgba(16, 35, 63, 0.04);
 }
 
 .apex-input:focus {
   outline: none;
   border-color: var(--apex-primary-teal);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+  box-shadow: 0 0 0 4px rgba(14, 159, 110, 0.14);
 }
 
 .apex-input::placeholder {
@@ -666,12 +669,12 @@ img {
 
 .verification-input:focus {
   border-color: var(--apex-primary-teal) !important;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14) !important;
+  box-shadow: 0 0 0 4px rgba(14, 159, 110, 0.14) !important;
   background: var(--apex-white) !important;
 }
 
 .verification-input:hover {
-  border-color: rgba(37, 99, 235, 0.35) !important;
+  border-color: rgba(14, 159, 110, 0.35) !important;
 }
 
 /* Verification Code Display */
@@ -686,7 +689,8 @@ img {
 .apex-debit-card {
   background:
     radial-gradient(circle at 82% 20%, rgba(255, 255, 255, 0.24), transparent 12rem),
-    linear-gradient(135deg, #0F172A 0%, var(--apex-primary-teal) 48%, var(--apex-teal-light) 100%);
+    radial-gradient(circle at 18% 82%, rgba(216, 168, 78, 0.3), transparent 12rem),
+    linear-gradient(135deg, #10233F 0%, #0B5F58 52%, var(--apex-primary-teal) 100%);
   border-radius: var(--apex-radius-3xl);
   padding: var(--apex-spacing-8);
   color: var(--apex-white);
@@ -755,8 +759,8 @@ img {
   padding: var(--apex-spacing-10) var(--apex-spacing-4);
   margin: var(--apex-spacing-8) auto;
   max-width: 760px;
-  background: rgba(255, 255, 255, 0.68);
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(255, 253, 248, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.78);
   border-radius: var(--apex-radius-3xl);
   box-shadow: var(--apex-shadow-sm);
   backdrop-filter: blur(18px);
@@ -797,8 +801,8 @@ img {
 }
 
 .apex-transaction-item:hover {
-  background: rgba(219, 234, 254, 0.7);
-  border-color: rgba(37, 99, 235, 0.14);
+  background: rgba(223, 247, 234, 0.72);
+  border-color: rgba(14, 159, 110, 0.16);
   transform: translateX(4px);
 }
 
@@ -847,7 +851,7 @@ img {
 }
 
 .apex-goal {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 253, 248, 0.86);
   border: 1px solid rgba(255, 255, 255, 0.76);
   border-radius: var(--apex-radius-2xl);
   padding: var(--apex-spacing-6);
@@ -858,7 +862,7 @@ img {
 }
 
 .apex-goal:hover {
-  border-color: rgba(37, 99, 235, 0.18);
+  border-color: rgba(14, 159, 110, 0.22);
   box-shadow: var(--apex-shadow-lg);
   transform: translateY(-4px);
 }
@@ -957,7 +961,7 @@ img {
 
 /* APEX Feature Cards */
 .apex-feature-card {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 253, 248, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.76);
   border-radius: var(--apex-radius-2xl);
   padding: var(--apex-spacing-6);
@@ -970,7 +974,7 @@ img {
 }
 
 .apex-feature-card:hover {
-  border-color: rgba(37, 99, 235, 0.18);
+  border-color: rgba(14, 159, 110, 0.22);
   box-shadow: var(--apex-shadow-lg);
   transform: translateY(-6px);
 }
@@ -984,7 +988,7 @@ img {
   justify-content: center;
   font-size: var(--apex-font-size-2xl);
   margin: 0 auto var(--apex-spacing-4);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75), 0 14px 28px rgba(37, 99, 235, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.78), 0 14px 28px rgba(14, 159, 110, 0.12);
 }
 
 .apex-feature-title {
@@ -1007,14 +1011,15 @@ img {
   align-items: center;
   justify-content: center;
   background:
-    radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.36), transparent 18rem),
-    radial-gradient(circle at 80% 10%, rgba(96, 165, 250, 0.28), transparent 20rem),
-    linear-gradient(135deg, #0F172A, var(--apex-green-dark));
+    radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.24), transparent 18rem),
+    radial-gradient(circle at 80% 10%, rgba(216, 168, 78, 0.18), transparent 20rem),
+    radial-gradient(circle at 50% 78%, rgba(14, 159, 110, 0.16), transparent 24rem),
+    linear-gradient(135deg, #10233F, #0B5F58 58%, #065F46);
   padding: var(--apex-spacing-4);
 }
 
 .apex-auth-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 253, 248, 0.92);
   border-radius: var(--apex-radius-3xl);
   padding: var(--apex-spacing-8);
   box-shadow: var(--apex-shadow-xl);
@@ -1033,7 +1038,9 @@ img {
 .apex-auth-logo {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, var(--apex-primary-teal), var(--apex-teal-light));
+  background:
+    radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.48), transparent 42%),
+    linear-gradient(135deg, var(--apex-primary-teal), var(--apex-teal-light));
   border-radius: var(--apex-radius-full);
   display: flex;
   align-items: center;
@@ -1064,13 +1071,13 @@ img {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 253, 248, 0.94);
   border-top: 1px solid rgba(148, 163, 184, 0.24);
   padding: var(--apex-spacing-2) var(--apex-spacing-4);
   justify-content: space-around;
   align-items: center;
   z-index: 100;
-  box-shadow: 0 -14px 40px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 -14px 40px rgba(16, 35, 63, 0.12);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }
@@ -1102,7 +1109,7 @@ img {
 .apex-mobile-more-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.56);
+  background: rgba(16, 35, 63, 0.56);
   z-index: 2000;
   display: flex;
   align-items: flex-end;
@@ -1118,7 +1125,7 @@ img {
 
 .apex-mobile-more-sheet {
   width: 100%;
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(255, 253, 248, 0.96);
   border-top-left-radius: var(--apex-radius-2xl);
   border-top-right-radius: var(--apex-radius-2xl);
   box-shadow: var(--apex-shadow-2xl);
@@ -1190,7 +1197,7 @@ body.apex-mobile-more-open {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: rgba(15, 23, 42, 0.92);
+  background: rgba(16, 35, 63, 0.92);
   color: var(--apex-white);
   padding: var(--apex-spacing-4) var(--apex-spacing-6);
   border-radius: var(--apex-radius-2xl);
@@ -1655,9 +1662,10 @@ body.apex-mobile-more-open {
 /* Visual Refresh Layer */
 .apex-section:first-of-type[style*="linear-gradient"] {
   background:
-    radial-gradient(circle at 18% 20%, rgba(125, 211, 252, 0.32), transparent 20rem),
-    radial-gradient(circle at 82% 18%, rgba(96, 165, 250, 0.24), transparent 22rem),
-    linear-gradient(135deg, #111827 0%, #1E3A8A 48%, #2563EB 100%) !important;
+    radial-gradient(circle at 18% 20%, rgba(34, 211, 238, 0.24), transparent 20rem),
+    radial-gradient(circle at 78% 18%, rgba(216, 168, 78, 0.2), transparent 22rem),
+    radial-gradient(circle at 50% 85%, rgba(14, 159, 110, 0.22), transparent 24rem),
+    linear-gradient(135deg, #10233F 0%, #0B5F58 52%, #0E9F6E 100%) !important;
   position: relative;
   isolation: isolate;
 }
@@ -1668,16 +1676,16 @@ body.apex-mobile-more-open {
   inset: 0;
   z-index: -1;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 52px 52px;
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 58px 58px;
   mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.72), transparent 78%);
 }
 
 .apex-section:first-of-type[style*="linear-gradient"] h1 {
   color: var(--apex-white) !important;
   text-wrap: balance;
-  text-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+  text-shadow: 0 18px 44px rgba(7, 17, 31, 0.24);
 }
 
 .apex-section:first-of-type[style*="linear-gradient"] p {
@@ -1685,9 +1693,9 @@ body.apex-mobile-more-open {
 }
 
 .apex-section:first-of-type[style*="linear-gradient"] .apex-btn-light {
-  background: rgba(255, 255, 255, 0.94) !important;
+  background: rgba(255, 253, 248, 0.96) !important;
   color: var(--apex-primary-teal) !important;
-  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.24);
+  box-shadow: 0 18px 42px rgba(16, 35, 63, 0.24);
 }
 
 .apex-section:first-of-type[style*="linear-gradient"] .apex-btn-ghost {
